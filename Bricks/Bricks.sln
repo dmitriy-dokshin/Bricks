@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.Core", "Bricks.Core\Bricks.Core.csproj", "{1919938A-32A3-47D6-A8BA-DFE576BD38C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.Sync", "Bricks.Sync\Bricks.Sync.csproj", "{9E8E9905-1BEA-41DB-939F-BD70CF23E332}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.Sync.UnitTests", "Bricks.Sync.UnitTests\Bricks.Sync.UnitTests.csproj", "{65D416F2-8F60-44FD-8E7D-F72FCD02AF01}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{27BE237D-7E9B-43F3-BBB6-E6EE8C134CE5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.Sync.Tests", "Bricks.Sync.Tests\Bricks.Sync.Tests.csproj", "{BC883378-2A76-48A2-B8A3-EFF6F2773C58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.Sync.IntegrationTests", "Bricks.Sync.IntegrationTests\Bricks.Sync.IntegrationTests.csproj", "{1C660445-4422-4411-8A3B-FD5FAF377801}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1919938A-32A3-47D6-A8BA-DFE576BD38C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1919938A-32A3-47D6-A8BA-DFE576BD38C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1919938A-32A3-47D6-A8BA-DFE576BD38C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1919938A-32A3-47D6-A8BA-DFE576BD38C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E8E9905-1BEA-41DB-939F-BD70CF23E332}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E8E9905-1BEA-41DB-939F-BD70CF23E332}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E8E9905-1BEA-41DB-939F-BD70CF23E332}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E8E9905-1BEA-41DB-939F-BD70CF23E332}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65D416F2-8F60-44FD-8E7D-F72FCD02AF01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65D416F2-8F60-44FD-8E7D-F72FCD02AF01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65D416F2-8F60-44FD-8E7D-F72FCD02AF01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65D416F2-8F60-44FD-8E7D-F72FCD02AF01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC883378-2A76-48A2-B8A3-EFF6F2773C58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC883378-2A76-48A2-B8A3-EFF6F2773C58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC883378-2A76-48A2-B8A3-EFF6F2773C58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC883378-2A76-48A2-B8A3-EFF6F2773C58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C660445-4422-4411-8A3B-FD5FAF377801}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C660445-4422-4411-8A3B-FD5FAF377801}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C660445-4422-4411-8A3B-FD5FAF377801}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C660445-4422-4411-8A3B-FD5FAF377801}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{65D416F2-8F60-44FD-8E7D-F72FCD02AF01} = {27BE237D-7E9B-43F3-BBB6-E6EE8C134CE5}
+		{BC883378-2A76-48A2-B8A3-EFF6F2773C58} = {27BE237D-7E9B-43F3-BBB6-E6EE8C134CE5}
+		{1C660445-4422-4411-8A3B-FD5FAF377801} = {27BE237D-7E9B-43F3-BBB6-E6EE8C134CE5}
+	EndGlobalSection
+EndGlobal
