@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<modularitySettings xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform" xdt:Transform="InsertIfMissing">
+	<modules xdt:Transform="InsertIfMissing">
+		<add name="Bricks.Core" type="Bricks.Core.Module, Bricks.Core" order="0" xdt:Transform="InsertIfMissing"
+			 xdt:Locator="Match(name)" />
+	</modules>
+</modularitySettings>

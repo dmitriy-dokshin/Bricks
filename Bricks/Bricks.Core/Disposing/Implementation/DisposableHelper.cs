@@ -7,20 +7,18 @@ using System;
 namespace Bricks.Core.Disposing.Implementation
 {
 	/// <summary>
-	/// Реализация по умолчанию <see cref="IDisposableHelper" />.
+	/// The default implementation of <see cref="IDisposableHelper" />.
 	/// </summary>
 	internal sealed class DisposableHelper : IDisposableHelper
 	{
 		#region Implementation of IDisposableHelper
 
 		/// <summary>
-		/// Создаёт объект <see cref="IDisposable" />, выполняющий действие <paramref name="dispose" /> при освобождении
-		/// ресурсов.
+		/// Creates an <see cref="IDisposable" /> object that executes action <paramref name="dispose" /> when releasing resources.
 		/// </summary>
-		/// <param name="dispose">Действие, выполняемое при освобождении ресурсов.</param>
+		/// <param name="dispose">An <see cref="Action" /> that will be executed when releasing resources.</param>
 		/// <returns>
-		/// Объект <see cref="IDisposable" />, выполняющий действие <paramref name="dispose" /> при освобождении
-		/// ресурсов.
+		/// An <see cref="IDisposable" /> object that executes action <paramref name="dispose" /> when releasing resources.
 		/// </returns>
 		public IDisposable Action(Action dispose)
 		{

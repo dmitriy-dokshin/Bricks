@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<configSections xdt:Transform="InsertIfMissing">
+		<section name="unity"
+				 type="Microsoft.Practices.Unity.Configuration.UnityConfigurationSection, Microsoft.Practices.Unity.Configuration"
+				 xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+		<section name="modularitySettings"
+				 type="Bricks.Core.Modularity.Implementation.ModularityConfigurationSection, Bricks.Core"
+				 xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+	</configSections>
+
+	<unity configSource="Config\UnitySettings.config" xdt:Transform="InsertIfMissing" />
+	<modularitySettings configSource="Config\ModularitySettings.config" xdt:Transform="InsertIfMissing" />
+</configuration>

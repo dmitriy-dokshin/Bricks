@@ -7,7 +7,7 @@ using System;
 namespace Bricks.Core.Disposing.Implementation
 {
 	/// <summary>
-	/// Представляет реализацию <see cref="IDisposable" />, в которой при освобождении ресурсов вызывается делегат.
+	/// The implementation of the <see cref="IDisposable" /> that excutes delegate when releasing resources.
 	/// </summary>
 	internal sealed class ActionDisposable : DisposableBase
 	{
@@ -21,11 +21,10 @@ namespace Bricks.Core.Disposing.Implementation
 		#region Overrides of DisposableBase
 
 		/// <summary>
-		/// Освобождает ресурсы, связанные с объектом.
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 		/// </summary>
 		/// <param name="disposing">
-		/// Признак освобождения ресурсов при вызове метода <see cref="IDisposable.Dispose" /> (если
-		/// <c>true</c>) или при вызове финализатор (если <c>false</c>).
+		/// <c>true</c> if method is called from <see cref="Dispose" />; <c>false</c> if method is called by finalizer.
 		/// </param>
 		protected override void Dispose(bool disposing)
 		{

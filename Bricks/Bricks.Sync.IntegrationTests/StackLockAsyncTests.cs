@@ -27,7 +27,7 @@ namespace Bricks.Sync.IntegrationTests
 		{
 			for (int i = 0; i < list.Count; i++)
 			{
-				Assert.AreEqual(i, list[list.Count - i]);
+				Assert.AreEqual(i, list[list.Count - (i + 1)]);
 			}
 		}
 	}

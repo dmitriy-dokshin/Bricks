@@ -7,7 +7,7 @@ using System;
 namespace Bricks.Core.Disposing.Implementation
 {
 	/// <summary>
-	/// Базовый класс для реализации <see cref="IDisposable" />.
+	/// The base class for the <see cref="IDisposable" /> implementation.
 	/// </summary>
 	public abstract class DisposableBase : IDisposable
 	{
@@ -25,16 +25,15 @@ namespace Bricks.Core.Disposing.Implementation
 		#endregion
 
 		/// <summary>
-		/// Признак того, что ресурсы уже освобождены.
+		/// <c>true</c> if resources have been already released.
 		/// </summary>
 		protected bool IsDisposed { get; private set; }
 
 		/// <summary>
-		/// Освобождает ресурсы, связанные с объектом.
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
 		/// </summary>
 		/// <param name="disposing">
-		/// Признак освобождения ресурсов при вызове метода <see cref="IDisposable.Dispose" /> (если
-		/// <c>true</c>) или при вызове финализатор (если <c>false</c>).
+		/// <c>true</c> if method is called from <see cref="Dispose" />; <c>false</c> if method is called by finalizer.
 		/// </param>
 		protected virtual void Dispose(bool disposing)
 		{
