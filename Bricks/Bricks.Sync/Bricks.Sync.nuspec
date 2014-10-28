@@ -15,6 +15,9 @@
 		<!--<releaseNotes>Summary of changes made in this release of the package.</releaseNotes>-->
 		<copyright>$copyright$</copyright>
 		<tags>Bricks Builders Synchronization Async</tags>
+		<dependencies>
+			<dependency id="Bricks.Core" version="0.1" />
+		</dependencies>
 	</metadata>
 	<files>
 		<file src="NuGet\content\**\*.*" target="content" />

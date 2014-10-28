@@ -1,26 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<unity xmlns="http://schemas.microsoft.com/practices/2010/unity">
-	<assembly name="Bricks.Core" />
-	<assembly name="Microsoft.Practices.ServiceLocation" />
+<unity xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<assembly name="Bricks.Core" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+	<assembly name="Microsoft.Practices.ServiceLocation" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
 
-	<container>
+	<container xdt:Transform="InsertIfMissing">
 		<register type="Microsoft.Practices.ServiceLocation.IServiceLocator"
-				  mapTo="Bricks.Core.IoC.SimpleUnityServiceLocator">
+				  mapTo="Bricks.Core.IoC.SimpleUnityServiceLocator"
+				  xdt:Transform="InsertIfMissing" xdt:Locator="Match(type)">
 			<lifetime type="HierarchicalLifetimeManager" />
 		</register>
 		<register type="Bricks.Core.Conversion.IConverter"
-				  mapTo="Bricks.Core.Conversion.Implementation.Converter">
+				  mapTo="Bricks.Core.Conversion.Implementation.Converter"
+				  xdt:Transform="InsertIfMissing" xdt:Locator="Match(type)">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
 		<register type="Bricks.Core.Configuration.IConfigurationManager"
-				  mapTo="Bricks.Core.Configuration.Implementation.ConfigurationManagerImpl">
+				  mapTo="Bricks.Core.Configuration.Implementation.ConfigurationManagerImpl"
+				  xdt:Transform="InsertIfMissing" xdt:Locator="Match(type)">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
 		<register type="Bricks.Core.Disposing.IDisposableHelper"
-				  mapTo="Bricks.Core.Disposing.Implementation.DisposableHelper">
+				  mapTo="Bricks.Core.Disposing.Implementation.DisposableHelper"
+				  xdt:Transform="InsertIfMissing" xdt:Locator="Match(type)">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
+	</container>
+
+	<container name="Barter.Core" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)">
 		<register type="Bricks.Core.Disposing.IDisposableHelper"
 				  mapTo="Bricks.Core.Disposing.Implementation.DisposableHelper">
 			<lifetime type="ContainerControlledLifetimeManager" />

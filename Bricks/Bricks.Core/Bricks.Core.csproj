@@ -104,10 +104,14 @@
     </None>
     <None Include="app.config" />
     <None Include="Bricks.Core.nuspec" />
-    <None Include="NuGet\content\Config\ModularitySettings.config" />
-    <None Include="NuGet\content\Config\UnitySettings.config" />
+    <None Include="NuGet\content\Web.config.uninstall.xdt" />
+    <None Include="NuGet\content\App.config.uninstall.xdt" />
+    <None Include="NuGet\content\Config\UnitySettings.config.uninstall.xdt" />
+    <None Include="NuGet\content\Config\UnitySettings.config.install.xdt" />
     <None Include="NuGet\content\Web.config.install.xdt" />
-    <None Include="NuGet\content\App.config.install.xdt" />
+    <None Include="NuGet\content\App.config.install.xdt">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="NuGet\content\Config\ModularitySettings.config.uninstall.xdt" />
     <None Include="NuGet\content\Config\ModularitySettings.config.install.xdt" />
     <None Include="packages.config" />
