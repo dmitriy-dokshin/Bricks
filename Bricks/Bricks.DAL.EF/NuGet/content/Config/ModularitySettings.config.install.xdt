@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<modularitySettings xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<modules>
+		<add name="Bricks.DAL.EF" type="Bricks.DAL.EF.Module, Bricks.DAL.EF" order="30" xdt:Transform="InsertIfMissing"
+			 xdt:Locator="Match(name)" />
+	</modules>
+</modularitySettings>

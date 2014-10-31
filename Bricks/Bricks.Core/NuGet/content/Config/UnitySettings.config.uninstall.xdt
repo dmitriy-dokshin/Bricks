@@ -22,6 +22,6 @@
 		</register>
 	</container>
 
-	<container name="Barter.Core" xdt:Transform="Remove" xdt:Locator="Match(name)">
+	<container name="Bricks.Core" xdt:Transform="Remove" xdt:Locator="Match(name)">
 	</container>
 </unity>

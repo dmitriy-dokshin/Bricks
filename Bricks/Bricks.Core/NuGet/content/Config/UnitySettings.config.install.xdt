@@ -27,13 +27,17 @@
 		</register>
 	</container>
 
-	<container name="Barter.Core" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)">
+	<container name="Bricks.Core" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)">
 		<register type="Bricks.Core.Disposing.IDisposableHelper"
 				  mapTo="Bricks.Core.Disposing.Implementation.DisposableHelper">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
 		<register type="Bricks.Core.Seams.IRandomProvider"
 				  mapTo="Bricks.Core.Seams.Implementation.RandomProvider">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+		<register type="Bricks.Core.Tasks.ICancellationTokenProvider"
+				  mapTo="Bricks.Core.Tasks.NoneCancellationTokenProvider">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
 	</container>

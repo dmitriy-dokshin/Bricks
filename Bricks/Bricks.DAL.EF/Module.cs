@@ -1,13 +1,13 @@
 ﻿#region
 
 using Bricks.Core.Modularity.Implementation;
-using Bricks.Sync.Implementation;
+using Bricks.DAL.Repository;
 
 using Microsoft.Practices.Unity;
 
 #endregion
 
-namespace Bricks.Sync
+namespace Bricks.DAL.EF
 {
 	public sealed class Module : ModuleBase
 	{
@@ -20,8 +20,7 @@ namespace Bricks.Sync
 		/// <param name="args">The <see cref="IUnityContainer" /> that contains initialization arguments.</param>
 		public override void Initialize(IUnityContainer container, IUnityContainer args)
 		{
-			container.RegisterType<IInterlockedHelper, InterlockedHelper>(new ContainerControlledLifetimeManager());
-			container.RegisterType<ILockAsync, LockAsync>();
+			container.RegisterType<IRepository, Repository>();
 		}
 
 		#endregion
