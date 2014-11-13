@@ -21,7 +21,7 @@ namespace Bricks.Sync
 		public override void Initialize(IUnityContainer container, IUnityContainer args)
 		{
 			container.RegisterType<IInterlockedHelper, InterlockedHelper>(new ContainerControlledLifetimeManager());
-			container.RegisterType<ILockAsync, LockAsync>();
+			container.RegisterType<ISyncFactory, SyncFactory>(new ContainerControlledLifetimeManager());
 		}
 
 		#endregion

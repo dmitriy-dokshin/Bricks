@@ -32,6 +32,8 @@ namespace Bricks.Sync.Implementation
 			{
 				_random = new Random();
 			}
+
+			_currentCompletedTcsIndex = -1;
 		}
 
 		[InjectionMethod]
@@ -47,18 +49,18 @@ namespace Bricks.Sync.Implementation
 
 		private void RemoveAndSetNextResult()
 		{
-			int? tcsIndex =
+			int tcsIndex =
 				_interlockedHelper.CompareExchange(ref _taskCompletionSources,
 					x =>
 					{
 						IImmutableList<TaskCompletionSource<IDisposable>> newValue = x.RemoveAt(_currentCompletedTcsIndex);
-						return _interlockedHelper.CreateChangeResult(newValue, newValue.Count > 0 ? GetNextTcsIndex(newValue) : (int?) null);
+						return _interlockedHelper.CreateChangeResult(newValue, newValue.Count > 0 ? GetNextTcsIndex(newValue) : -1);
 					});
-			if (tcsIndex.HasValue)
+			if (tcsIndex >= 0)
 			{
 				try
 				{
-					_currentCompletedTcsIndex = tcsIndex.Value;
+					_currentCompletedTcsIndex = tcsIndex;
 					_taskCompletionSources[_currentCompletedTcsIndex].SetResult(_disposableHelper.Action(RemoveAndSetNextResult));
 				}
 				catch (InvalidOperationException)
