@@ -15,5 +15,8 @@
 		<!--<releaseNotes>Summary of changes made in this release of the package.</releaseNotes>-->
 		<copyright>$copyright$</copyright>
 		<tags>Bricks Builders ASP.NET Web API</tags>
+		<dependencies>
+			<dependency id="Bricks.Core" version="0.1" />
+		</dependencies>
 	</metadata>
 </package>

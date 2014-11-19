@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Bricks.DAL.EF.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,6 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Bricks.DAL.EF.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
@@ -71,12 +73,13 @@
     <Compile Include="Repository.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="Bricks.Core.nuspec">
+    <None Include="Bricks.DAL.EF.nuspec">
       <SubType>Designer</SubType>
     </None>
     <None Include="NuGet\content\Config\ModularitySettings.config.install.xdt" />
     <None Include="NuGet\content\Config\ModularitySettings.config.uninstall.xdt" />
+    <None Include="NuGet\content\Config\UnitySettings.config.install.xdt" />
+    <None Include="NuGet\content\Config\UnitySettings.config.uninstall.xdt" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

@@ -26,7 +26,7 @@ namespace Bricks.Sync.Implementation
 		/// Creates new instance of <see cref="ILockAsync" /> type.
 		/// </summary>
 		/// <returns>New instance of <see cref="ILockAsync" /> type</returns>
-		public virtual ILockAsync CreateAsyncLock(LockAsyncType type)
+		public virtual ILockAsync CreateAsyncLock(LockAsyncType type = LockAsyncType.Queue)
 		{
 			return _serviceLocator.BuildUp(new LockAsync(type));
 		}

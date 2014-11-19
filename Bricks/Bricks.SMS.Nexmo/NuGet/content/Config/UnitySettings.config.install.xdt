@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<unity xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<assembly name="Bricks.SMS.Nexmo" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+
+	<container name="Bricks.SMS.Nexmo" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)">
+		<register type="Bricks.SMS.ISmsService"
+				  mapTo="Bricks.SMS.Nexmo.NexmoSmsService">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+	</container>
+</unity>

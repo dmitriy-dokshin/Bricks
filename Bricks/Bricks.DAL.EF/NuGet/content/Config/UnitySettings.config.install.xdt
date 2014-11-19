@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<unity xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<assembly name="Bricks.DAL" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+	<assembly name="Bricks.DAL.EF" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+
+	<container name="Bricks.DAL.EF" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)">
+		<register type="Bricks.DAL.Repository.IRepository"
+				  mapTo="Bricks.DAL.EF.Repository">
+		</register>
+		<register type="Bricks.DAL.Repository.ISqlRepository"
+				  mapTo="Bricks.DAL.EF.Repository">
+		</register>
+	</container>
+</unity>

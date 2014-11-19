@@ -39,6 +39,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.WebAPI", "Bricks.Web
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.OWIN", "Bricks.OWIN\Bricks.OWIN.csproj", "{A3C72C1E-F41F-4750-80D1-4D7E34D1AD96}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.Web", "Bricks.Web\Bricks.Web.csproj", "{3D01F1C7-EEB2-45CD-97A3-94FCA46F460D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.Helpers", "Bricks.Helpers\Bricks.Helpers.csproj", "{3F8A3074-0918-4D0E-8FDF-1F7BBA57BACF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.SMS", "Bricks.SMS\Bricks.SMS.csproj", "{5E9FDE84-A6B0-4B10-A387-93FA9086A8FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.SMS.Nexmo", "Bricks.SMS.Nexmo\Bricks.SMS.Nexmo.csproj", "{8D79BA85-F80F-4894-A0F5-1C9A131B685C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.Auth", "Bricks.Auth\Bricks.Auth.csproj", "{82862838-2E8E-49A5-B392-F3E51A228341}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +95,26 @@ Global
 		{A3C72C1E-F41F-4750-80D1-4D7E34D1AD96}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3C72C1E-F41F-4750-80D1-4D7E34D1AD96}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3C72C1E-F41F-4750-80D1-4D7E34D1AD96}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D01F1C7-EEB2-45CD-97A3-94FCA46F460D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D01F1C7-EEB2-45CD-97A3-94FCA46F460D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D01F1C7-EEB2-45CD-97A3-94FCA46F460D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D01F1C7-EEB2-45CD-97A3-94FCA46F460D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F8A3074-0918-4D0E-8FDF-1F7BBA57BACF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F8A3074-0918-4D0E-8FDF-1F7BBA57BACF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F8A3074-0918-4D0E-8FDF-1F7BBA57BACF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F8A3074-0918-4D0E-8FDF-1F7BBA57BACF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E9FDE84-A6B0-4B10-A387-93FA9086A8FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E9FDE84-A6B0-4B10-A387-93FA9086A8FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E9FDE84-A6B0-4B10-A387-93FA9086A8FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E9FDE84-A6B0-4B10-A387-93FA9086A8FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8D79BA85-F80F-4894-A0F5-1C9A131B685C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8D79BA85-F80F-4894-A0F5-1C9A131B685C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8D79BA85-F80F-4894-A0F5-1C9A131B685C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8D79BA85-F80F-4894-A0F5-1C9A131B685C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82862838-2E8E-49A5-B392-F3E51A228341}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82862838-2E8E-49A5-B392-F3E51A228341}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82862838-2E8E-49A5-B392-F3E51A228341}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82862838-2E8E-49A5-B392-F3E51A228341}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

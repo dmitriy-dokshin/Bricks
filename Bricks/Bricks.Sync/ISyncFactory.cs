@@ -9,6 +9,6 @@
 		/// Creates new instance of <see cref="ILockAsync" /> type.
 		/// </summary>
 		/// <returns>New instance of <see cref="ILockAsync" /> type</returns>
-		ILockAsync CreateAsyncLock(LockAsyncType type);
+		ILockAsync CreateAsyncLock(LockAsyncType type = LockAsyncType.Queue);
 	}
 }

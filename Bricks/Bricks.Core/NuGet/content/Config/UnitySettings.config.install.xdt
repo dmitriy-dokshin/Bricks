@@ -40,5 +40,21 @@
 				  mapTo="Bricks.Core.Tasks.NoneCancellationTokenProvider">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
+		<register type="Bricks.Core.Resources.IResourceProvider"
+				  mapTo="Bricks.Core.Resources.Implementation.ResourceProvider">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+		<register type="Bricks.Core.Results.IResultFactory"
+				  mapTo="Bricks.Core.Results.Implementation.ResultFactory">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+		<register type="Bricks.Core.DateTime.IDateTimeProvider"
+				  mapTo="Bricks.Core.DateTime.Implementation.DateTimeProvider">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+		<register type="Bricks.Core.Serialization.ISerializationHelper"
+				  mapTo="Bricks.Core.Serialization.Implementation.SerializationHelper">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
 	</container>
 </unity>

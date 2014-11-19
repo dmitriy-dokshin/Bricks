@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<configSections xdt:Transform="InsertIfMissing">
+		<section name="nexmoSettings" type="Bricks.SMS.Nexmo.NexmoSettings, Bricks.SMS.Nexmo"
+				 xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+	</configSections>
+
+	<nexmoSettings configSource="Config\NexmoSettings.config" xdt:Transform="InsertIfMissing" />
+</configuration>

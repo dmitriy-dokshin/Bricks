@@ -2,7 +2,7 @@
 
 <modularitySettings xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
 	<modules>
-		<add name="Bricks.Sync" type="Bricks.Sync.Module, Bricks.Sync" order="10" xdt:Transform="InsertIfMissing"
+		<add name="Bricks.Sync" type="Bricks.Sync.Module, Bricks.Sync" order="0" xdt:Transform="InsertIfMissing"
 			 xdt:Locator="Match(name)" />
 	</modules>
 </modularitySettings>

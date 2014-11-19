@@ -5,6 +5,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Bricks.Core.Results;
+
 #endregion
 
 namespace Bricks.DAL.Repository
@@ -30,7 +32,7 @@ namespace Bricks.DAL.Repository
 		/// <typeparam name="TEntity">Тип сущности.</typeparam>
 		/// <param name="entities">Сущности, которые нужно добавить.</param>
 		/// <returns>Задача, результатом которой являются добавленные сущности.</returns>
-		Task<IEnumerable<TEntity>> InsertRangeAsync<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
+		Task<IResult<IReadOnlyCollection<TEntity>>> InsertRangeAsync<TEntity>(IReadOnlyCollection<TEntity> entities) where TEntity : class;
 
 		/// <summary>
 		/// Добавляет сущность <paramref name="entity" />.
@@ -38,7 +40,7 @@ namespace Bricks.DAL.Repository
 		/// <typeparam name="TEntity">Тип сущности.</typeparam>
 		/// <param name="entity">Сущность, которую нужно добавить.</param>
 		/// <returns>Задача, результатом которой является добавленная сущность.</returns>
-		Task<TEntity> InsertAsync<TEntity>(TEntity entity) where TEntity : class;
+		Task<IResult<TEntity>> InsertAsync<TEntity>(TEntity entity) where TEntity : class;
 
 		/// <summary>
 		/// Обновляет сущности <paramref name="entities" />.
@@ -46,7 +48,7 @@ namespace Bricks.DAL.Repository
 		/// <typeparam name="TEntity">Тип сущности.</typeparam>
 		/// <param name="entities">Сущности, которые нужно обновить.</param>
 		/// <returns>Задача, результатом которой являются обновленные сущности.</returns>
-		Task<IEnumerable<TEntity>> UpdateRangeAsync<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
+		Task<IResult<IReadOnlyCollection<TEntity>>> UpdateRangeAsync<TEntity>(IReadOnlyCollection<TEntity> entities) where TEntity : class;
 
 		/// <summary>
 		/// Обновляет сущность <paramref name="entity" />.
@@ -54,7 +56,7 @@ namespace Bricks.DAL.Repository
 		/// <typeparam name="TEntity">Тип сущности.</typeparam>
 		/// <param name="entity">Сущность, которую нужно обновить.</param>
 		/// <returns>Задача, результатом которой являются обновленная сущность.</returns>
-		Task<TEntity> UpdateAsync<TEntity>(TEntity entity) where TEntity : class;
+		Task<IResult<TEntity>> UpdateAsync<TEntity>(TEntity entity) where TEntity : class;
 
 		/// <summary>
 		/// Удаляет сущности <paramref name="entities" />.
@@ -62,7 +64,7 @@ namespace Bricks.DAL.Repository
 		/// <typeparam name="TEntity">Тип сущности.</typeparam>
 		/// <param name="entities">Сущности, которые нужно удалить.</param>
 		/// <returns>Задача удаления сущностей.</returns>
-		Task DeleteRangeAsync<TEntity>(IEnumerable<TEntity> entities) where TEntity : class;
+		Task<IResult> DeleteRangeAsync<TEntity>(IReadOnlyCollection<TEntity> entities) where TEntity : class;
 
 		/// <summary>
 		/// Удаляет сущность <paramref name="entity" />.
@@ -70,7 +72,7 @@ namespace Bricks.DAL.Repository
 		/// <typeparam name="TEntity">Тип сущности.</typeparam>
 		/// <param name="entity">Сущность, которую нужно удалить.</param>
 		/// <returns>Задача удаления сущности.</returns>
-		Task DeleteAsync<TEntity>(TEntity entity) where TEntity : class;
+		Task<IResult> DeleteAsync<TEntity>(TEntity entity) where TEntity : class;
 
 		/// <summary>
 		/// Перезагружает сущность.

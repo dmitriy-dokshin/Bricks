@@ -3,7 +3,6 @@
 <configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
 	<configSections>
 		<section name="modularitySettings"
-				 type="Bricks.Core.Modularity.Implementation.ModularityConfigurationSection, Bricks.Core"
 				 xdt:Transform="Remove" xdt:Locator="Match(name)" />
 	</configSections>
 

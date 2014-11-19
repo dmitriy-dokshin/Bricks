@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<unity xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<assembly name="Bricks.Sync" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+
+	<container name="Bricks.Sync" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)">
+		<register type="Bricks.Sync.IInterlockedHelper" mapTo="Bricks.Sync.Implementation.InterlockedHelper">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+		<register type="Bricks.Sync.ISyncFactory" mapTo="Bricks.Sync.Implementation.SyncFactory">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+	</container>
+</unity>

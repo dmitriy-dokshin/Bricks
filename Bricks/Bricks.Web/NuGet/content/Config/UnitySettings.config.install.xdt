@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<unity xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<assembly name="Bricks.Web" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+
+	<container name="Bricks.Web" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)">
+		<register type="Bricks.Web.IUrlHelper"
+				  mapTo="Bricks.Web.Implementation.UrlHelper">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+		<register type="Bricks.Web.IWebClient"
+				  mapTo="Bricks.Web.Implementation.WebClientImpl">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+		<register type="Bricks.Web.IWebSerializationHelper"
+				  mapTo="Bricks.Web.Implementation.WebSerializationHelper">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+		<register type="Bricks.Web.IWebHelper"
+				  mapTo="Bricks.Web.Implementation.WebHelper">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+	</container>
+</unity>

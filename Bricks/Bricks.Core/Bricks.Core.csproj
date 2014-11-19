@@ -55,6 +55,9 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
       <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
@@ -80,10 +83,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="DateTime\IDateTimeProvider.cs" />
+    <Compile Include="DateTime\Implementation\DateTimeProvider.cs" />
     <Compile Include="Disposing\Implementation\ActionDisposable.cs" />
     <Compile Include="Disposing\Implementation\DisposableBase.cs" />
     <Compile Include="Disposing\Implementation\DisposableHelper.cs" />
     <Compile Include="Disposing\IDisposableHelper.cs" />
+    <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="IoC\ServiceLocatorExtensions.cs" />
     <Compile Include="IoC\SimpleUnityServiceLocator.cs" />
     <Compile Include="Modularity\IApplication.cs" />
@@ -98,8 +104,24 @@
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\ReflectionHelper.cs" />
+    <Compile Include="Resources\Implementation\ResourceManagerImpl.cs" />
+    <Compile Include="Resources\Implementation\ResourceProvider.cs" />
+    <Compile Include="Resources\IResourceManager.cs" />
+    <Compile Include="Resources\IResourceProvider.cs" />
+    <Compile Include="Resources\ResourceProviderExtensions.cs" />
+    <Compile Include="Resources\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Results\IResult.cs" />
+    <Compile Include="Results\IResultFactory.cs" />
+    <Compile Include="Results\Implementation\ResultFactory.cs" />
+    <Compile Include="Results\ResultExtensions.cs" />
     <Compile Include="Seams\IRandomProvider.cs" />
     <Compile Include="Seams\Implementation\RandomProvider.cs" />
+    <Compile Include="Serialization\ISerializationHelper.cs" />
+    <Compile Include="Serialization\Implementation\SerializationHelper.cs" />
     <Compile Include="Tasks\ICancellationTokenProvider.cs" />
     <Compile Include="Tasks\NoneCancellationTokenProvider.cs" />
   </ItemGroup>
@@ -107,7 +129,6 @@
     <None Include="..\..\BuildKey.pfx">
       <Link>BuildKey.pfx</Link>
     </None>
-    <None Include="app.config" />
     <None Include="Bricks.Core.nuspec" />
     <None Include="NuGet\content\Web.config.uninstall.xdt" />
     <None Include="NuGet\content\App.config.uninstall.xdt" />
@@ -121,9 +142,15 @@
     <None Include="NuGet\content\Config\ModularitySettings.config.install.xdt" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Web\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Conversion\Implementation\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>

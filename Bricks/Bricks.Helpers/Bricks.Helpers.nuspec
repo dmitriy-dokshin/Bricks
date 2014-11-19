@@ -14,9 +14,10 @@
 		<description>$description$</description>
 		<!--<releaseNotes>Summary of changes made in this release of the package.</releaseNotes>-->
 		<copyright>$copyright$</copyright>
-		<tags>Bricks Builders DAL</tags>
+		<tags>Bricks Builders Helpers</tags>
 		<dependencies>
 			<dependency id="Bricks.Core" version="0.1" />
+			<dependency id="Bricks.Sync" version="0.1" />
 		</dependencies>
 	</metadata>
 	<files>

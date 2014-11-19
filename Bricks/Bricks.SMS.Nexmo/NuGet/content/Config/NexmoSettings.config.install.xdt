@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<nexmoSettings xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	key=""
+	secret=""
+	baseUrl="https://rest.nexmo.com/"
+	senderIdResourceType=""
+	senderIdResourceName="">
+	<serviceUrls xdt:Transform="InsertIfMissing">
+		<add type="Bricks.SMS.Nexmo.SmsParameters, Bricks.SMS.Nexmo" url="sms/json" xdt:Transform="InsertIfMissing"
+			 xdt:Locator="Match(type)" />
+	</serviceUrls>
+</nexmoSettings>

@@ -73,6 +73,7 @@
     <Compile Include="ISyncFactory.cs" />
     <Compile Include="Implementation\LockAsync.cs" />
     <Compile Include="Implementation\InterlockedHelper.cs" />
+    <Compile Include="ISyncStorage.cs" />
     <Compile Include="LockAsyncType.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,10 +83,11 @@
     <None Include="..\..\BuildKey.pfx">
       <Link>BuildKey.pfx</Link>
     </None>
-    <None Include="app.config" />
     <None Include="Bricks.Sync.nuspec" />
     <None Include="NuGet\content\Config\ModularitySettings.config.install.xdt" />
     <None Include="NuGet\content\Config\ModularitySettings.config.uninstall.xdt" />
+    <None Include="NuGet\content\Config\UnitySettings.config.uninstall.xdt" />
+    <None Include="NuGet\content\Config\UnitySettings.config.install.xdt" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

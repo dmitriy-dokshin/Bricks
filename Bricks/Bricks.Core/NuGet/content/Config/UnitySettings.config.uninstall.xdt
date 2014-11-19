@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
-<unity xmlns="http://schemas.microsoft.com/practices/2010/unity"
-	   xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+<unity xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
 	<assembly name="Bricks.Core" xdt:Transform="Remove" xdt:Locator="Match(name)" />
 
 	<container>
