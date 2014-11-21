@@ -16,7 +16,4 @@
 		<copyright>$copyright$</copyright>
 		<tags>Bricks Builders OWIN</tags>
 	</metadata>
-	<files>
-		<file src="NuGet\content\**\*.*" target="content" />
-	</files>
 </package>

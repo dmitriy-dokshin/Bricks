@@ -43,6 +43,12 @@
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.2.1\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation">
       <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
@@ -92,6 +98,9 @@
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="IoC\ServiceLocatorExtensions.cs" />
     <Compile Include="IoC\SimpleUnityServiceLocator.cs" />
+    <Compile Include="Mapping\IMapper.cs" />
+    <Compile Include="Mapping\MapperExtensions.cs" />
+    <Compile Include="Mapping\MapperImpl.cs" />
     <Compile Include="Modularity\IApplication.cs" />
     <Compile Include="Modularity\IModularitySettings.cs" />
     <Compile Include="Modularity\IModule.cs" />
@@ -129,6 +138,7 @@
     <None Include="..\..\BuildKey.pfx">
       <Link>BuildKey.pfx</Link>
     </None>
+    <None Include="app.config" />
     <None Include="Bricks.Core.nuspec" />
     <None Include="NuGet\content\Web.config.uninstall.xdt" />
     <None Include="NuGet\content\App.config.uninstall.xdt" />
@@ -167,6 +177,7 @@
     <PostBuildEvent>cd $(ProjectDir)
 nuget pack $(ProjectName)$(ProjectExt) -Prop Configuration=$(ConfigurationName) -OutputDirectory "$(SolutionDir)NuGet Packages" -Symbols</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.2.1\tools\AutoMapper.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

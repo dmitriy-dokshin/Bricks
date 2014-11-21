@@ -17,9 +17,9 @@ namespace Bricks.Core.Results
 		/// <param name="success">Признак успешного завершения.</param>
 		/// <param name="message">Сообщение, описывающее результат.</param>
 		/// <param name="exception">Исключение.</param>
-		/// <param name="inneResult">Внутренний результат.</param>
+		/// <param name="innerResult">Внутренний результат.</param>
 		/// <returns>Результат выполнения функции.</returns>
-		IResult Create(bool success = true, string message = null, Exception exception = null, IResult inneResult = null);
+		IResult Create(bool success = true, string message = null, Exception exception = null, IResult innerResult = null);
 
 		/// <summary>
 		/// Создаёт результат выполнения функции с данными.
@@ -29,8 +29,8 @@ namespace Bricks.Core.Results
 		/// <param name="success">Признак успешного завершения.</param>
 		/// <param name="message">Сообщение, описывающее результат.</param>
 		/// <param name="exception">Исключение.</param>
-		/// <param name="inneResult">Внутренний результат.</param>
+		/// <param name="innerResult">Внутренний результат.</param>
 		/// <returns>Результат выполнения функции с данными.</returns>
-		IResult<TData> Create<TData>(TData data = default (TData), bool success = true, string message = null, Exception exception = null, IResult inneResult = null);
+		IResult<TData> Create<TData>(TData data = default (TData), bool success = true, string message = null, Exception exception = null, IResult innerResult = null);
 	}
 }

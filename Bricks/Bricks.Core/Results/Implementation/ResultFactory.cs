@@ -19,11 +19,11 @@ namespace Bricks.Core.Results.Implementation
 		/// <param name="success">Признак успешного завершения.</param>
 		/// <param name="message">Сообщение, описывающее результат.</param>
 		/// <param name="exception">Исключение.</param>
-		/// <param name="inneResult">Внутренний результат.</param>
+		/// <param name="innerResult">Внутренний результат.</param>
 		/// <returns>Результат выполнения функции.</returns>
-		public IResult Create(bool success = true, string message = null, Exception exception = null, IResult inneResult = null)
+		public IResult Create(bool success = true, string message = null, Exception exception = null, IResult innerResult = null)
 		{
-			return new Result(success, message, exception, inneResult);
+			return new Result(success, message, exception, innerResult);
 		}
 
 		/// <summary>
@@ -34,11 +34,11 @@ namespace Bricks.Core.Results.Implementation
 		/// <param name="success">Признак успешного завершения.</param>
 		/// <param name="message">Сообщение, описывающее результат.</param>
 		/// <param name="exception">Исключение.</param>
-		/// <param name="inneResult">Внутренний результат.</param>
+		/// <param name="innerResult">Внутренний результат.</param>
 		/// <returns>Результат выполнения функции с данными.</returns>
-		public IResult<TData> Create<TData>(TData data = default (TData), bool success = true, string message = null, Exception exception = null, IResult inneResult = null)
+		public IResult<TData> Create<TData>(TData data = default (TData), bool success = true, string message = null, Exception exception = null, IResult innerResult = null)
 		{
-			return new Result<TData>(data, success, message, exception, inneResult);
+			return new Result<TData>(data, success, message, exception, innerResult);
 		}
 
 		#endregion
@@ -80,8 +80,8 @@ namespace Bricks.Core.Results.Implementation
 
 		private sealed class Result<TData> : Result, IResult<TData>
 		{
-			public Result(TData data, bool success, string message, Exception exception, IResult inneResult)
-			: base(success, message, exception, inneResult)
+			public Result(TData data, bool success, string message, Exception exception, IResult innerResult)
+				: base(success, message, exception, innerResult)
 			{
 				Data = data;
 			}

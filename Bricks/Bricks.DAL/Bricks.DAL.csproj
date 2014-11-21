@@ -53,6 +53,7 @@
     <Compile Include="Repository\ITransactionScope.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Bricks.DAL.EF.nuspec">
       <SubType>Designer</SubType>
     </None>
