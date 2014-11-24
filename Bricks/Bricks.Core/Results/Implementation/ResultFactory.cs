@@ -45,11 +45,13 @@ namespace Bricks.Core.Results.Implementation
 
 		private class Result : IResult
 		{
+			private readonly string _message;
+
 			public Result(bool success, string message, Exception exception, IResult innerResult)
 			{
 				InnerResult = innerResult;
 				Success = success;
-				Message = message;
+				_message = message;
 				Exception = exception;
 			}
 
@@ -63,7 +65,19 @@ namespace Bricks.Core.Results.Implementation
 			/// <summary>
 			/// Сообщение, описывающее результат.
 			/// </summary>
-			public string Message { get; private set; }
+			public string Message
+			{
+				get
+				{
+					string message = _message;
+					if (message == null && InnerResult != null)
+					{
+						message = InnerResult.Message;
+					}
+
+					return message;
+				}
+			}
 
 			/// <summary>
 			/// Исключение.

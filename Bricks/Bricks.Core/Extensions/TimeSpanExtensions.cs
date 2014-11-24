@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Text;
 
 #endregion
 
@@ -29,6 +30,37 @@ namespace Bricks.Core.Extensions
 		public static int RoundToMinutes(this TimeSpan timeSpan)
 		{
 			return Convert.ToInt32(Math.Round(timeSpan.TotalMinutes));
+		}
+
+		public static string ToDetailedString(this TimeSpan target)
+		{
+			var stringBuilder = new StringBuilder();
+			if (target.Hours > 0)
+			{
+				stringBuilder.AppendFormat(Resources.TimeSpanPartFormat, target.Hours, Resources.Hours);
+			}
+
+			if (target.Minutes > 0)
+			{
+				if (stringBuilder.Length > 0)
+				{
+					stringBuilder.Append(Resources.TimeSpanPartsSeparator);
+				}
+
+				stringBuilder.AppendFormat(Resources.TimeSpanPartFormat, target.Minutes, Resources.Minutes);
+			}
+
+			if (target.Seconds > 0)
+			{
+				if (stringBuilder.Length > 0)
+				{
+					stringBuilder.Append(Resources.TimeSpanPartsSeparator);
+				}
+
+				stringBuilder.AppendFormat(Resources.TimeSpanPartFormat, target.Seconds, Resources.Seconds);
+			}
+
+			return stringBuilder.ToString();
 		}
 	}
 }

@@ -7,7 +7,7 @@ using AutoMapper;
 
 #endregion
 
-namespace Bricks.Core.Mapping
+namespace Bricks.Core.Mapping.Implementation
 {
 	/// <summary>
 	/// Реализация по умолчанию для <see cref="IMapper" />.

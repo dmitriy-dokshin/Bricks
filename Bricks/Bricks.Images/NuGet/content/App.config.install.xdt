@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<configSections xdt:Transform="InsertIfMissing">
+		<section name="imageSettings" type="Bricks.Images.Implementation.ImageSettings, Bricks.Images"
+				 xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+		<section name="cachingConfiguration"
+				 type="Microsoft.Practices.EnterpriseLibrary.Caching.Configuration.CacheManagerSettings, Microsoft.Practices.EnterpriseLibrary.Caching"
+				 xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+	</configSections>
+
+	<imageSettings configSource="Config\ImageSettings.config" xdt:Transform="InsertIfMissing" />
+	<cachingConfiguration configSource="Config\CachingSettings.config" xdt:Transform="InsertIfMissing" />
+</configuration>

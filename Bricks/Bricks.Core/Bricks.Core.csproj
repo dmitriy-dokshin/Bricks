@@ -95,12 +95,17 @@
     <Compile Include="Disposing\Implementation\DisposableBase.cs" />
     <Compile Include="Disposing\Implementation\DisposableHelper.cs" />
     <Compile Include="Disposing\IDisposableHelper.cs" />
+    <Compile Include="Extensions\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
     <Compile Include="IoC\ServiceLocatorExtensions.cs" />
     <Compile Include="IoC\SimpleUnityServiceLocator.cs" />
     <Compile Include="Mapping\IMapper.cs" />
     <Compile Include="Mapping\MapperExtensions.cs" />
-    <Compile Include="Mapping\MapperImpl.cs" />
+    <Compile Include="Mapping\Implementation\MapperImpl.cs" />
     <Compile Include="Modularity\IApplication.cs" />
     <Compile Include="Modularity\IModularitySettings.cs" />
     <Compile Include="Modularity\IModule.cs" />
@@ -157,6 +162,10 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Conversion\Implementation\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Extensions\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>

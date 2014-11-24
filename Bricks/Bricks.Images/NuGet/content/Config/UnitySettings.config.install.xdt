@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<unity xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<assembly name="Bricks.Images" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+
+	<container name="Bricks.Images" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)">
+		<register type="Bricks.Images.IImageProcessor"
+				  mapTo="Bricks.Images.Implementation.ImageProcessor">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+		<register type="Bricks.Images.IImageManager`2"
+				  mapTo="Bricks.Images.Implementation.ImageManager`2">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+	</container>
+</unity>

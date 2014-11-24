@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
@@ -56,16 +57,7 @@ namespace Bricks.DAL.EF
 		public async Task<IResult<IReadOnlyCollection<TEntity>>> InsertRangeAsync<TEntity>(IReadOnlyCollection<TEntity> entities) where TEntity : class
 		{
 			_dbContext.Set<TEntity>().AddRange(entities);
-			try
-			{
-				await _dbContext.SaveChangesAsync(_cancellationToken);
-			}
-			catch (DbUpdateException exception)
-			{
-				return CreateUnsuccessfulResult<IReadOnlyCollection<TEntity>>(exception);
-			}
-
-			return _resultFactory.Create(entities);
+			return await SaveChanges<IReadOnlyCollection<TEntity>>() ?? _resultFactory.Create(entities);
 		}
 
 		/// <summary>
@@ -77,16 +69,7 @@ namespace Bricks.DAL.EF
 		public async Task<IResult<TEntity>> InsertAsync<TEntity>(TEntity entity) where TEntity : class
 		{
 			_dbContext.Set<TEntity>().Add(entity);
-			try
-			{
-				await _dbContext.SaveChangesAsync(_cancellationToken);
-			}
-			catch (DbUpdateException exception)
-			{
-				return CreateUnsuccessfulResult<TEntity>(exception);
-			}
-
-			return _resultFactory.Create(entity);
+			return await SaveChanges<TEntity>() ?? _resultFactory.Create(entity);
 		}
 
 		/// <summary>
@@ -109,16 +92,7 @@ namespace Bricks.DAL.EF
 				}
 			}
 
-			try
-			{
-				await _dbContext.SaveChangesAsync(_cancellationToken);
-			}
-			catch (DbUpdateException exception)
-			{
-				return CreateUnsuccessfulResult<IReadOnlyCollection<TEntity>>(exception);
-			}
-
-			return _resultFactory.Create(entities);
+			return await SaveChanges<IReadOnlyCollection<TEntity>>() ?? _resultFactory.Create(entities);
 		}
 
 		/// <summary>
@@ -138,16 +112,7 @@ namespace Bricks.DAL.EF
 				dbEntityEntry.State = EntityState.Modified;
 			}
 
-			try
-			{
-				await _dbContext.SaveChangesAsync(_cancellationToken);
-			}
-			catch (DbUpdateException exception)
-			{
-				return CreateUnsuccessfulResult<TEntity>(exception);
-			}
-
-			return _resultFactory.Create(entity);
+			return await SaveChanges<TEntity>() ?? _resultFactory.Create(entity);
 		}
 
 		/// <summary>
@@ -159,15 +124,7 @@ namespace Bricks.DAL.EF
 		public async Task<IResult> DeleteRangeAsync<TEntity>(IReadOnlyCollection<TEntity> entities) where TEntity : class
 		{
 			_dbContext.Set<TEntity>().RemoveRange(entities);
-			try
-			{
-				await _dbContext.SaveChangesAsync(_cancellationToken);
-				return _resultFactory.Create();
-			}
-			catch (DbUpdateException exception)
-			{
-				return CreateUnsuccessfulResult(exception);
-			}
+			return await SaveChanges<TEntity>() ?? _resultFactory.Create();
 		}
 
 		/// <summary>
@@ -179,15 +136,7 @@ namespace Bricks.DAL.EF
 		public async Task<IResult> DeleteAsync<TEntity>(TEntity entity) where TEntity : class
 		{
 			_dbContext.Set<TEntity>().Remove(entity);
-			try
-			{
-				await _dbContext.SaveChangesAsync(_cancellationToken);
-				return _resultFactory.Create();
-			}
-			catch (DbUpdateException exception)
-			{
-				return CreateUnsuccessfulResult(exception);
-			}
+			return await SaveChanges<TEntity>() ?? _resultFactory.Create();
 		}
 
 		/// <summary>
@@ -233,14 +182,66 @@ namespace Bricks.DAL.EF
 
 		#endregion
 
+		private async Task<IResult<TData>> SaveChanges<TData>()
+		{
+			try
+			{
+				await _dbContext.SaveChangesAsync(_cancellationToken);
+			}
+			catch (DbUpdateException exception)
+			{
+				return CreateUnsuccessfulResult<TData>(exception);
+			}
+			catch (DbEntityValidationException exception)
+			{
+				return CreateUnsuccessfulResult<TData>(exception);
+			}
+
+			return null;
+		}
+
+		private async Task<IResult> SaveChanges()
+		{
+			try
+			{
+				await _dbContext.SaveChangesAsync(_cancellationToken);
+			}
+			catch (DbUpdateException exception)
+			{
+				return CreateUnsuccessfulResult(exception);
+			}
+			catch (DbEntityValidationException exception)
+			{
+				return CreateUnsuccessfulResult(exception);
+			}
+
+			return null;
+		}
+
 		private IResult<TData> CreateUnsuccessfulResult<TData>(DbUpdateException exception)
 		{
 			return _resultFactory.CreateUnsuccessfulResult<TData>(exception.InnerException != null ? exception.InnerException.Message : exception.Message, exception);
 		}
 
+		private IResult<TData> CreateUnsuccessfulResult<TData>(DbEntityValidationException exception)
+		{
+			IEnumerable<string> errorMessages =
+				exception.EntityValidationErrors
+					.Where(x => !x.IsValid)
+					.SelectMany(x => x.ValidationErrors)
+					.Select(x => x.ErrorMessage);
+			string message = string.Join(Environment.NewLine, errorMessages);
+			return _resultFactory.CreateUnsuccessfulResult<TData>(message, exception);
+		}
+
 		private IResult CreateUnsuccessfulResult(DbUpdateException exception)
 		{
-			return _resultFactory.Create(false, exception.InnerException != null ? exception.InnerException.Message : exception.Message, exception);
+			return CreateUnsuccessfulResult<object>(exception);
+		}
+
+		private IResult CreateUnsuccessfulResult(DbEntityValidationException exception)
+		{
+			return CreateUnsuccessfulResult<object>(exception);
 		}
 
 		private sealed class TransactionScope : ITransactionScope

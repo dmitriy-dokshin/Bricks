@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{82862838-2E8E-49A5-B392-F3E51A228341}</ProjectGuid>
+    <ProjectGuid>{E96B361E-162D-4122-855E-D0DCAE5D4204}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Bricks.Auth</RootNamespace>
-    <AssemblyName>Bricks.Auth</AssemblyName>
+    <RootNamespace>Bricks.Images</RootNamespace>
+    <AssemblyName>Bricks.Images</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Bricks.Auth.XML</DocumentationFile>
+    <DocumentationFile>bin\Debug\Bricks.Images.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -31,7 +31,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Bricks.Auth.XML</DocumentationFile>
+    <DocumentationFile>bin\Release\Bricks.Images.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -40,24 +40,34 @@
     <AssemblyOriginatorKeyFile>..\..\BuildKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.Owin">
-      <HintPath>..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching">
+      <HintPath>..\packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Caching.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security">
-      <HintPath>..\packages\Microsoft.Owin.Security.3.0.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
+      <HintPath>..\packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security.OAuth">
-      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
     </Reference>
-    <Reference Include="Owin">
-      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception">
+      <HintPath>..\packages\Unity.Interception.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration">
+      <HintPath>..\packages\Unity.Interception.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -68,33 +78,64 @@
     <Compile Include="..\CommonInfo.cs">
       <Link>CommonInfo.cs</Link>
     </Compile>
-    <Compile Include="Implementation\CodeGenerator.cs" />
-    <Compile Include="ICodeGenerator.cs" />
+    <Compile Include="IImage.cs" />
+    <Compile Include="IImageManager.cs" />
+    <Compile Include="IImageProcessor.cs" />
+    <Compile Include="IImageRepository.cs" />
+    <Compile Include="IImageSettings.cs" />
+    <Compile Include="ImageExtensions.cs" />
+    <Compile Include="Implementation\Image.cs" />
+    <Compile Include="Implementation\ImageManager.cs" />
+    <Compile Include="Implementation\ImageProcessor.cs" />
+    <Compile Include="Implementation\ImageSettings.cs" />
+    <Compile Include="Implementation\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Module.cs" />
-    <Compile Include="IPasswordHasher.cs" />
-    <Compile Include="Implementation\PasswordHasher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Providers\OAuthTokenProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\BuildKey.pfx">
       <Link>BuildKey.pfx</Link>
     </None>
     <None Include="app.config" />
-    <None Include="Bricks.Helpers.nuspec">
+    <None Include="Bricks.Images.nuspec" />
+    <None Include="NuGet\content\App.config.install.xdt">
       <SubType>Designer</SubType>
     </None>
+    <None Include="NuGet\content\App.config.uninstall.xdt" />
+    <None Include="NuGet\content\Config\CachingSettings.config.uninstall.xdt" />
+    <None Include="NuGet\content\Config\CachingSettings.config.install.xdt" />
+    <None Include="NuGet\content\Config\ImageSettings.config" />
     <None Include="NuGet\content\Config\ModularitySettings.config.install.xdt" />
     <None Include="NuGet\content\Config\ModularitySettings.config.uninstall.xdt" />
     <None Include="NuGet\content\Config\UnitySettings.config.install.xdt" />
     <None Include="NuGet\content\Config\UnitySettings.config.uninstall.xdt" />
+    <None Include="NuGet\content\Web.config.install.xdt" />
+    <None Include="NuGet\content\Web.config.uninstall.xdt" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bricks.Core\Bricks.Core.csproj">
-      <Project>{1919938a-32a3-47d6-a8ba-dfe576bd38c1}</Project>
+      <Project>{1919938A-32A3-47D6-A8BA-DFE576BD38C1}</Project>
       <Name>Bricks.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Bricks.Helpers\Bricks.Helpers.csproj">
+      <Project>{3F8A3074-0918-4D0E-8FDF-1F7BBA57BACF}</Project>
+      <Name>Bricks.Helpers</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bricks.Sync\Bricks.Sync.csproj">
+      <Project>{9E8E9905-1BEA-41DB-939F-BD70CF23E332}</Project>
+      <Name>Bricks.Sync</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Implementation\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

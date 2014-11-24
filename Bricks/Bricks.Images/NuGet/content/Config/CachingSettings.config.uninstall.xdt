@@ -1,0 +1,10 @@
+﻿<?xml version="1.0"?>
+
+<cachingConfiguration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<backingStores>
+		<add xdt:Transform="Remove" xdt:Locator="Match(name)" name="NullBackingStore" />
+	</backingStores>
+	<cacheManagers>
+		<add xdt:Transform="Remove" xdt:Locator="Match(name)" name="ImagesCacheManager" />
+	</cacheManagers>
+</cachingConfiguration>
