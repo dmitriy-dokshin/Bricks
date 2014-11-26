@@ -6,7 +6,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using Bricks.Core.Configuration;
-using Bricks.Helpers.Exceptions;
+using Bricks.Core.Helpers;
+using Bricks.Core.Results;
 
 #endregion
 
@@ -204,20 +205,23 @@ namespace Bricks.Helpers.Regex.Implementation
 
 		private Match Match(string input, string pattern, RegexOptions options = RegexOptions.None)
 		{
-			return _exceptionHelper.Catch<Match, RegexMatchTimeoutException>(
+			IResult<Match> result = _exceptionHelper.Catch<Match, RegexMatchTimeoutException>(
 				() => System.Text.RegularExpressions.Regex.Match(input, pattern, options, _regexSettings.MatchTimeout));
+			return result.Success ? result.Data : null;
 		}
 
 		private string Replace(string input, string pattern, string replacement, RegexOptions options = RegexOptions.None)
 		{
-			return _exceptionHelper.Catch<string, RegexMatchTimeoutException>(
+			IResult<string> result = _exceptionHelper.Catch<string, RegexMatchTimeoutException>(
 				() => System.Text.RegularExpressions.Regex.Replace(input, pattern, replacement, options, _regexSettings.MatchTimeout));
+			return result.Success ? result.Data : null;
 		}
 
 		private string Replace(string input, string pattern, MatchEvaluator matchEvaluator, RegexOptions options = RegexOptions.None)
 		{
-			return _exceptionHelper.Catch<string, RegexMatchTimeoutException>(
+			IResult<string> result = _exceptionHelper.Catch<string, RegexMatchTimeoutException>(
 				() => System.Text.RegularExpressions.Regex.Replace(input, pattern, matchEvaluator, options, _regexSettings.MatchTimeout));
+			return result.Success ? result.Data : null;
 		}
 	}
 }

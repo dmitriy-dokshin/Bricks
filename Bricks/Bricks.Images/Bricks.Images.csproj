@@ -108,7 +108,7 @@
     <None Include="NuGet\content\App.config.uninstall.xdt" />
     <None Include="NuGet\content\Config\CachingSettings.config.uninstall.xdt" />
     <None Include="NuGet\content\Config\CachingSettings.config.install.xdt" />
-    <None Include="NuGet\content\Config\ImageSettings.config" />
+    <None Include="NuGet\content\Config\ImagesSettings.config.install.xdt" />
     <None Include="NuGet\content\Config\ModularitySettings.config.install.xdt" />
     <None Include="NuGet\content\Config\ModularitySettings.config.uninstall.xdt" />
     <None Include="NuGet\content\Config\UnitySettings.config.install.xdt" />

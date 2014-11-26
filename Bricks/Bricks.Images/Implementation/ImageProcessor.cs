@@ -12,10 +12,15 @@ namespace Bricks.Images.Implementation
 	{
 		#region Implementation of IImageProcessor
 
-		public byte[] Resize(byte[] data, int width, int height, bool preserveAspectRatio = true)
+		public byte[] Resize(byte[] data, int? width = null, int? height = null, bool preserveAspectRatio = true)
 		{
-			var size = new Size(width, height);
+			if (!width.HasValue && !height.HasValue)
+			{
+				return data;
+			}
+
 			Image image = data.GetImage();
+			var size = new Size(width ?? image.Width, height ?? image.Height);
 
 			Size newSize = GetNewSize(image, size, preserveAspectRatio);
 			Image newImage = new Bitmap(newSize.Width, newSize.Height);

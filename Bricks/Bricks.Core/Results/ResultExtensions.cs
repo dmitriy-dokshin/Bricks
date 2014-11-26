@@ -12,5 +12,10 @@ namespace Bricks.Core.Results
 		{
 			return resultFactory.Create(default(TData), false, message, exception, innerResult);
 		}
+
+		public static IResult CreateUnsuccessfulResult(this IResultFactory resultFactory, string message = null, Exception exception = null, IResult innerResult = null)
+		{
+			return resultFactory.Create(false, message, exception, innerResult);
+		}
 	}
 }

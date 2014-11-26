@@ -93,8 +93,6 @@
     <Compile Include="Enum\Implementation\ResourceEnumValueMetadata.cs" />
     <Compile Include="Enum\Implementation\ResourceFlagsMetadata.cs" />
     <Compile Include="Enum\Implementation\ResourceFlagsValueMetadata.cs" />
-    <Compile Include="Exceptions\IExceptionHelper.cs" />
-    <Compile Include="Exceptions\Implementation\ExceptionHelper.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reflection\IReflectionHelper.cs" />

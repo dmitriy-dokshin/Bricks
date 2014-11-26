@@ -75,6 +75,11 @@ namespace Bricks.Core.Results.Implementation
 						message = InnerResult.Message;
 					}
 
+					if (message == null && Exception != null)
+					{
+						message = Exception.Message;
+					}
+
 					return message;
 				}
 			}

@@ -4,12 +4,14 @@ using System;
 using System.Drawing;
 using System.Globalization;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Bricks.Core.Configuration;
 using Bricks.Core.DateTime;
 using Bricks.Core.Extensions;
 using Bricks.Core.Results;
+using Bricks.Core.Tasks;
 using Bricks.Helpers.Reflection;
 using Bricks.Helpers.Sync;
 using Bricks.Sync;
@@ -31,6 +33,7 @@ namespace Bricks.Images.Implementation
 		private const string CacheKeyFormat = "{0}_{1}_{2}_{3}";
 
 		private readonly ICacheManager _cacheManager;
+		private readonly CancellationToken _cancellationToken;
 		private readonly IDateTimeProvider _dateTimeProvider;
 		private readonly IImageProcessor _imageProcessor;
 		private readonly IImageSettings _imageSettings;
@@ -39,7 +42,7 @@ namespace Bricks.Images.Implementation
 		private readonly IResultFactory _resultFactory;
 		private readonly IServiceLocator _serviceLocator;
 
-		public ImageManager(ILockStorage lockStorage, IConfigurationManager configurationManager, IServiceLocator serviceLocator, IResultFactory resultFactory, IDateTimeProvider dateTimeProvider, IReflectionHelper reflectionHelper, IImageProcessor imageProcessor)
+		public ImageManager(ILockStorage lockStorage, IConfigurationManager configurationManager, IServiceLocator serviceLocator, IResultFactory resultFactory, IDateTimeProvider dateTimeProvider, IReflectionHelper reflectionHelper, IImageProcessor imageProcessor, ICancellationTokenProvider cancellationTokenProvider)
 		{
 			_lockStorage = lockStorage;
 			_serviceLocator = serviceLocator;
@@ -49,6 +52,7 @@ namespace Bricks.Images.Implementation
 			_imageProcessor = imageProcessor;
 			_cacheManager = CacheFactory.GetCacheManager(ImageCacheManagerName);
 			_imageSettings = configurationManager.GetSettings<IImageSettings>(ImageSettingsKey);
+			_cancellationToken = cancellationTokenProvider.GetCancellationToken();
 		}
 
 		#region Implementation of IImageManager<TImage,in TId,TUserId>
@@ -67,7 +71,7 @@ namespace Bricks.Images.Implementation
 				ILockAsync @lock;
 				using (lockContainer.GetLock(userId, out @lock))
 				{
-					using (await @lock.Enter())
+					using (await @lock.Enter(_cancellationToken))
 					{
 						IImageRepository<TId, TUserId> imageRepository = GetImageRepository();
 						DateTimeOffset now = _dateTimeProvider.Now;
@@ -109,7 +113,7 @@ namespace Bricks.Images.Implementation
 
 		public async Task<IResult<IImage<TId, TUserId>>> GetImage(TId imageId, int? width = null, int? height = null, bool preserveAspectRatio = true)
 		{
-			string key = string.Format(CacheKeyFormat, imageId, width, height, preserveAspectRatio);
+			string key = string.Format(CultureInfo.InvariantCulture, CacheKeyFormat, imageId, width, height, preserveAspectRatio);
 
 			var image = (IImage<TId, TUserId>)_cacheManager.GetData(key);
 			if (image == null)
@@ -120,7 +124,7 @@ namespace Bricks.Images.Implementation
 					ILockAsync @lock;
 					using (lockContainer.GetLock(imageId, out @lock))
 					{
-						using (await @lock.Enter())
+						using (await @lock.Enter(_cancellationToken))
 						{
 							image = (IImage<TId, TUserId>)_cacheManager.GetData(key);
 							if (image == null)

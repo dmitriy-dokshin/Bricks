@@ -16,10 +16,16 @@ namespace Bricks.Core.Reflection
 		/// <summary>
 		/// Получает название члена класса на основе выражения <paramref name="expression" />.
 		/// </summary>
-		/// <typeparam name="T">Тип возвращаемого значения.</typeparam>
+		/// <typeparam name="TValue">Тип возвращаемого значения.</typeparam>
 		/// <param name="expression">Выражение, являющееся обращением к члену класса.</param>
 		/// <returns>Название члена классса.</returns>
-		public static string GetMemberName<T>(this Expression<Func<T>> expression)
+		public static string GetMemberName<TValue>(this Expression<Func<TValue>> expression)
+		{
+			var memberExpression = (MemberExpression)expression.Body;
+			return memberExpression.Member.Name;
+		}
+
+		public static string GetMemberName<T, TValue>(this Expression<Func<T, TValue>> expression)
 		{
 			var memberExpression = (MemberExpression)expression.Body;
 			return memberExpression.Member.Name;

@@ -2,6 +2,6 @@
 {
 	public interface IImageProcessor
 	{
-		byte[] Resize(byte[] data, int width, int height, bool preserveAspectRatio = true);
+		byte[] Resize(byte[] data, int? width = null, int? height = null, bool preserveAspectRatio = true);
 	}
 }

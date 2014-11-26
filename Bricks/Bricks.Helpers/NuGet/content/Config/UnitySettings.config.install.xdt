@@ -27,10 +27,6 @@
 				  mapTo="Bricks.Helpers.Enum.Implementation.EnumMetadataContainer">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
-		<register type="Bricks.Helpers.Exceptions.IExceptionHelper"
-				  mapTo="Bricks.Helpers.Exceptions.Implementation.ExceptionHelper">
-			<lifetime type="ContainerControlledLifetimeManager" />
-		</register>
 		<register type="Bricks.Helpers.Regex.IRegexHelper"
 				  mapTo="Bricks.Helpers.Regex.Implementation.RegexHelper">
 			<lifetime type="ContainerControlledLifetimeManager" />
