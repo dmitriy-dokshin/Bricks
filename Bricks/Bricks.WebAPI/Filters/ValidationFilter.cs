@@ -9,6 +9,10 @@ using System.Threading.Tasks;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
+using Bricks.Core.IoC;
+
+using Microsoft.Practices.ServiceLocation;
+
 #endregion
 
 namespace Bricks.WebAPI.Filters
@@ -18,6 +22,13 @@ namespace Bricks.WebAPI.Filters
 	/// </summary>
 	public sealed class ValidationFilter : IActionFilter
 	{
+		private readonly IServiceLocator _serviceLocator;
+
+		public ValidationFilter(IServiceLocator serviceLocator)
+		{
+			_serviceLocator = serviceLocator;
+		}
+
 		#region Implementation of IFilter
 
 		/// <summary>
@@ -50,9 +61,27 @@ namespace Bricks.WebAPI.Filters
 			if (actionContext.ModelState.IsValid)
 			{
 				CheckDefaultIfNull(actionContext);
+				BuildUpParameters(actionContext);
 			}
 
 			return continuation();
+		}
+
+		#endregion
+
+		private static void CheckNotNull(HttpActionContext actionContext)
+		{
+			IEnumerable<HttpParameterDescriptor> parameterDescriptors =
+				actionContext.ActionDescriptor.GetParameters().Where(x => x.GetCustomAttributes<NotNullAttribute>().Any());
+			foreach (HttpParameterDescriptor parameterDescriptor in parameterDescriptors)
+			{
+				string parameterName = parameterDescriptor.ParameterName;
+				object value;
+				if (!actionContext.ActionArguments.TryGetValue(parameterName, out value) || value == null)
+				{
+					actionContext.ModelState.AddModelError(parameterName, Resources.NotNullErrorMessage);
+				}
+			}
 		}
 
 		private static void CheckDefaultIfNull(HttpActionContext actionContext)
@@ -71,21 +100,17 @@ namespace Bricks.WebAPI.Filters
 			}
 		}
 
-		private static void CheckNotNull(HttpActionContext actionContext)
+		private void BuildUpParameters(HttpActionContext actionContext)
 		{
-			IEnumerable<HttpParameterDescriptor> parameterDescriptors =
-				actionContext.ActionDescriptor.GetParameters().Where(x => x.GetCustomAttributes<NotNullAttribute>().Any());
-			foreach (HttpParameterDescriptor parameterDescriptor in parameterDescriptors)
+			foreach (HttpParameterDescriptor parameterDescriptor in actionContext.ActionDescriptor.GetParameters())
 			{
 				string parameterName = parameterDescriptor.ParameterName;
 				object value;
-				if (!actionContext.ActionArguments.TryGetValue(parameterName, out value) || value == null)
+				if (actionContext.ActionArguments.TryGetValue(parameterName, out value) && value is IInitializable)
 				{
-					actionContext.ModelState.AddModelError(parameterName, Resources.NotNullErrorMessage);
+					_serviceLocator.BuildUp(value);
 				}
 			}
 		}
-
-		#endregion
 	}
 }

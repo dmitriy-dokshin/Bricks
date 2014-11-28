@@ -96,6 +96,11 @@
     <Compile Include="Disposing\Implementation\DisposableHelper.cs" />
     <Compile Include="Disposing\IDisposableHelper.cs" />
     <Compile Include="Environment\IEnvironment.cs" />
+    <Compile Include="Events\Implementation\EventHandlerAdapter.cs" />
+    <Compile Include="Events\Implementation\EventManager.cs" />
+    <Compile Include="Events\IEventHandler.cs" />
+    <Compile Include="Events\IEventManager.cs" />
+    <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -106,6 +111,7 @@
     <Compile Include="Helpers\IExceptionHelper.cs" />
     <Compile Include="Helpers\Implementation\ExceptionHelper.cs" />
     <Compile Include="Helpers\ResourceHelper.cs" />
+    <Compile Include="IoC\IInitializable.cs" />
     <Compile Include="IoC\ServiceLocatorExtensions.cs" />
     <Compile Include="IoC\SimpleUnityServiceLocator.cs" />
     <Compile Include="IO\IFileSystemProvider.cs" />

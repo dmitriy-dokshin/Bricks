@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<unity xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<assembly name="Bricks.Clients.SignalR" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+	<assembly name="Microsoft.AspNet.SignalR.Core" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+
+	<container name="Bricks.Clients.SignalR" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)">
+		<register type="Microsoft.AspNet.SignalR.IDependencyResolver"
+				  mapTo="Bricks.Clients.SignalR.ServiceLocatorDependenyResolver" />
+		<register type="Microsoft.AspNet.SignalR.Hubs.IHubActivator"
+				  mapTo="Bricks.Clients.SignalR.ServiceLocatorHubActivator" />
+		<register type="Newtonsoft.Json.Serialization.IContractResolver, Newtonsoft.Json"
+				  mapTo="Bricks.Clients.SignalR.SignalRContractResolver" />
+	</container>
+</unity>

@@ -44,4 +44,15 @@ namespace Bricks.Helpers.Enum
 		/// <returns>Описание перечисления.</returns>
 		string GetDescription(CultureInfo cultureInfo = null);
 	}
+
+	public interface IEnumMetadata<TEnum> : IEnumMetadata
+		where TEnum : struct
+	{
+		/// <summary>
+		/// Словарь значений-названий перечисления.
+		/// </summary>
+		new IReadOnlyDictionary<TEnum, string> ValueNameDictionary { get; }
+
+		IEnumValueMetadata GetEnumValueMetadata(TEnum enumValue);
+	}
 }

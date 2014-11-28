@@ -12,5 +12,8 @@ namespace Bricks.Core.Helpers
 	{
 		IResult<TResult> Catch<TResult, TException>(Func<TResult> func)
 			where TException : Exception;
+
+		TResult SimpleCatch<TResult, TException>(Func<TResult> func)
+			where TException : Exception;
 	}
 }

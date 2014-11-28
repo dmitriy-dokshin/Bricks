@@ -68,5 +68,9 @@
 				  mapTo="Bricks.Core.IO.Implementation.FileSystemProvider">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
+		<register type="Bricks.Core.Events.IEventManager"
+				  mapTo="Bricks.Core.Events.Implementation.EventManager">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
 	</container>
 </unity>

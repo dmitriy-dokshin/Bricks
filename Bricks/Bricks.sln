@@ -51,6 +51,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.Auth", "Bricks.Auth\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.Images", "Bricks.Images\Bricks.Images.csproj", "{E96B361E-162D-4122-855E-D0DCAE5D4204}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.Clients", "Bricks.Clients\Bricks.Clients.csproj", "{6E581D2E-759E-4B18-960D-3BCC5B51064A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.Clients.SignalR", "Bricks.Clients.SignalR\Bricks.Clients.SignalR.csproj", "{52E9C98A-2054-49AA-9845-556A439E500D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -121,6 +125,14 @@ Global
 		{E96B361E-162D-4122-855E-D0DCAE5D4204}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E96B361E-162D-4122-855E-D0DCAE5D4204}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E96B361E-162D-4122-855E-D0DCAE5D4204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E581D2E-759E-4B18-960D-3BCC5B51064A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E581D2E-759E-4B18-960D-3BCC5B51064A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E581D2E-759E-4B18-960D-3BCC5B51064A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E581D2E-759E-4B18-960D-3BCC5B51064A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52E9C98A-2054-49AA-9845-556A439E500D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52E9C98A-2054-49AA-9845-556A439E500D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52E9C98A-2054-49AA-9845-556A439E500D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52E9C98A-2054-49AA-9845-556A439E500D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

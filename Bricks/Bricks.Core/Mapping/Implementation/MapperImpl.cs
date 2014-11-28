@@ -82,6 +82,16 @@ namespace Bricks.Core.Mapping.Implementation
 			Mapper.CreateMap<TSource, TDestination>().ForMember(destinationMember, x => x.ResolveUsing(resolver));
 		}
 
+		/// <summary>
+		/// Skip member mapping and use a custom function to convert to the destination type
+		/// 
+		/// </summary>
+		/// <param name="mappingFunction">Callback to convert from source type to destination type</param>
+		public void ConvertUsing<TSource, TDestination>(Func<TSource, TDestination> mappingFunction)
+		{
+			Mapper.CreateMap<TSource, TDestination>().ConvertUsing(mappingFunction);
+		}
+
 		#endregion
 	}
 }

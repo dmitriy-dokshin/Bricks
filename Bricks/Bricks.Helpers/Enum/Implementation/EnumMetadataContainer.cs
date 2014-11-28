@@ -53,15 +53,20 @@ namespace Bricks.Helpers.Enum.Implementation
 			return result;
 		}
 
+		public IEnumMetadata<TEnum> GetEnumMetadata<TEnum>() where TEnum : struct
+		{
+			return new EnumMetadataTAdapter<TEnum>(GetEnumMetadata(typeof(TEnum)));
+		}
+
 		#endregion
 
 		private IEnumMetadata CreateEnumMetadata(Type enumType)
 		{
 			var dependencyOverride = new DependencyOverride(typeof(Type), new InjectionParameter(enumType));
 			IEnumMetadata enumMetadata =
-			_enumHelper.IsFlags(enumType)
-			? _unityContainer.Resolve<IFlagsMetadata>(dependencyOverride)
-			: _unityContainer.Resolve<IEnumMetadata>(dependencyOverride);
+				_enumHelper.IsFlags(enumType)
+					? _unityContainer.Resolve<IFlagsMetadata>(dependencyOverride)
+					: _unityContainer.Resolve<IEnumMetadata>(dependencyOverride);
 			return enumMetadata;
 		}
 	}

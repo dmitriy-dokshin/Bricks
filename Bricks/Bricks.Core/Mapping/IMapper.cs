@@ -57,5 +57,12 @@ namespace Bricks.Core.Mapping
 		/// </param>
 		/// <param name="resolver">Функция, используемая при маппинге соответствующего члена целевого типа.</param>
 		void ResolveUsing<TSource, TDestination>(Expression<Func<TDestination, object>> destinationMember, Func<TSource, object> resolver);
+
+		/// <summary>
+		/// Skip member mapping and use a custom function to convert to the destination type
+		/// 
+		/// </summary>
+		/// <param name="mappingFunction">Callback to convert from source type to destination type</param>
+		void ConvertUsing<TSource, TDestination>(Func<TSource, TDestination> mappingFunction);
 	}
 }

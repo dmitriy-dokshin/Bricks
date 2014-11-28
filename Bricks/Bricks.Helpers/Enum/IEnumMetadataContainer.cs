@@ -17,5 +17,7 @@ namespace Bricks.Helpers.Enum
 		/// <param name="enumType">Тип перечисления.</param>
 		/// <returns>Метаданные перечисления.</returns>
 		IEnumMetadata GetEnumMetadata(Type enumType);
+
+		IEnumMetadata<TEnum> GetEnumMetadata<TEnum>() where TEnum : struct;
 	}
 }

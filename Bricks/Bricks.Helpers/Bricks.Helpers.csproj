@@ -87,6 +87,7 @@
     <Compile Include="Enum\Implementation\EnumHelper.cs" />
     <Compile Include="Enum\Implementation\EnumMetadataBase.cs" />
     <Compile Include="Enum\Implementation\EnumMetadataContainer.cs" />
+    <Compile Include="Enum\Implementation\EnumMetadataTAdapter.cs" />
     <Compile Include="Enum\Implementation\EnumResourceHelper.cs" />
     <Compile Include="Enum\Implementation\FlagsMetadataBase.cs" />
     <Compile Include="Enum\Implementation\ResourceEnumMetadata.cs" />

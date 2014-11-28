@@ -14,5 +14,10 @@ namespace Bricks.Core.Helpers
 		{
 			return exceptionHelper.Catch<TResult, Exception>(func);
 		}
+
+		public static TResult SimpleCatch<TResult>(this IExceptionHelper exceptionHelper, Func<TResult> func)
+		{
+			return exceptionHelper.SimpleCatch<TResult, Exception>(func);
+		}
 	}
 }

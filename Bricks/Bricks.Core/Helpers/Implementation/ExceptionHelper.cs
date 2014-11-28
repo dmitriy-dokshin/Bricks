@@ -35,6 +35,18 @@ namespace Bricks.Core.Helpers.Implementation
 			}
 		}
 
+		public TResult SimpleCatch<TResult, TException>(Func<TResult> func) where TException : Exception
+		{
+			try
+			{
+				return func();
+			}
+			catch (TException exception)
+			{
+				return default(TResult);
+			}
+		}
+
 		#endregion
 	}
 }
