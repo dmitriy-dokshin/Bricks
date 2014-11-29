@@ -122,7 +122,7 @@ namespace Bricks.Images.Implementation
 				using (_lockStorage.GetContainer(_reflectionHelper.GetFullName(MethodBase.GetCurrentMethod()), out lockContainer))
 				{
 					ILockAsync @lock;
-					using (lockContainer.GetLock(imageId, out @lock))
+					using (lockContainer.GetLock(key, out @lock))
 					{
 						using (await @lock.Enter(_cancellationToken))
 						{
