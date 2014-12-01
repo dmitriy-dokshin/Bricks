@@ -6,18 +6,36 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 
+using Bricks.Core.Exceptions;
+using Bricks.Core.Results;
+
+using Microsoft.Practices.ServiceLocation;
+
 #endregion
 
-namespace Bricks.Images
+namespace Bricks.Helpers.Images
 {
 	public static class ImageExtensions
 	{
-		public static Image GetImage(this byte[] data)
+		private static readonly Lazy<IExceptionHelper> _exceptionHelper;
+
+		static ImageExtensions()
+		{
+			_exceptionHelper = new Lazy<IExceptionHelper>(
+				ServiceLocator.Current.GetInstance<IExceptionHelper>, true);
+		}
+
+		public static IResult<Image> GetImage(this byte[] data)
 		{
 			using (var memoryStream = new MemoryStream(data))
 			{
-				return Image.FromStream(memoryStream);
+				return memoryStream.GetImage();
 			}
+		}
+
+		public static IResult<Image> GetImage(this Stream stream)
+		{
+			return _exceptionHelper.Value.Catch<Image, ArgumentException>(() => Image.FromStream(stream));
 		}
 
 		public static byte[] GetBytes(this Image image)

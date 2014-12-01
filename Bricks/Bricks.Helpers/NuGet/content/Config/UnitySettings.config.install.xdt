@@ -42,5 +42,13 @@
 				  mapTo="Bricks.Helpers.Sync.Implementation.LockStorage">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
+		<register type="Bricks.Helpers.Images.IImageProcessor"
+				  mapTo="Bricks.Helpers.Images.Implementation.ImageProcessor">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+		<register type="Bricks.Helpers.Caching.ICacheStorage"
+				  mapTo="Bricks.Helpers.Caching.Implementation.CacheStorage">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
 	</container>
 </unity>

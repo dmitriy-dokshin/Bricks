@@ -6,7 +6,7 @@ using System.Drawing.Drawing2D;
 
 #endregion
 
-namespace Bricks.Images.Implementation
+namespace Bricks.Helpers.Images.Implementation
 {
 	internal sealed class ImageProcessor : IImageProcessor
 	{
@@ -19,10 +19,37 @@ namespace Bricks.Images.Implementation
 				return data;
 			}
 
-			Image image = data.GetImage();
-			var size = new Size(width ?? image.Width, height ?? image.Height);
+			var getImageResult = data.GetImage();
+			if (!getImageResult.Success)
+			{
+				return data;
+			}
 
-			Size newSize = GetNewSize(image, size, preserveAspectRatio);
+			Image image = getImageResult.Data;
+			Image newImage = Resize(image);
+			return newImage.GetBytes();
+		}
+
+		public Image Resize(Image image, int? width = null, int? height = null, bool preserveAspectRatio = true)
+		{
+			if (!width.HasValue && !height.HasValue)
+			{
+				return image;
+			}
+
+			int maxWidth = image.Width * 2;
+			if (width.HasValue && width.Value > maxWidth)
+			{
+				width = maxWidth;
+			}
+
+			int maxHeight = image.Height * 2;
+			if (height.HasValue && height.Value > maxHeight)
+			{
+				height = maxHeight;
+			}
+
+			Size newSize = GetNewSize(image, width ?? image.Width, height ?? image.Height, preserveAspectRatio);
 			Image newImage = new Bitmap(newSize.Width, newSize.Height);
 			using (Graphics graphicsHandle = Graphics.FromImage(newImage))
 			{
@@ -30,33 +57,26 @@ namespace Bricks.Images.Implementation
 				graphicsHandle.DrawImage(image, 0, 0, newSize.Width, newSize.Height);
 			}
 
-			return newImage.GetBytes();
+			return newImage;
 		}
 
 		#endregion
 
-		/// <summary>
-		/// Рассчитывает новый размер изображения <paramref name="image" />.
-		/// </summary>
-		/// <param name="image">Исходное изображение.</param>
-		/// <param name="size">Размер нового изображения.</param>
-		/// <param name="preserveAspectRatio">Признак сохранения пропорций исходного изображения.</param>
-		/// <returns>Новый размер изображения.</returns>
-		private static Size GetNewSize(Image image, Size size, bool preserveAspectRatio)
+		private static Size GetNewSize(Image image, int width, int height, bool preserveAspectRatio)
 		{
 			Size newSize;
 			if (preserveAspectRatio)
 			{
 				int originalWidth = image.Width;
 				int originalHeight = image.Height;
-				double percentWidth = size.Width / (double)originalWidth;
-				double percentHeight = size.Height / (double)originalHeight;
+				double percentWidth = width / (double)originalWidth;
+				double percentHeight = height / (double)originalHeight;
 				double percent = percentHeight < percentWidth ? percentHeight : percentWidth;
 				newSize = new Size((int)(Math.Round(originalWidth * percent)), (int)(Math.Round(originalHeight * percent)));
 			}
 			else
 			{
-				newSize = size;
+				newSize = new Size(width, height);
 			}
 
 			return newSize;
