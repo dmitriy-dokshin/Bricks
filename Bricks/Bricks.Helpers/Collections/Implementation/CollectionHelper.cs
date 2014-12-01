@@ -59,6 +59,11 @@ namespace Bricks.Helpers.Collections.Implementation
 				});
 		}
 
+		public IEnumerable<T> Single<T>(T item)
+		{
+			yield return item;
+		}
+
 		#endregion
 	}
 }

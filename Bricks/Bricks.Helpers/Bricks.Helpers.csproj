@@ -69,12 +69,12 @@
     <Compile Include="..\CommonInfo.cs">
       <Link>CommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Collections\ICollectionHelper.cs" />
     <Compile Include="Collections\Implementation\ContainerFactory.cs" />
     <Compile Include="Collections\IContainerFactory.cs" />
     <Compile Include="Collections\Implementation\Container.cs" />
     <Compile Include="Collections\IContainer.cs" />
     <Compile Include="Collections\Implementation\CollectionHelper.cs" />
-    <Compile Include="Collections\ICollectionHelper.cs" />
     <Compile Include="Enum\EnumExtensions.cs" />
     <Compile Include="Enum\EnumResourceAttribute.cs" />
     <Compile Include="Enum\IEnumHelper.cs" />

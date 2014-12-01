@@ -5,80 +5,58 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
-using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Bricks.Core.Exceptions;
 using Bricks.Core.Results;
 using Bricks.Core.Tasks;
 using Bricks.DAL.Repository;
+using Bricks.Helpers.Collections;
 
 #endregion
 
 namespace Bricks.DAL.EF
 {
-	/// <summary>
-	/// Реализация по умолчанию <see cref="IRepository" />.
-	/// </summary>
 	internal sealed class Repository : IRepository, ISqlRepository
 	{
 		private readonly CancellationToken _cancellationToken;
+		private readonly ICollectionHelper _collectionHelper;
 		private readonly DbContext _dbContext;
-		private readonly IResultFactory _resultFactory;
+		private readonly IExceptionHelper _exceptionHelper;
 
-		public Repository(DbContext dbContext, ICancellationTokenProvider cancellationTokenProvider, IResultFactory resultFactory)
+		public Repository(DbContext dbContext, ICancellationTokenProvider cancellationTokenProvider, IExceptionHelper exceptionHelper, ICollectionHelper collectionHelper)
 		{
 			_dbContext = dbContext;
-			_resultFactory = resultFactory;
+			_exceptionHelper = exceptionHelper;
+			_collectionHelper = collectionHelper;
 			_cancellationToken = cancellationTokenProvider.GetCancellationToken();
 		}
 
 		#region Implementation of IRepository
 
-		/// <summary>
-		/// Возвращает запрос для сущности типа <typeparamref name="TEntity" />.
-		/// </summary>
-		/// <typeparam name="TEntity">Тип сущности.</typeparam>
-		/// <returns>Запрос для сущности типа <typeparamref name="TEntity" />.</returns>
 		public IQueryable<TEntity> Select<TEntity>() where TEntity : class
 		{
 			return _dbContext.Set<TEntity>();
 		}
 
-		/// <summary>
-		/// Добавляет сущности <paramref name="entities" />.
-		/// </summary>
-		/// <typeparam name="TEntity">Тип сущности.</typeparam>
-		/// <param name="entities">Сущности, которые нужно добавить.</param>
-		/// <returns>Задача, результатом которой являются добавленные сущности.</returns>
-		public async Task<IResult<IReadOnlyCollection<TEntity>>> InsertRangeAsync<TEntity>(IReadOnlyCollection<TEntity> entities) where TEntity : class
+		public TEnumerable AddRange<TEntity, TEnumerable>(TEnumerable entities) where TEntity : class where TEnumerable : IEnumerable<TEntity>
 		{
-			_dbContext.Set<TEntity>().AddRange(entities);
-			return await SaveChanges<IReadOnlyCollection<TEntity>>() ?? _resultFactory.Create(entities);
+			DbSet<TEntity> dbSet = _dbContext.Set<TEntity>();
+			dbSet.AddRange(entities);
+			return entities;
 		}
 
-		/// <summary>
-		/// Добавляет сущность <paramref name="entity" />.
-		/// </summary>
-		/// <typeparam name="TEntity">Тип сущности.</typeparam>
-		/// <param name="entity">Сущность, которую нужно добавить.</param>
-		/// <returns>Задача, результатом которой является добавленная сущность.</returns>
-		public async Task<IResult<TEntity>> InsertAsync<TEntity>(TEntity entity) where TEntity : class
+		public TEntity Add<TEntity>(TEntity entity) where TEntity : class
 		{
-			_dbContext.Set<TEntity>().Add(entity);
-			return await SaveChanges<TEntity>() ?? _resultFactory.Create(entity);
+			IEnumerable<TEntity> enumerable = _collectionHelper.Single(entity);
+			return AddRange<TEntity, IEnumerable<TEntity>>(enumerable).First();
 		}
 
-		/// <summary>
-		/// Обновляет сущности <paramref name="entities" />.
-		/// </summary>
-		/// <typeparam name="TEntity">Тип сущности.</typeparam>
-		/// <param name="entities">Сущности, которые нужно обновить.</param>
-		/// <returns>Задача, результатом которой являются обновленные сущности.</returns>
-		public async Task<IResult<IReadOnlyCollection<TEntity>>> UpdateRangeAsync<TEntity>(IReadOnlyCollection<TEntity> entities) where TEntity : class
+		public TEnumerable UpdateRange<TEntity, TEnumerable>(TEnumerable entities) where TEntity : class where TEnumerable : IEnumerable<TEntity>
 		{
 			DbSet<TEntity> dbSet = _dbContext.Set<TEntity>();
 			foreach (TEntity entity in entities)
@@ -92,73 +70,41 @@ namespace Bricks.DAL.EF
 				}
 			}
 
-			return await SaveChanges<IReadOnlyCollection<TEntity>>() ?? _resultFactory.Create(entities);
+			return entities;
 		}
 
-		/// <summary>
-		/// Обновляет сущность <paramref name="entity" />.
-		/// </summary>
-		/// <typeparam name="TEntity">Тип сущности.</typeparam>
-		/// <param name="entity">Сущность, которую нужно обновить.</param>
-		/// <returns>Задача, результатом которой являются обновленная сущность.</returns>
-		public async Task<IResult<TEntity>> UpdateAsync<TEntity>(TEntity entity) where TEntity : class
+		public TEntity Update<TEntity>(TEntity entity) where TEntity : class
 		{
-			DbEntityEntry<TEntity> dbEntityEntry = _dbContext.Entry(entity);
-			if (dbEntityEntry.State == EntityState.Detached)
-			{
-				DbSet<TEntity> dbSet = _dbContext.Set<TEntity>();
-				dbSet.Attach(entity);
-				dbEntityEntry = _dbContext.Entry(entity);
-				dbEntityEntry.State = EntityState.Modified;
-			}
-
-			return await SaveChanges<TEntity>() ?? _resultFactory.Create(entity);
+			IEnumerable<TEntity> enumerable = _collectionHelper.Single(entity);
+			return UpdateRange<TEntity, IEnumerable<TEntity>>(enumerable).First();
 		}
 
-		/// <summary>
-		/// Удаляет сущности <paramref name="entities" />.
-		/// </summary>
-		/// <typeparam name="TEntity">Тип сущности.</typeparam>
-		/// <param name="entities">Сущности, которые нужно удалить.</param>
-		/// <returns>Задача удаления сущностей.</returns>
-		public async Task<IResult> DeleteRangeAsync<TEntity>(IReadOnlyCollection<TEntity> entities) where TEntity : class
+		public void RemoveRange<TEntity, TEnumerable>(TEnumerable entities) where TEntity : class where TEnumerable : IEnumerable<TEntity>
 		{
-			_dbContext.Set<TEntity>().RemoveRange(entities);
-			return await SaveChanges<TEntity>() ?? _resultFactory.Create();
+			DbSet<TEntity> dbSet = _dbContext.Set<TEntity>();
+			dbSet.RemoveRange(entities);
 		}
 
-		/// <summary>
-		/// Удаляет сущность <paramref name="entity" />.
-		/// </summary>
-		/// <typeparam name="TEntity">Тип сущности.</typeparam>
-		/// <param name="entity">Сущность, которую нужно удалить.</param>
-		/// <returns>Задача удаления сущности.</returns>
-		public async Task<IResult> DeleteAsync<TEntity>(TEntity entity) where TEntity : class
+		public void Remove<TEntity>(TEntity entity) where TEntity : class
 		{
-			_dbContext.Set<TEntity>().Remove(entity);
-			return await SaveChanges<TEntity>() ?? _resultFactory.Create();
+			IEnumerable<TEntity> enumerable = _collectionHelper.Single(entity);
+			RemoveRange<TEntity, IEnumerable<TEntity>>(enumerable);
 		}
 
-		/// <summary>
-		/// Перезагружает сущность.
-		/// </summary>
-		/// <typeparam name="TEntity">Тип сущности.</typeparam>
-		/// <param name="entity">Сущность, которую нужно перезагрузить.</param>
-		/// <returns />
 		public Task ReloadAsync<TEntity>(TEntity entity) where TEntity : class
 		{
 			return _dbContext.Entry(entity).ReloadAsync(_cancellationToken);
 		}
 
-		/// <summary>
-		/// Получает транзакцию.
-		/// </summary>
-		/// <param name="isolationLevel">Уровень блокировки транзакции.</param>
-		/// <returns>Объект транзакции.</returns>
 		public ITransactionScope GetTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted)
 		{
 			DbContextTransaction dbContextTransaction = _dbContext.Database.BeginTransaction(isolationLevel);
 			return new TransactionScope(dbContextTransaction);
+		}
+
+		public Task<IResult> SaveAsync()
+		{
+			return _exceptionHelper.CatchAsync(() => (Task)_dbContext.SaveChangesAsync(_cancellationToken), typeof(DbUpdateException), typeof(DbUpdateException));
 		}
 
 		#endregion
@@ -181,68 +127,6 @@ namespace Bricks.DAL.EF
 		}
 
 		#endregion
-
-		private async Task<IResult<TData>> SaveChanges<TData>()
-		{
-			try
-			{
-				await _dbContext.SaveChangesAsync(_cancellationToken);
-			}
-			catch (DbUpdateException exception)
-			{
-				return CreateUnsuccessfulResult<TData>(exception);
-			}
-			catch (DbEntityValidationException exception)
-			{
-				return CreateUnsuccessfulResult<TData>(exception);
-			}
-
-			return null;
-		}
-
-		private async Task<IResult> SaveChanges()
-		{
-			try
-			{
-				await _dbContext.SaveChangesAsync(_cancellationToken);
-			}
-			catch (DbUpdateException exception)
-			{
-				return CreateUnsuccessfulResult(exception);
-			}
-			catch (DbEntityValidationException exception)
-			{
-				return CreateUnsuccessfulResult(exception);
-			}
-
-			return null;
-		}
-
-		private IResult<TData> CreateUnsuccessfulResult<TData>(DbUpdateException exception)
-		{
-			return _resultFactory.CreateUnsuccessfulResult<TData>(exception.InnerException != null ? exception.InnerException.Message : exception.Message, exception);
-		}
-
-		private IResult<TData> CreateUnsuccessfulResult<TData>(DbEntityValidationException exception)
-		{
-			IEnumerable<string> errorMessages =
-				exception.EntityValidationErrors
-					.Where(x => !x.IsValid)
-					.SelectMany(x => x.ValidationErrors)
-					.Select(x => x.ErrorMessage);
-			string message = string.Join(Environment.NewLine, errorMessages);
-			return _resultFactory.CreateUnsuccessfulResult<TData>(message, exception);
-		}
-
-		private IResult CreateUnsuccessfulResult(DbUpdateException exception)
-		{
-			return CreateUnsuccessfulResult<object>(exception);
-		}
-
-		private IResult CreateUnsuccessfulResult(DbEntityValidationException exception)
-		{
-			return CreateUnsuccessfulResult<object>(exception);
-		}
 
 		private sealed class TransactionScope : ITransactionScope
 		{

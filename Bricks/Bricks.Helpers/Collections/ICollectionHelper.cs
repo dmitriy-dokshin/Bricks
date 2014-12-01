@@ -11,5 +11,7 @@ namespace Bricks.Helpers.Collections
 		ICollection<T> GetEmptyCollection<T>();
 
 		IReadOnlyCollection<T> GetEmptyReadOnlyCollection<T>();
+
+		IEnumerable<T> Single<T>(T item);
 	}
 }

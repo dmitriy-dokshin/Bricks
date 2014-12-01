@@ -60,8 +60,8 @@
 				  mapTo="Bricks.Core.Mapping.Implementation.MapperImpl">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
-		<register type="Bricks.Core.Helpers.IExceptionHelper"
-				  mapTo="Bricks.Core.Helpers.Implementation.ExceptionHelper">
+		<register type="Bricks.Core.Exceptions.IExceptionHelper"
+				  mapTo="Bricks.Core.Exceptions.Implementation.ExceptionHelper">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
 		<register type="Bricks.Core.IO.IFileSystemProvider"

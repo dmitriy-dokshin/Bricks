@@ -107,10 +107,10 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Extensions\TimeSpanExtensions.cs" />
-    <Compile Include="Helpers\ExceptionExtensions.cs" />
-    <Compile Include="Helpers\IExceptionHelper.cs" />
-    <Compile Include="Helpers\Implementation\ExceptionHelper.cs" />
-    <Compile Include="Helpers\ResourceHelper.cs" />
+    <Compile Include="Exceptions\ExceptionExtensions.cs" />
+    <Compile Include="Exceptions\IExceptionHelper.cs" />
+    <Compile Include="Exceptions\Implementation\ExceptionHelper.cs" />
+    <Compile Include="Resources\ResourceHelper.cs" />
     <Compile Include="IoC\IInitializable.cs" />
     <Compile Include="IoC\ServiceLocatorExtensions.cs" />
     <Compile Include="IoC\SimpleUnityServiceLocator.cs" />

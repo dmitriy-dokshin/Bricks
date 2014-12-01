@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-using Bricks.Core.Helpers;
+using Bricks.Core.Exceptions;
 
 using Microsoft.AspNet.SignalR;
 using Microsoft.Practices.ServiceLocation;

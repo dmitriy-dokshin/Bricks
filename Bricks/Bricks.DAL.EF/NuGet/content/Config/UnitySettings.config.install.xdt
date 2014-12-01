@@ -11,5 +11,8 @@
 		<register type="Bricks.DAL.Repository.ISqlRepository"
 				  mapTo="Bricks.DAL.EF.Repository">
 		</register>
+		<register type="Bricks.DAL.Repository.IRepositoryHelper"
+				  mapTo="Bricks.DAL.EF.RepositoryHelper">
+		</register>
 	</container>
 </unity>

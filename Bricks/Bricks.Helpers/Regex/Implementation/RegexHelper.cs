@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 using Bricks.Core.Configuration;
-using Bricks.Core.Helpers;
+using Bricks.Core.Exceptions;
 using Bricks.Core.Results;
 
 #endregion

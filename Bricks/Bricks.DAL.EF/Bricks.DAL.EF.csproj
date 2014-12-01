@@ -71,6 +71,7 @@
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
+    <Compile Include="RepositoryHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -91,6 +92,10 @@
     <ProjectReference Include="..\Bricks.DAL\Bricks.DAL.csproj">
       <Project>{8fce3989-41f9-4fc8-8994-888e136123d2}</Project>
       <Name>Bricks.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Bricks.Helpers\Bricks.Helpers.csproj">
+      <Project>{3F8A3074-0918-4D0E-8FDF-1F7BBA57BACF}</Project>
+      <Name>Bricks.Helpers</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

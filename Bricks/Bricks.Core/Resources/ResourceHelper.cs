@@ -4,7 +4,7 @@ using System.IO;
 
 #endregion
 
-namespace Bricks.Core.Helpers
+namespace Bricks.Core.Resources
 {
 	public static class ResourceHelper
 	{

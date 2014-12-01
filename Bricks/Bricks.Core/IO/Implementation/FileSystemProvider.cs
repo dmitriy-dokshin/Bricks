@@ -3,7 +3,7 @@
 using System.IO;
 
 using Bricks.Core.Environment;
-using Bricks.Core.Helpers;
+using Bricks.Core.Exceptions;
 using Bricks.Core.Results;
 
 #endregion
