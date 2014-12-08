@@ -25,7 +25,7 @@ namespace Bricks.Core.Exceptions.Implementation
 
 		#region Implementation of IExceptionHelper
 
-		public IResult<TResult> Catch<TResult>(Func<TResult> func, IEnumerable<Type> exceptionTypes)
+		public IResult<TResult> Catch<TResult>(Func<TResult> func, IEnumerable<Type> exceptionTypes, string message = null)
 		{
 			TResult result;
 			try
@@ -36,7 +36,7 @@ namespace Bricks.Core.Exceptions.Implementation
 			{
 				if (exceptionTypes.Contains(exception.GetType()))
 				{
-					return _resultFactory.CreateUnsuccessfulResult<TResult>(exception: exception);
+					return _resultFactory.CreateUnsuccessfulResult<TResult>(message, exception);
 				}
 
 				throw;
@@ -45,7 +45,7 @@ namespace Bricks.Core.Exceptions.Implementation
 			return _resultFactory.Create(result);
 		}
 
-		public IResult Catch(Action action, IEnumerable<Type> exceptionTypes)
+		public IResult Catch(Action action, IEnumerable<Type> exceptionTypes, string message = null)
 		{
 			try
 			{
@@ -55,7 +55,7 @@ namespace Bricks.Core.Exceptions.Implementation
 			{
 				if (exceptionTypes.Contains(exception.GetType()))
 				{
-					return _resultFactory.CreateUnsuccessfulResult(exception: exception);
+					return _resultFactory.CreateUnsuccessfulResult(message, exception);
 				}
 
 				throw;
@@ -98,7 +98,7 @@ namespace Bricks.Core.Exceptions.Implementation
 			}
 		}
 
-		public async Task<IResult<TResult>> CatchAsync<TResult>(Func<Task<TResult>> func, IEnumerable<Type> exceptionTypes)
+		public async Task<IResult<TResult>> CatchAsync<TResult>(Func<Task<TResult>> func, IEnumerable<Type> exceptionTypes, string message = null)
 		{
 			TResult result;
 			try
@@ -109,7 +109,7 @@ namespace Bricks.Core.Exceptions.Implementation
 			{
 				if (exceptionTypes.Contains(exception.GetType()))
 				{
-					return _resultFactory.CreateUnsuccessfulResult<TResult>(exception: exception);
+					return _resultFactory.CreateUnsuccessfulResult<TResult>(message, exception);
 				}
 
 				throw;
@@ -118,7 +118,7 @@ namespace Bricks.Core.Exceptions.Implementation
 			return _resultFactory.Create(result);
 		}
 
-		public async Task<IResult> CatchAsync(Func<Task> action, IEnumerable<Type> exceptionTypes)
+		public async Task<IResult> CatchAsync(Func<Task> action, IEnumerable<Type> exceptionTypes, string message = null)
 		{
 			try
 			{
@@ -128,7 +128,7 @@ namespace Bricks.Core.Exceptions.Implementation
 			{
 				if (exceptionTypes.Contains(exception.GetType()))
 				{
-					return _resultFactory.CreateUnsuccessfulResult(exception: exception);
+					return _resultFactory.CreateUnsuccessfulResult(message, exception);
 				}
 
 				throw;

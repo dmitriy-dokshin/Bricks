@@ -104,7 +104,7 @@ namespace Bricks.DAL.EF
 
 		public Task<IResult> SaveAsync()
 		{
-			return _exceptionHelper.CatchAsync(() => (Task)_dbContext.SaveChangesAsync(_cancellationToken), typeof(DbUpdateException), typeof(DbUpdateException));
+			return _exceptionHelper.CatchAsync(() => (Task)_dbContext.SaveChangesAsync(_cancellationToken), Resources.Repository_SaveAsync_ExceptionMessage, typeof(DbUpdateException), typeof(DbUpdateException));
 		}
 
 		#endregion

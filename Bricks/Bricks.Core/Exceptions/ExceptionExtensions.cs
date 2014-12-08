@@ -13,9 +13,9 @@ namespace Bricks.Core.Exceptions
 	{
 		#region Func
 
-		public static IResult<TResult> Catch<TResult>(this IExceptionHelper exceptionHelper, Func<TResult> func, params Type[] exceptionTypes)
+		public static IResult<TResult> Catch<TResult>(this IExceptionHelper exceptionHelper, Func<TResult> func, string message = null, params Type[] exceptionTypes)
 		{
-			return exceptionHelper.Catch(func, exceptionTypes);
+			return exceptionHelper.Catch(func, exceptionTypes, message);
 		}
 
 		public static TResult SimpleCatch<TResult>(this IExceptionHelper exceptionHelper, Func<TResult> func, params Type[] exceptionTypes)
@@ -23,10 +23,10 @@ namespace Bricks.Core.Exceptions
 			return exceptionHelper.SimpleCatch(func, exceptionTypes);
 		}
 
-		public static IResult<TResult> Catch<TResult, TException>(this IExceptionHelper exceptionHelper, Func<TResult> func)
+		public static IResult<TResult> Catch<TResult, TException>(this IExceptionHelper exceptionHelper, Func<TResult> func, string message = null)
 			where TException : Exception
 		{
-			return exceptionHelper.Catch(func, typeof(TException));
+			return exceptionHelper.Catch(func, message, typeof(TException));
 		}
 
 		public static TResult SimpleCatch<TResult, TException>(this IExceptionHelper exceptionHelper, Func<TResult> func)
@@ -35,9 +35,9 @@ namespace Bricks.Core.Exceptions
 			return exceptionHelper.SimpleCatch(func, typeof(TException));
 		}
 
-		public static IResult<TResult> Catch<TResult>(this IExceptionHelper exceptionHelper, Func<TResult> func)
+		public static IResult<TResult> Catch<TResult>(this IExceptionHelper exceptionHelper, Func<TResult> func, string message = null)
 		{
-			return exceptionHelper.Catch<TResult, Exception>(func);
+			return exceptionHelper.Catch<TResult, Exception>(func, message);
 		}
 
 		public static TResult SimpleCatch<TResult>(this IExceptionHelper exceptionHelper, Func<TResult> func)
@@ -49,9 +49,9 @@ namespace Bricks.Core.Exceptions
 
 		#region Async Func
 
-		public static Task<IResult<TResult>> CatchAsync<TResult>(this IExceptionHelper exceptionHelper, Func<Task<TResult>> func, params Type[] exceptionTypes)
+		public static Task<IResult<TResult>> CatchAsync<TResult>(this IExceptionHelper exceptionHelper, Func<Task<TResult>> func, string message = null, params Type[] exceptionTypes)
 		{
-			return exceptionHelper.CatchAsync(func, exceptionTypes);
+			return exceptionHelper.CatchAsync(func, exceptionTypes, message);
 		}
 
 		public static Task<TResult> SimpleCatchAsync<TResult>(this IExceptionHelper exceptionHelper, Func<Task<TResult>> func, params Type[] exceptionTypes)
@@ -59,10 +59,10 @@ namespace Bricks.Core.Exceptions
 			return exceptionHelper.SimpleCatchAsync(func, exceptionTypes);
 		}
 
-		public static Task<IResult<TResult>> CatchAsync<TResult, TException>(this IExceptionHelper exceptionHelper, Func<Task<TResult>> func)
+		public static Task<IResult<TResult>> CatchAsync<TResult, TException>(this IExceptionHelper exceptionHelper, Func<Task<TResult>> func, string message = null)
 			where TException : Exception
 		{
-			return exceptionHelper.CatchAsync(func, typeof(TException));
+			return exceptionHelper.CatchAsync(func, message, typeof(TException));
 		}
 
 		public static Task<TResult> SimpleCatchAsync<TResult, TException>(this IExceptionHelper exceptionHelper, Func<Task<TResult>> func)
@@ -71,9 +71,9 @@ namespace Bricks.Core.Exceptions
 			return exceptionHelper.SimpleCatchAsync(func, typeof(TException));
 		}
 
-		public static Task<IResult<TResult>> CatchAsync<TResult>(this IExceptionHelper exceptionHelper, Func<Task<TResult>> func)
+		public static Task<IResult<TResult>> CatchAsync<TResult>(this IExceptionHelper exceptionHelper, Func<Task<TResult>> func, string message = null)
 		{
-			return exceptionHelper.CatchAsync<TResult, Exception>(func);
+			return exceptionHelper.CatchAsync<TResult, Exception>(func, message);
 		}
 
 		public static Task<TResult> SimpleCatchAsync<TResult>(this IExceptionHelper exceptionHelper, Func<Task<TResult>> func)
@@ -85,9 +85,9 @@ namespace Bricks.Core.Exceptions
 
 		#region Action
 
-		public static IResult Catch(this IExceptionHelper exceptionHelper, Action action, params Type[] exceptionTypes)
+		public static IResult Catch(this IExceptionHelper exceptionHelper, Action action, string message = null, params Type[] exceptionTypes)
 		{
-			return exceptionHelper.Catch(action, exceptionTypes);
+			return exceptionHelper.Catch(action, exceptionTypes, message);
 		}
 
 		public static void SimpleCatch(this IExceptionHelper exceptionHelper, Action action, params Type[] exceptionTypes)
@@ -95,10 +95,10 @@ namespace Bricks.Core.Exceptions
 			exceptionHelper.SimpleCatch(action, exceptionTypes);
 		}
 
-		public static IResult Catch<TException>(this IExceptionHelper exceptionHelper, Action action)
+		public static IResult Catch<TException>(this IExceptionHelper exceptionHelper, Action action, string message = null)
 			where TException : Exception
 		{
-			return exceptionHelper.Catch(action, typeof(TException));
+			return exceptionHelper.Catch(action, message, typeof(TException));
 		}
 
 		public static void SimpleCatch<TException>(this IExceptionHelper exceptionHelper, Action action)
@@ -107,9 +107,9 @@ namespace Bricks.Core.Exceptions
 			exceptionHelper.SimpleCatch(action, typeof(TException));
 		}
 
-		public static IResult Catch(this IExceptionHelper exceptionHelper, Action action)
+		public static IResult Catch(this IExceptionHelper exceptionHelper, Action action, string message = null)
 		{
-			return exceptionHelper.Catch<Exception>(action);
+			return exceptionHelper.Catch<Exception>(action, message);
 		}
 
 		public static void SimpleCatch(this IExceptionHelper exceptionHelper, Action action)
@@ -121,9 +121,9 @@ namespace Bricks.Core.Exceptions
 
 		#region Async Action
 
-		public static Task<IResult> CatchAsync(this IExceptionHelper exceptionHelper, Func<Task> action, params Type[] exceptionTypes)
+		public static Task<IResult> CatchAsync(this IExceptionHelper exceptionHelper, Func<Task> action, string message = null, params Type[] exceptionTypes)
 		{
-			return exceptionHelper.CatchAsync(action, exceptionTypes);
+			return exceptionHelper.CatchAsync(action, exceptionTypes, message);
 		}
 
 		public static Task SimpleCatchAsync(this IExceptionHelper exceptionHelper, Func<Task> action, params Type[] exceptionTypes)
@@ -131,10 +131,10 @@ namespace Bricks.Core.Exceptions
 			return exceptionHelper.SimpleCatchAsync(action, exceptionTypes);
 		}
 
-		public static Task<IResult> CatchAsync<TException>(this IExceptionHelper exceptionHelper, Func<Task> action)
+		public static Task<IResult> CatchAsync<TException>(this IExceptionHelper exceptionHelper, Func<Task> action, string message = null)
 			where TException : Exception
 		{
-			return exceptionHelper.CatchAsync(action, typeof(TException));
+			return exceptionHelper.CatchAsync(action, message, typeof(TException));
 		}
 
 		public static Task SimpleCatchAsync<TException>(this IExceptionHelper exceptionHelper, Func<Task> action)
@@ -143,9 +143,9 @@ namespace Bricks.Core.Exceptions
 			return exceptionHelper.SimpleCatchAsync(action, typeof(TException));
 		}
 
-		public static Task<IResult> CatchAsync(this IExceptionHelper exceptionHelper, Func<Task> action)
+		public static Task<IResult> CatchAsync(this IExceptionHelper exceptionHelper, Func<Task> action, string message = null)
 		{
-			return exceptionHelper.CatchAsync<Exception>(action);
+			return exceptionHelper.CatchAsync<Exception>(action, message);
 		}
 
 		public static Task SimpleCatchAsync(this IExceptionHelper exceptionHelper, Func<Task> action)
