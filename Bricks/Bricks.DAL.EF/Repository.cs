@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
@@ -104,7 +105,7 @@ namespace Bricks.DAL.EF
 
 		public Task<IResult> SaveAsync()
 		{
-			return _exceptionHelper.CatchAsync(() => (Task)_dbContext.SaveChangesAsync(_cancellationToken), Resources.Repository_SaveAsync_ExceptionMessage, typeof(DbUpdateException), typeof(DbUpdateException));
+			return _exceptionHelper.CatchAsync(() => (Task)_dbContext.SaveChangesAsync(_cancellationToken), Resources.Repository_SaveAsync_ExceptionMessage, typeof(DbEntityValidationException), typeof(DbUpdateException));
 		}
 
 		#endregion
@@ -118,15 +119,25 @@ namespace Bricks.DAL.EF
 		/// <param name="sql">SQL-скрипт.</param>
 		/// <param name="parameters">Параметры SQL-скрипта.</param>
 		/// <returns>Результат запроса.</returns>
-		public IEnumerable<TEntity> ExecuteSql<TEntity>(string sql, params KeyValuePair<string, object>[] parameters)
+		public IEnumerable<TEntity> SqlQuery<TEntity>(string sql, params KeyValuePair<string, object>[] parameters)
 		{
-			SqlParameter[] sqlParameters = parameters.Select(x => new SqlParameter(string.Format(CultureInfo.InvariantCulture, "@{0}", x.Key), x.Value ?? DBNull.Value)).ToArray();
+			SqlParameter[] sqlParameters = GetParameters(parameters);
 			// ReSharper disable CoVariantArrayConversion
 			return _dbContext.Database.SqlQuery<TEntity>(sql, sqlParameters);
 			// ReSharper restore CoVariantArrayConversion
 		}
 
+		public Task<int> ExecuteSqlCommandAsync(string sql, params KeyValuePair<string, object>[] parameters)
+		{
+			return _dbContext.Database.ExecuteSqlCommandAsync(sql, _cancellationToken, parameters);
+		}
+
 		#endregion
+
+		private static SqlParameter[] GetParameters(KeyValuePair<string, object>[] parameters)
+		{
+			return parameters.Select(x => new SqlParameter(string.Format(CultureInfo.InvariantCulture, "@{0}", x.Key), x.Value ?? DBNull.Value)).ToArray();
+		}
 
 		private sealed class TransactionScope : ITransactionScope
 		{

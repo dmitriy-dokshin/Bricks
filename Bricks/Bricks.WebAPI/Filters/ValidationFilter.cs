@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
 using System.Threading;
@@ -57,7 +58,7 @@ namespace Bricks.WebAPI.Filters
 		/// <param name="continuation">The delegate function to continue after the action method is invoked.</param>
 		public Task<HttpResponseMessage> ExecuteActionFilterAsync(HttpActionContext actionContext, CancellationToken cancellationToken, Func<Task<HttpResponseMessage>> continuation)
 		{
-			CheckNotNull(actionContext);
+			CheckRequired(actionContext);
 			if (actionContext.ModelState.IsValid)
 			{
 				CheckDefaultIfNull(actionContext);
@@ -69,15 +70,19 @@ namespace Bricks.WebAPI.Filters
 
 		#endregion
 
-		private static void CheckNotNull(HttpActionContext actionContext)
+		private static void CheckRequired(HttpActionContext actionContext)
 		{
-			IEnumerable<HttpParameterDescriptor> parameterDescriptors =
-				actionContext.ActionDescriptor.GetParameters().Where(x => x.GetCustomAttributes<NotNullAttribute>().Any());
-			foreach (HttpParameterDescriptor parameterDescriptor in parameterDescriptors)
+			var parameterDescriptorRequiredAttributes =
+				actionContext.ActionDescriptor.GetParameters()
+					.Select(x => new { Parameter = x, Attribute = x.GetCustomAttributes<RequiredAttribute>().FirstOrDefault() })
+					.Where(x => x.Attribute != null);
+			foreach (var parameterDescriptorRequiredAttribute in parameterDescriptorRequiredAttributes)
 			{
+				HttpParameterDescriptor parameterDescriptor = parameterDescriptorRequiredAttribute.Parameter;
+				RequiredAttribute requiredAttribute = parameterDescriptorRequiredAttribute.Attribute;
 				string parameterName = parameterDescriptor.ParameterName;
 				object value;
-				if (!actionContext.ActionArguments.TryGetValue(parameterName, out value) || value == null)
+				if (!actionContext.ActionArguments.TryGetValue(parameterName, out value) || value == null || (!requiredAttribute.AllowEmptyStrings && (value as string) == string.Empty))
 				{
 					actionContext.ModelState.AddModelError(parameterName, Resources.NotNullErrorMessage);
 				}

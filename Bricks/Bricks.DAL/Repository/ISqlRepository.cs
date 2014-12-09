@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 #endregion
 
@@ -18,6 +19,8 @@ namespace Bricks.DAL.Repository
 		/// <param name="sql">SQL-скрипт.</param>
 		/// <param name="parameters">Параметры SQL-скрипта.</param>
 		/// <returns>Результат запроса.</returns>
-		IEnumerable<TEntity> ExecuteSql<TEntity>(string sql, params KeyValuePair<string, object>[] parameters);
+		IEnumerable<TEntity> SqlQuery<TEntity>(string sql, params KeyValuePair<string, object>[] parameters);
+
+		Task<int> ExecuteSqlCommandAsync(string sql, params KeyValuePair<string, object>[] parameters);
 	}
 }
