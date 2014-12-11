@@ -23,35 +23,35 @@ namespace Bricks.Sync.Tests
 		[Test]
 		public void TryEnter_LockIsNotEntered_ReturnsTrue()
 		{
-			// Assert
+			// Arrange
 			ILockAsync lockAsync = GetLockAsync();
 
 			// Act
 			IDisposable disposable;
 			bool isEntered = lockAsync.TryEnter(out disposable);
 
-			// Arrange
+			// Assert
 			Assert.IsTrue(isEntered);
 		}
 
 		[Test]
 		public void TryEnter_LockIsNotEntered_DisposableIsNotNull()
 		{
-			// Assert
+			// Arrange
 			ILockAsync lockAsync = GetLockAsync();
 
 			// Act
 			IDisposable disposable;
 			lockAsync.TryEnter(out disposable);
 
-			// Arrange
+			// Assert
 			Assert.IsNotNull(disposable);
 		}
 
 		[Test]
 		public void TryEnter_LockIsEntered_ReturnsFalse()
 		{
-			// Assert
+			// Arrange
 			ILockAsync lockAsync = GetLockAsync();
 
 			// Act
@@ -59,14 +59,14 @@ namespace Bricks.Sync.Tests
 			lockAsync.TryEnter(out disposable);
 			bool isEntered = lockAsync.TryEnter(out disposable);
 
-			// Arrange
+			// Assert
 			Assert.IsFalse(isEntered);
 		}
 
 		[Test]
 		public void TryEnter_LockIsEntered_DisposableIsNull()
 		{
-			// Assert
+			// Arrange
 			ILockAsync lockAsync = GetLockAsync();
 
 			// Act
@@ -74,14 +74,14 @@ namespace Bricks.Sync.Tests
 			lockAsync.TryEnter(out disposable);
 			lockAsync.TryEnter(out disposable);
 
-			// Arrange
+			// Assert
 			Assert.IsNull(disposable);
 		}
 
 		[Test]
 		public void TryEnter_AfterDisposing_ReturnsTrue()
 		{
-			// Assert
+			// Arrange
 			ILockAsync lockAsync = GetLockAsync();
 
 			// Act
@@ -90,14 +90,14 @@ namespace Bricks.Sync.Tests
 			disposable.Dispose();
 			bool isEntered = lockAsync.TryEnter(out disposable);
 
-			// Arrange
+			// Assert
 			Assert.IsTrue(isEntered);
 		}
 
 		[Test]
 		public void TryEnter_AfterDisposing_DisposableIsNotNull()
 		{
-			// Assert
+			// Arrange
 			ILockAsync lockAsync = GetLockAsync();
 
 			// Act
@@ -106,28 +106,28 @@ namespace Bricks.Sync.Tests
 			disposable.Dispose();
 			lockAsync.TryEnter(out disposable);
 
-			// Arrange
+			// Assert
 			Assert.IsNotNull(disposable);
 		}
 
 		[Test]
 		public void Enter_LockIsEntered_TaskIsInWaitingForActivationStatus()
 		{
-			// Assert
+			// Arrange
 			ILockAsync lockAsync = GetLockAsync();
 
 			// Act
 			lockAsync.Enter();
 			Task task = lockAsync.Enter();
 
-			// Arrange
+			// Assert
 			Assert.AreEqual(TaskStatus.WaitingForActivation, task.Status);
 		}
 
 		[Test]
 		public async Task Enter_AfterDisposing_TaskIsInRanToCompletionStatus()
 		{
-			// Assert
+			// Arrange
 			ILockAsync lockAsync = GetLockAsync();
 
 			// Act
@@ -135,27 +135,27 @@ namespace Bricks.Sync.Tests
 			Task task = lockAsync.Enter();
 			disposable.Dispose();
 
-			// Arrange
+			// Assert
 			Assert.AreEqual(TaskStatus.RanToCompletion, task.Status);
 		}
 
 		[Test]
 		public void Enter_LockIsNotEntered_TaskIsInRanToCompletionStatus()
 		{
-			// Assert
+			// Arrange
 			ILockAsync lockAsync = GetLockAsync();
 
 			// Act
 			Task task = lockAsync.Enter();
 
-			// Arrange
+			// Assert
 			Assert.AreEqual(TaskStatus.RanToCompletion, task.Status);
 		}
 
 		[Test]
 		public void EnterWithCancellationTokenAndCancel_LockIsEntered_TaskIsInCanceledStatus()
 		{
-			// Assert
+			// Arrange
 			ILockAsync lockAsync = GetLockAsync();
 
 			// Act
@@ -164,14 +164,14 @@ namespace Bricks.Sync.Tests
 			Task task = lockAsync.Enter(cancellationTokenSource.Token);
 			cancellationTokenSource.Cancel();
 
-			// Arrange
+			// Assert
 			Assert.AreEqual(TaskStatus.Canceled, task.Status);
 		}
 
 		[Test]
 		public void EnterWithCancellationTokenAndCancel_LockIsNotEntered_TaskIsInRanToCompletionStatus()
 		{
-			// Assert
+			// Arrange
 			ILockAsync lockAsync = GetLockAsync();
 
 			// Act
@@ -179,7 +179,7 @@ namespace Bricks.Sync.Tests
 			Task task = lockAsync.Enter(cancellationTokenSource.Token);
 			cancellationTokenSource.Cancel();
 
-			// Arrange
+			// Assert
 			Assert.AreEqual(TaskStatus.RanToCompletion, task.Status);
 		}
 	}

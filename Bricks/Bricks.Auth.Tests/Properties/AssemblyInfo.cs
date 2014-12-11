@@ -1,31 +1,26 @@
-﻿#region
-
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-
-#endregion
 
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-
-[assembly: AssemblyTitle("Bricks.Auth")]
-[assembly: AssemblyDescription("Contains types for authentication and authorization.")]
+[assembly: AssemblyTitle("Bricks.Auth.Tests")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyProduct("Bricks.Auth")]
-[assembly: AssemblyTrademark("Bricks.Auth")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Bricks.Auth.Tests")]
+[assembly: AssemblyCopyright("Copyright ©  2014")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
-
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-
-[assembly: Guid("0fb46e1f-4a40-45f0-a870-300a6abd8716")]
+[assembly: Guid("803262f6-e320-490c-a90b-95406fc7c28f")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -37,6 +32,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-
-[assembly: AssemblyVersion("0.1.*")]
-[assembly: InternalsVisibleTo("Bricks.Auth.Tests, PublicKey=00240000048000009400000006020000002400005253413100040000010001007553659ad380e0f1381f7274a4bfffb036fcde90579afa2fe2a7c5a721f43ba635032ff38b664c96504c6945905b885cc02567fbfe716f720275fd648748d4403a944b523d8db340e83069510db1b63de21d5623bd2f455989778924a56bc345838dad5336c2c039b4de5bee646c10e04d73bcc561f2da8075ee13600c08add5")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

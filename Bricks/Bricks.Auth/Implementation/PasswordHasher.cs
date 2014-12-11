@@ -2,6 +2,7 @@
 
 using System;
 using System.Security.Cryptography;
+using System.Text;
 
 #endregion
 
@@ -9,23 +10,43 @@ namespace Bricks.Auth.Implementation
 {
 	internal class PasswordHasher : IPasswordHasher
 	{
-		private const int IterationsCount = 1000;
-		private const int SaltSize = 16;
-		private const int BytesRequired = 16;
+		private const int Seed = 47;
+		private const int SaltSize = 64;
+		private readonly byte[] _defaultSalt;
+
+		public PasswordHasher()
+		{
+			Random random = new Random(Seed);
+			_defaultSalt = new byte[SaltSize];
+			random.NextBytes(_defaultSalt);
+		}
 
 		#region Implementation of IPasswordHasher
 
-		public string HashPassword(string password)
+		public string HashPassword(string password, byte[] salt = null)
 		{
-			var array = new byte[1 + SaltSize + BytesRequired];
-			using (var pbkdf2 = new Rfc2898DeriveBytes(password, SaltSize, IterationsCount))
+			byte[] plainText = Encoding.Unicode.GetBytes(password);
+			if (salt == null)
 			{
-				byte[] salt = pbkdf2.Salt;
-				Buffer.BlockCopy(salt, 0, array, 1, SaltSize);
-				byte[] bytes = pbkdf2.GetBytes(BytesRequired);
-				Buffer.BlockCopy(bytes, 0, array, SaltSize + 1, BytesRequired);
+				salt = _defaultSalt;
 			}
-			return Convert.ToBase64String(array);
+
+			HashAlgorithm algorithm = new SHA256Managed();
+
+			byte[] plainTextWithSaltBytes =
+				new byte[plainText.Length + salt.Length];
+
+			for (int i = 0; i < plainText.Length; i++)
+			{
+				plainTextWithSaltBytes[i] = plainText[i];
+			}
+			for (int i = 0; i < salt.Length; i++)
+			{
+				plainTextWithSaltBytes[plainText.Length + i] = salt[i];
+			}
+
+			var hash = algorithm.ComputeHash(plainTextWithSaltBytes);
+			return Convert.ToBase64String(hash);
 		}
 
 		#endregion
