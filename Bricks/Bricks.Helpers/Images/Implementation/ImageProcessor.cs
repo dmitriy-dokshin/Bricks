@@ -26,7 +26,7 @@ namespace Bricks.Helpers.Images.Implementation
 			}
 
 			Image image = getImageResult.Data;
-			Image newImage = Resize(image);
+			Image newImage = Resize(image, width, height, preserveAspectRatio);
 			return newImage.GetBytes();
 		}
 
