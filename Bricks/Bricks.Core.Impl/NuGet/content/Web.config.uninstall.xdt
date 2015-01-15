@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<configSections>
+		<section name="unity" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+		<section name="modularitySettings" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+		<section name="regexSettings" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+	</configSections>
+
+	<unity xdt:Transform="Remove" />
+	<modularitySettings xdt:Transform="Remove" />
+	<regexSettings xdt:Transform="Remove" />
+</configuration>

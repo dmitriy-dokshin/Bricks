@@ -32,6 +32,17 @@ namespace Bricks.WebAPI.IoC
 
 		#endregion
 
+		public event EventHandler<IUnityContainer> InitializeChildContainer;
+
+		private void OnInitializeChildContainer(IUnityContainer childContainer)
+		{
+			var handler = InitializeChildContainer;
+			if (handler != null)
+			{
+				handler(this, childContainer);
+			}
+		}
+
 		#region Implementation of IDependencyScope
 
 		/// <summary>
@@ -45,7 +56,7 @@ namespace Bricks.WebAPI.IoC
 		{
 			try
 			{
-				object service = _unityContainer.Resolve(serviceType);
+				var service = _unityContainer.Resolve(serviceType);
 				return service;
 			}
 			catch (ResolutionFailedException)
@@ -83,7 +94,8 @@ namespace Bricks.WebAPI.IoC
 		/// </returns>
 		public IDependencyScope BeginScope()
 		{
-			IUnityContainer childContainer = _unityContainer.CreateChildContainer();
+			var childContainer = _unityContainer.CreateChildContainer();
+			OnInitializeChildContainer(childContainer);
 			return new UnityDependencyResolver(childContainer);
 		}
 

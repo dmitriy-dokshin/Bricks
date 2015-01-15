@@ -12,12 +12,12 @@ namespace Bricks.DAL.Fakes.Queryable
 	public class AsyncEnumerableQuery<T> : EnumerableQuery<T>, IDbAsyncEnumerable<T>, IQueryable
 	{
 		public AsyncEnumerableQuery(IEnumerable<T> enumerable)
-		: base(enumerable)
+			: base(enumerable)
 		{
 		}
 
 		public AsyncEnumerableQuery(Expression expression)
-		: base(expression)
+			: base(expression)
 		{
 		}
 

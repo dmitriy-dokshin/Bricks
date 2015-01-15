@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<modularitySettings xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<modules>
+		<add name="Bricks.WebAPI" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+	</modules>
+</modularitySettings>

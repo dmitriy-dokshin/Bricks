@@ -10,9 +10,8 @@ using System.Threading.Tasks;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
-using Bricks.Helpers.Reflection;
-using Bricks.Helpers.Sync;
-using Bricks.Sync;
+using Bricks.Core.Reflection;
+using Bricks.Core.Sync;
 
 using Microsoft.Practices.EnterpriseLibrary.Caching;
 using Microsoft.Practices.EnterpriseLibrary.Caching.Expirations;
@@ -23,10 +22,10 @@ namespace Bricks.WebAPI.Filters
 {
 	public sealed class CacheFilter : IActionFilter
 	{
+		private IImmutableDictionary<string, ICacheManager> _cacheMangers;
 		private readonly IInterlockedHelper _interlockedHelper;
 		private readonly ILockStorage _lockStorage;
 		private readonly IReflectionHelper _reflectionHelper;
-		private IImmutableDictionary<string, ICacheManager> _cacheMangers;
 
 		public CacheFilter(IInterlockedHelper interlockedHelper, ILockStorage lockStorage, IReflectionHelper reflectionHelper)
 		{
@@ -67,52 +66,71 @@ namespace Bricks.WebAPI.Filters
 		{
 			if (actionContext.Request.Method == HttpMethod.Get)
 			{
-				CacheAttribute cacheAttribute = actionContext.ActionDescriptor.GetCustomAttributes<CacheAttribute>().FirstOrDefault();
+				var cacheAttribute = actionContext.ActionDescriptor.GetCustomAttributes<CacheAttribute>().FirstOrDefault();
 				if (cacheAttribute != null)
 				{
-					string cacheManagerKey = actionContext.ControllerContext.ControllerDescriptor.ControllerName + "." + actionContext.ActionDescriptor.ActionName;
-					ICacheManager cacheManager = _interlockedHelper.CompareExchange(ref _cacheMangers, x =>
-						{
-							ICacheManager result;
-							IImmutableDictionary<string, ICacheManager> newValue;
-							if (!x.TryGetValue(cacheManagerKey, out result))
-							{
-								result = CacheFactory.GetCacheManager(cacheManagerKey);
-								newValue = x.Add(cacheManagerKey, result);
-							}
-							else
-							{
-								newValue = x;
-							}
-
-							return _interlockedHelper.CreateChangeResult(newValue, result);
-						});
-
-					string key = actionContext.Request.RequestUri.PathAndQuery;
-					var httpResponseMessageData = (HttpResponseMessageData)cacheManager.GetData(key);
-					if (httpResponseMessageData == null)
+					if (cacheAttribute.ServerLifetime.HasValue)
 					{
-						ILockContainer lockContainer;
-						using (_lockStorage.GetContainer(_reflectionHelper.GetFullName(MethodBase.GetCurrentMethod()), out lockContainer))
-						{
-							ILockAsync @lock;
-							using (lockContainer.GetLock(cacheManager, out @lock))
+						var cacheManagerKey = actionContext.ControllerContext.ControllerDescriptor.ControllerName + "." + actionContext.ActionDescriptor.ActionName;
+						var cacheManager = _interlockedHelper.CompareExchange(ref _cacheMangers, x =>
 							{
-								using (await @lock.Enter(cancellationToken))
+								ICacheManager result;
+								IImmutableDictionary<string, ICacheManager> newValue;
+								if (!x.TryGetValue(cacheManagerKey, out result))
 								{
-									httpResponseMessageData = (HttpResponseMessageData)cacheManager.GetData(key);
-									if (httpResponseMessageData == null)
+									result = CacheFactory.GetCacheManager(cacheManagerKey);
+									newValue = x.Add(cacheManagerKey, result);
+								}
+								else
+								{
+									newValue = x;
+								}
+
+								return _interlockedHelper.CreateChangeResult(newValue, result);
+							});
+
+						var key = actionContext.Request.RequestUri.PathAndQuery;
+						var httpResponseMessageData = (HttpResponseMessageData)cacheManager.GetData(key);
+						if (httpResponseMessageData == null)
+						{
+							ILockContainer lockContainer;
+							using (_lockStorage.GetContainer(_reflectionHelper.GetFullName(MethodBase.GetCurrentMethod()), out lockContainer))
+							{
+								ILockAsync @lock;
+								using (lockContainer.GetLock(cacheManager, out @lock))
+								{
+									using (await @lock.Enter(cancellationToken))
 									{
-										HttpResponseMessage httpResponseMessage = await continuation();
-										httpResponseMessageData = await HttpResponseMessageData.Create(httpResponseMessage);
-										cacheManager.Add(key, httpResponseMessageData, CacheItemPriority.Normal, null, new AbsoluteTime(cacheAttribute.Lifetime));
+										httpResponseMessageData = (HttpResponseMessageData)cacheManager.GetData(key);
+										if (httpResponseMessageData == null)
+										{
+											var httpResponseMessage = await continuation();
+											if (cacheAttribute.ClientLifetime.HasValue)
+											{
+												var cacheControlHeaderValue = httpResponseMessage.Headers.CacheControl;
+												cacheControlHeaderValue.Private = true;
+												cacheControlHeaderValue.MaxAge = cacheAttribute.ClientLifetime.Value;
+											}
+
+											httpResponseMessageData = await HttpResponseMessageData.Create(httpResponseMessage);
+											cacheManager.Add(key, httpResponseMessageData, CacheItemPriority.Normal, null, new AbsoluteTime(cacheAttribute.ServerLifetime.Value));
+										}
 									}
 								}
 							}
 						}
+
+						return httpResponseMessageData.ToResponseMessage();
 					}
 
-					return httpResponseMessageData.ToResponseMessage();
+					if (cacheAttribute.ClientLifetime.HasValue)
+					{
+						var httpResponseMessage = await continuation();
+						var cacheControlHeaderValue = httpResponseMessage.Headers.CacheControl;
+						cacheControlHeaderValue.Private = true;
+						cacheControlHeaderValue.MaxAge = cacheAttribute.ClientLifetime.Value;
+						return httpResponseMessage;
+					}
 				}
 			}
 

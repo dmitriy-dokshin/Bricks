@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 
-using Bricks.Core.Configuration.Implementation;
+using Bricks.Core.Configuration;
 using Bricks.Core.Resources;
-using Bricks.Web;
+using Bricks.Core.Web;
 
 using Microsoft.Practices.Unity;
 
@@ -26,7 +26,6 @@ namespace Bricks.SMS.Nexmo
 		private const string ServiceUrlsName = "serviceUrls";
 		private const string SenderIdResourceTypeName = "senderIdResourceType";
 		private const string SenderIdResourceNameName = "senderIdResourceName";
-
 		private Uri _baseUrl;
 		private IReadOnlyDictionary<Type, Uri> _serviceUrls;
 
@@ -65,6 +64,14 @@ namespace Bricks.SMS.Nexmo
 			{
 				return (string)this[SenderIdResourceNameName];
 			}
+		}
+
+		[InjectionMethod]
+		public void Initialize(IResourceProvider resourceProvider)
+		{
+			_baseUrl = new Uri(BaseUrl);
+			_serviceUrls = ServiceUrls.ToDictionary(x => Type.GetType(x.Type, true), x => new Uri(x.Url, UriKind.RelativeOrAbsolute).ToAbsoluteIfNot(_baseUrl));
+			SenderId = resourceProvider.GetResourceManager(SenderIdResourceType).GetString(SenderIdResourceName);
 		}
 
 		#region Implementation of INexmoSettings
@@ -121,13 +128,5 @@ namespace Bricks.SMS.Nexmo
 		public string SenderId { get; private set; }
 
 		#endregion
-
-		[InjectionMethod]
-		public void Initialize(IResourceProvider resourceProvider)
-		{
-			_baseUrl = new Uri(BaseUrl);
-			_serviceUrls = ServiceUrls.ToDictionary(x => Type.GetType(x.Type, true), x => new Uri(x.Url, UriKind.RelativeOrAbsolute).ToAbsoluteIfNot(_baseUrl));
-			SenderId = resourceProvider.GetResourceManager(SenderIdResourceType).GetString(SenderIdResourceName);
-		}
 	}
 }

@@ -1,6 +1,6 @@
 ﻿#region
 
-using Bricks.Core.Modularity.Implementation;
+using Bricks.Core.Modularity;
 
 #endregion
 

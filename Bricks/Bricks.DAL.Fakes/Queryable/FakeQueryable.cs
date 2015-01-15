@@ -16,8 +16,8 @@ namespace Bricks.DAL.Fakes.Queryable
 	/// <typeparam name="T">Тип элементов.</typeparam>
 	public class FakeQueryable<T> : IQueryable<T>
 	{
-		private readonly AsyncQueryProvider<T> _queryProvider;
 		private readonly IQueryable<T> _queryable;
+		private readonly AsyncQueryProvider<T> _queryProvider;
 		private readonly IReadOnlyCollection<T> _source;
 
 		public FakeQueryable(IReadOnlyCollection<T> source = null)
@@ -27,7 +27,8 @@ namespace Bricks.DAL.Fakes.Queryable
 			_queryProvider = new AsyncQueryProvider<T>(_queryable.Provider);
 		}
 
-		public FakeQueryable(params T[] items) : this((IReadOnlyCollection<T>)items)
+		public FakeQueryable(params T[] items)
+			: this((IReadOnlyCollection<T>)items)
 		{
 		}
 
@@ -68,7 +69,10 @@ namespace Bricks.DAL.Fakes.Queryable
 		/// </returns>
 		public Expression Expression
 		{
-			get { return _queryable.Expression; }
+			get
+			{
+				return _queryable.Expression;
+			}
 		}
 
 		/// <summary>
@@ -81,7 +85,10 @@ namespace Bricks.DAL.Fakes.Queryable
 		/// </returns>
 		public Type ElementType
 		{
-			get { return typeof (T); }
+			get
+			{
+				return typeof(T);
+			}
 		}
 
 		/// <summary>
@@ -92,7 +99,10 @@ namespace Bricks.DAL.Fakes.Queryable
 		/// </returns>
 		public IQueryProvider Provider
 		{
-			get { return _queryProvider; }
+			get
+			{
+				return _queryProvider;
+			}
 		}
 
 		#endregion

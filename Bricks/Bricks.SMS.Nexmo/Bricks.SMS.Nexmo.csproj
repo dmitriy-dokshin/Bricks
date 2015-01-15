@@ -54,8 +54,9 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -98,17 +99,9 @@
       <Project>{1919938a-32a3-47d6-a8ba-dfe576bd38c1}</Project>
       <Name>Bricks.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bricks.Helpers\Bricks.Helpers.csproj">
-      <Project>{3f8a3074-0918-4d0e-8fdf-1f7bba57bacf}</Project>
-      <Name>Bricks.Helpers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Bricks.SMS\Bricks.SMS.csproj">
       <Project>{5e9fde84-a6b0-4b10-a387-93fa9086a8fd}</Project>
       <Name>Bricks.SMS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bricks.Web\Bricks.Web.csproj">
-      <Project>{3d01f1c7-eeb2-45cd-97a3-94fca46f460d}</Project>
-      <Name>Bricks.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

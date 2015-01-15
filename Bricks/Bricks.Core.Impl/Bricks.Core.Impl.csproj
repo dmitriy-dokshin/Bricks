@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D54058B5-B13E-4E74-832B-88FA28E10533}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Bricks.Core.Impl</RootNamespace>
+    <AssemblyName>Bricks.Core.Impl</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Bricks.Core.Impl.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\..\BuildKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper">
+      <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4">
+      <HintPath>..\packages\AutoMapper.3.3.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable">
+      <HintPath>..\packages\Microsoft.Bcl.Immutable.1.0.34\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonInfo.cs">
+      <Link>CommonInfo.cs</Link>
+    </Compile>
+    <Compile Include="Auth\CodeGenerator.cs" />
+    <Compile Include="Auth\PasswordHasher.cs" />
+    <Compile Include="Collections\CollectionHelper.cs" />
+    <Compile Include="Collections\Container.cs" />
+    <Compile Include="Collections\ContainerFactory.cs" />
+    <Compile Include="Configuration\ConfigurationManagerImpl.cs" />
+    <Compile Include="Conversion\Converter.cs" />
+    <Compile Include="Conversion\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="DateTime\DateTimeProvider.cs" />
+    <Compile Include="Disposing\ActionDisposable.cs" />
+    <Compile Include="Disposing\DisposableHelper.cs" />
+    <Compile Include="Enum\EnumHelper.cs" />
+    <Compile Include="Enum\EnumMetadataBase.cs" />
+    <Compile Include="Enum\EnumMetadataContainer.cs" />
+    <Compile Include="Enum\EnumMetadataTAdapter.cs" />
+    <Compile Include="Enum\EnumResourceHelper.cs" />
+    <Compile Include="Enum\FlagsMetadataBase.cs" />
+    <Compile Include="Enum\IEnumResourceHelper.cs" />
+    <Compile Include="Enum\ResourceEnumMetadata.cs" />
+    <Compile Include="Enum\ResourceEnumValueMetadata.cs" />
+    <Compile Include="Enum\ResourceFlagsMetadata.cs" />
+    <Compile Include="Enum\ResourceFlagsValueMetadata.cs" />
+    <Compile Include="Events\EventHandlerAdapter.cs" />
+    <Compile Include="Events\EventManager.cs" />
+    <Compile Include="Exceptions\ExceptionHelper.cs" />
+    <Compile Include="Images\ImageProcessor.cs" />
+    <Compile Include="IoC\SimpleUnityServiceLocator.cs" />
+    <Compile Include="IO\FileSystemProvider.cs" />
+    <Compile Include="Mapping\MapperImpl.cs" />
+    <Compile Include="Modularity\ModularityConfigurationSection.cs" />
+    <Compile Include="Modularity\ModuleConfigurationElement.cs" />
+    <Compile Include="Modularity\ModuleConfigurationElementCollection.cs" />
+    <Compile Include="Module.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reflection\ReflectionHelper.cs" />
+    <Compile Include="Regex\EmailRegexSettings.cs" />
+    <Compile Include="Regex\PhoneRegexSettings.cs" />
+    <Compile Include="Regex\RegexHelper.cs" />
+    <Compile Include="Regex\RegexSettings.cs" />
+    <Compile Include="Resources\ResourceManagerImpl.cs" />
+    <Compile Include="Resources\ResourceProvider.cs" />
+    <Compile Include="Results\ResultFactory.cs" />
+    <Compile Include="Seams\RandomProvider.cs" />
+    <Compile Include="Serialization\SerializationHelper.cs" />
+    <Compile Include="Sync\InterlockedHelper.cs" />
+    <Compile Include="Sync\LockAsync.cs" />
+    <Compile Include="Sync\LockContainer.cs" />
+    <Compile Include="Sync\LockStorage.cs" />
+    <Compile Include="Sync\SyncFactory.cs" />
+    <Compile Include="Tasks\NoneCancellationTokenProvider.cs" />
+    <Compile Include="Auth\ExternalLogins\Facebook\FacebookLoginProvider.cs" />
+    <Compile Include="Auth\ExternalLogins\Facebook\FacebookParameters.cs" />
+    <Compile Include="Auth\ExternalLogins\Facebook\FacebookResponseData.cs" />
+    <Compile Include="Auth\ExternalLogins\Facebook\FacebookUserData.cs" />
+    <Compile Include="Auth\ExternalLogins\Facebook\FacebookUserParameters.cs" />
+    <Compile Include="Auth\ExternalLogins\Facebook\FacebookUserPictureData.cs" />
+    <Compile Include="Auth\ExternalLogins\Facebook\FacebookUserPictureParameters.cs" />
+    <Compile Include="Web\Resources.Designer.cs">
+      <DependentUpon>Resources.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Web\UrlHelper.cs" />
+    <Compile Include="Web\ValueConverters\EnumToLowerStringValueConverter.cs" />
+    <Compile Include="Web\ValueConverters\EnumToStringValueConverter.cs" />
+    <Compile Include="Web\ValueConverters\GuidToStringValueConverter.cs" />
+    <Compile Include="Web\WebClientImpl.cs" />
+    <Compile Include="Web\WebHelper.cs" />
+    <Compile Include="Web\WebResponse.cs" />
+    <Compile Include="Web\WebSerializationHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\BuildKey.pfx">
+      <Link>BuildKey.pfx</Link>
+    </None>
+    <None Include="app.config" />
+    <None Include="Bricks.Core.Impl.nuspec" />
+    <None Include="NuGet\content\App.config.install.xdt">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="NuGet\content\App.config.uninstall.xdt" />
+    <None Include="NuGet\content\Config\ModularitySettings.config.install.xdt" />
+    <None Include="NuGet\content\Config\ModularitySettings.config.uninstall.xdt" />
+    <None Include="NuGet\content\Config\RegexSettings.config.install.xdt" />
+    <None Include="NuGet\content\Config\UnitySettings.config.install.xdt" />
+    <None Include="NuGet\content\Config\UnitySettings.config.uninstall.xdt" />
+    <None Include="NuGet\content\Web.config.install.xdt" />
+    <None Include="NuGet\content\Web.config.uninstall.xdt" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bricks.Core\Bricks.Core.csproj">
+      <Project>{1919938a-32a3-47d6-a8ba-dfe576bd38c1}</Project>
+      <Name>Bricks.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Conversion\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Web\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <PropertyGroup>
+    <PostBuildEvent>cd $(ProjectDir)
+nuget pack $(ProjectName)$(ProjectExt) -Prop Configuration=$(ConfigurationName) -OutputDirectory "$(SolutionDir)NuGet Packages" -Symbols</PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets" Condition="Exists('..\packages\AutoMapper.3.3.0\tools\AutoMapper.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

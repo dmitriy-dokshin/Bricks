@@ -26,16 +26,16 @@ namespace Bricks.OWIN.Middeware
 		public Task Invoke(IDictionary<string, object> environment)
 		{
 			var context = new OwinContext(environment);
-			bool isAuthenticated = false;
+			var isAuthenticated = false;
 
-			string authorization = context.Request.Headers["Authorization"];
+			var authorization = context.Request.Headers["Authorization"];
 			if (!string.IsNullOrEmpty(authorization))
 			{
-				string[] authorizationParts = authorization.Split(' ');
+				var authorizationParts = authorization.Split(' ');
 				if (authorizationParts.Length == 2 && authorizationParts[0] == "Basic")
 				{
-					string usernamePassword = Encoding.UTF8.GetString(Convert.FromBase64String(authorizationParts[1]));
-					string[] usernamePasswordParts = usernamePassword.Split(':');
+					var usernamePassword = Encoding.UTF8.GetString(Convert.FromBase64String(authorizationParts[1]));
+					var usernamePasswordParts = usernamePassword.Split(':');
 					if (usernamePasswordParts.Length == 2
 						&& usernamePasswordParts[0] == _options.Username
 						&& usernamePasswordParts[1] == _options.Password)

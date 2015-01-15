@@ -2,7 +2,8 @@
 
 <modularitySettings xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
 	<modules>
-		<add name="Bricks.Clients.SignalR" type="Bricks.Clients.SignalR.Module, Bricks.Clients.SignalR" order="0" xdt:Transform="InsertIfMissing"
+		<add name="Bricks.Clients.SignalR" type="Bricks.Clients.SignalR.Module, Bricks.Clients.SignalR" order="0"
+			 xdt:Transform="InsertIfMissing"
 			 xdt:Locator="Match(name)" />
 	</modules>
 </modularitySettings>

@@ -31,7 +31,7 @@ namespace Bricks.Clients.SignalR
 
 		private static string GetHubTypeName(Type type)
 		{
-			int genericIndex = type.Name.LastIndexOf('`');
+			var genericIndex = type.Name.LastIndexOf('`');
 			if (genericIndex == -1)
 			{
 				return type.Name;

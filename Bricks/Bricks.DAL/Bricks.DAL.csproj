@@ -72,10 +72,6 @@
       <Project>{1919938A-32A3-47D6-A8BA-DFE576BD38C1}</Project>
       <Name>Bricks.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Bricks.Helpers\Bricks.Helpers.csproj">
-      <Project>{3F8A3074-0918-4D0E-8FDF-1F7BBA57BACF}</Project>
-      <Name>Bricks.Helpers</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

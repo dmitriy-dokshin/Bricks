@@ -1,6 +1,5 @@
 ﻿#region
 
-using System.Runtime.CompilerServices;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -11,7 +10,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 
 [assembly: AssemblyTitle("Bricks.Core")]
-[assembly: AssemblyDescription("Contains basic concepts of Bricks framework.")]
+[assembly: AssemblyDescription("Contains core and auxiliary components of Bricks framework.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyProduct("Bricks.Core")]
 [assembly: AssemblyTrademark("Bricks.Core")]
@@ -39,4 +38,3 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 
 [assembly: AssemblyVersion("0.1.*")]
-[assembly: InternalsVisibleTo("Bricks.Sync.IntegrationTests, PublicKey=00240000048000009400000006020000002400005253413100040000010001007553659ad380e0f1381f7274a4bfffb036fcde90579afa2fe2a7c5a721f43ba635032ff38b664c96504c6945905b885cc02567fbfe716f720275fd648748d4403a944b523d8db340e83069510db1b63de21d5623bd2f455989778924a56bc345838dad5336c2c039b4de5bee646c10e04d73bcc561f2da8075ee13600c08add5")]

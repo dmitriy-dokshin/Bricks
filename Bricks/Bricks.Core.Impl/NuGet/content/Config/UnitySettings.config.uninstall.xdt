@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<unity xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<assembly name="Bricks.Core" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+	<assembly name="Bricks.Core.Impl" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+
+	<container>
+		<register type="Microsoft.Practices.ServiceLocation.IServiceLocator"
+				  xdt:Transform="Remove" xdt:Locator="Match(type)" />
+		<register type="Bricks.Core.Conversion.IConverter"
+				  xdt:Transform="Remove" xdt:Locator="Match(type)" />
+		<register type="Bricks.Core.Configuration.IConfigurationManager"
+				  xdt:Transform="Remove" xdt:Locator="Match(type)" />
+		<register type="Bricks.Core.Disposing.IDisposableHelper"
+				  xdt:Transform="Remove" xdt:Locator="Match(type)" />
+	</container>
+
+	<container name="Bricks.Core.Impl" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+</unity>

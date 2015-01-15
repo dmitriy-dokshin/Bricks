@@ -28,6 +28,23 @@ namespace Bricks.Clients.SignalR
 			_hubContext = hubContext;
 		}
 
+		private static string GetUserId(TUserId userId)
+		{
+			var convertible = userId as IConvertible;
+			if (convertible != null)
+			{
+				return convertible.ToString(CultureInfo.InvariantCulture);
+			}
+
+			var convertible1 = userId as IConvertible<string>;
+			if (convertible1 != null)
+			{
+				return convertible1.Convert();
+			}
+
+			return userId.ToString();
+		}
+
 		#region Implementation of IClientContext<out TClient>
 
 		/// <summary>
@@ -82,22 +99,5 @@ namespace Bricks.Clients.SignalR
 		}
 
 		#endregion
-
-		private static string GetUserId(TUserId userId)
-		{
-			var convertible = userId as IConvertible;
-			if (convertible != null)
-			{
-				return convertible.ToString(CultureInfo.InvariantCulture);
-			}
-
-			var convertible1 = userId as IConvertible<string>;
-			if (convertible1 != null)
-			{
-				return convertible1.Convert();
-			}
-
-			return userId.ToString();
-		}
 	}
 }

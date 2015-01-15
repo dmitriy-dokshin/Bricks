@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-
-<modularitySettings xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
-	<modules>
-		<add name="Bricks.Auth" type="Bricks.Auth.Module, Bricks.Auth" order="0" xdt:Transform="InsertIfMissing"
-			 xdt:Locator="Match(name)" />
-	</modules>
-</modularitySettings>

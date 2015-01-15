@@ -20,12 +20,6 @@ namespace Bricks.Clients.SignalR
 			_hubNamesByKey = ImmutableDictionary<string, string>.Empty;
 		}
 
-		public void Register<THub, TClient>(string key) where THub : Hub<TClient> where TClient : class
-		{
-			string hubName = HubHelper.GetHubName(typeof(THub));
-			_hubNamesByKey = _hubNamesByKey.SetItem(key, hubName);
-		}
-
 		#region Implementation of IClientStorage
 
 		/// <summary>
@@ -36,11 +30,17 @@ namespace Bricks.Clients.SignalR
 		/// <returns>Контекст подключения клиентов.</returns>
 		public virtual IClientContext<TClient, TUserId> GetClientContext<TClient>(string key) where TClient : class
 		{
-			string hubName = _hubNamesByKey[key];
-			IHubContext<TClient> hubContext = GlobalHost.ConnectionManager.GetHubContext<TClient>(hubName);
+			var hubName = _hubNamesByKey[key];
+			var hubContext = GlobalHost.ConnectionManager.GetHubContext<TClient>(hubName);
 			return new ClientContextAdapter<TClient, TUserId>(hubContext);
 		}
 
 		#endregion
+
+		public void Register<THub, TClient>(string key) where THub : Hub<TClient> where TClient : class
+		{
+			var hubName = HubHelper.GetHubName(typeof(THub));
+			_hubNamesByKey = _hubNamesByKey.SetItem(key, hubName);
+		}
 	}
 }

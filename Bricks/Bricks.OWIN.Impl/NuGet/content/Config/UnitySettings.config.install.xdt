@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<unity xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+	<assembly name="Bricks.OWIN" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+	<assembly name="Bricks.OWIN.Impl" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
+
+	<container name="Bricks.OWIN.Impl" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)">
+		<register type="Bricks.OWIN.Auth.IAccessTokenProvider"
+				  mapTo="Bricks.OWIN.Impl.Auth.AccessTokenProvider">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+	</container>
+</unity>

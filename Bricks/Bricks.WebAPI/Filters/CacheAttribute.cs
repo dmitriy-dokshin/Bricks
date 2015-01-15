@@ -8,11 +8,14 @@ namespace Bricks.WebAPI.Filters
 {
 	public sealed class CacheAttribute : Attribute
 	{
-		public CacheAttribute(double minutes)
+		public CacheAttribute(double? serverLifetimeMinutes, double? clientLifetime)
 		{
-			Lifetime = TimeSpan.FromMinutes(minutes);
+			ServerLifetime = serverLifetimeMinutes.HasValue ? TimeSpan.FromMinutes(serverLifetimeMinutes.Value) : (TimeSpan?)null;
+			ClientLifetime = clientLifetime.HasValue ? TimeSpan.FromMinutes(clientLifetime.Value) : (TimeSpan?)null;
 		}
 
-		public TimeSpan Lifetime { get; private set; }
+		public TimeSpan? ServerLifetime { get; private set; }
+
+		public TimeSpan? ClientLifetime { get; private set; }
 	}
 }

@@ -1,12 +1,10 @@
 ﻿#region
 
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Bricks.Core.IoC;
-using Bricks.Web;
+using Bricks.Core.Web;
 
 using Microsoft.Practices.ServiceLocation;
 
@@ -43,18 +41,18 @@ namespace Bricks.SMS.Nexmo
 			var smsParameters = new SmsParameters(phoneNumber, text);
 			_serviceLocator.BuildUp(smsParameters);
 
-			Tuple<SmsResult, JObject> tuple = await _webHelper.Execute<SmsParameters, SmsResult, JObject>(
-																										  smsParameters.ServiceUrl, HttpMethod.Post, smsParameters, ContentType.Json);
-			SmsResult smsResult = tuple.Item1;
+			var tuple = await _webHelper.Execute<SmsParameters, SmsResult, JObject>(
+				smsParameters.ServiceUrl, HttpMethod.Post, smsParameters, ContentType.Json);
+			var smsResult = tuple.Item1;
 			if (smsResult == null)
 			{
 				// todo: Логировать.
 			}
 			else
 			{
-				IEnumerable<MessagePartDto> badMessages =
-				smsResult.Messages.Where(x => x.Status != NexmoResponseCode.Success);
-				foreach (MessagePartDto badMessage in badMessages)
+				var badMessages =
+					smsResult.Messages.Where(x => x.Status != NexmoResponseCode.Success);
+				foreach (var badMessage in badMessages)
 				{
 					// todo: Логировать.
 				}

@@ -57,7 +57,7 @@
     <None Include="..\..\BuildKey.pfx">
       <Link>BuildKey.pfx</Link>
     </None>
-    <None Include="Bricks.Helpers.nuspec" />
+    <None Include="Bricks.SMS.nuspec" />
     <None Include="NuGet\content\Config\UnitySettings.config.install.xdt" />
     <None Include="NuGet\content\Config\UnitySettings.config.uninstall.xdt" />
   </ItemGroup>

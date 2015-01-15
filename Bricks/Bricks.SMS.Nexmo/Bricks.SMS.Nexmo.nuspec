@@ -17,9 +17,7 @@
 		<tags>Bricks Builders SMS Nexmo</tags>
 		<dependencies>
 			<dependency id="Bricks.Core" version="0.1" />
-			<dependency id="Bricks.Helpers" version="0.1" />
 			<dependency id="Bricks.SMS" version="0.1" />
-			<dependency id="Bricks.Web" version="0.1" />
 		</dependencies>
 	</metadata>
 	<files>

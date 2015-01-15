@@ -22,25 +22,25 @@ namespace Bricks.Core.Conversion
 		}
 
 		public ConversionException(string message, Type sourceType, Type destinationType)
-		: base(message)
+			: base(message)
 		{
 			SourceType = sourceType;
 			DestinationType = destinationType;
 		}
 
 		public ConversionException(string message, Exception inner, Type sourceType, Type destinationType)
-		: base(message, inner)
+			: base(message, inner)
 		{
 			SourceType = sourceType;
 			DestinationType = destinationType;
 		}
 
 		protected ConversionException(SerializationInfo info, StreamingContext context)
-		: base(info, context)
+			: base(info, context)
 		{
-			string sourceTypeName = info.GetString(ReflectionHelper.GetMemberName(() => SourceType));
+			var sourceTypeName = info.GetString(Refl.GetMemberName(() => SourceType));
 			SourceType = !string.IsNullOrEmpty(sourceTypeName) ? Type.GetType(sourceTypeName) : null;
-			string destinationTypeName = info.GetString(ReflectionHelper.GetMemberName(() => DestinationType));
+			var destinationTypeName = info.GetString(Refl.GetMemberName(() => DestinationType));
 			DestinationType = !string.IsNullOrEmpty(destinationTypeName) ? Type.GetType(destinationTypeName) : null;
 		}
 
@@ -53,8 +53,8 @@ namespace Bricks.Core.Conversion
 		public override void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
 			base.GetObjectData(info, context);
-			info.AddValue(info.GetString(ReflectionHelper.GetMemberName(() => SourceType)), SourceType != null ? SourceType.AssemblyQualifiedName : null);
-			info.AddValue(info.GetString(ReflectionHelper.GetMemberName(() => Data)), DestinationType != null ? DestinationType.AssemblyQualifiedName : null);
+			info.AddValue(info.GetString(Refl.GetMemberName(() => SourceType)), SourceType != null ? SourceType.AssemblyQualifiedName : null);
+			info.AddValue(info.GetString(Refl.GetMemberName(() => Data)), DestinationType != null ? DestinationType.AssemblyQualifiedName : null);
 		}
 
 		#endregion

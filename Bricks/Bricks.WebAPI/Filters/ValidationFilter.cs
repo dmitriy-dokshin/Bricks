@@ -1,7 +1,6 @@
 ﻿#region
 
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
@@ -28,6 +27,54 @@ namespace Bricks.WebAPI.Filters
 		public ValidationFilter(IServiceLocator serviceLocator)
 		{
 			_serviceLocator = serviceLocator;
+		}
+
+		private static void CheckRequired(HttpActionContext actionContext)
+		{
+			var parameterDescriptorRequiredAttributes =
+				actionContext.ActionDescriptor.GetParameters()
+					.Select(x => new { Parameter = x, Attribute = x.GetCustomAttributes<RequiredAttribute>().FirstOrDefault() })
+					.Where(x => x.Attribute != null);
+			foreach (var parameterDescriptorRequiredAttribute in parameterDescriptorRequiredAttributes)
+			{
+				var parameterDescriptor = parameterDescriptorRequiredAttribute.Parameter;
+				var requiredAttribute = parameterDescriptorRequiredAttribute.Attribute;
+				var parameterName = parameterDescriptor.ParameterName;
+				object value;
+				if (!actionContext.ActionArguments.TryGetValue(parameterName, out value) || value == null || (!requiredAttribute.AllowEmptyStrings && (value as string) == string.Empty))
+				{
+					actionContext.ModelState.AddModelError(parameterName, Resources.NotNullErrorMessage);
+				}
+			}
+		}
+
+		private static void CheckDefaultIfNull(HttpActionContext actionContext)
+		{
+			var parameterDescriptors =
+				actionContext.ActionDescriptor.GetParameters().Where(x => x.GetCustomAttributes<DefaultIfNullAttribute>().Any());
+			foreach (var parameterDescriptor in parameterDescriptors)
+			{
+				var parameterName = parameterDescriptor.ParameterName;
+				object value;
+				if (!actionContext.ActionArguments.TryGetValue(parameterName, out value) || value == null)
+				{
+					value = Activator.CreateInstance(parameterDescriptor.ParameterType);
+					actionContext.ActionArguments[parameterName] = value;
+				}
+			}
+		}
+
+		private void BuildUpParameters(HttpActionContext actionContext)
+		{
+			foreach (var parameterDescriptor in actionContext.ActionDescriptor.GetParameters())
+			{
+				var parameterName = parameterDescriptor.ParameterName;
+				object value;
+				if (actionContext.ActionArguments.TryGetValue(parameterName, out value) && value is IInitializable)
+				{
+					_serviceLocator.BuildUp(value);
+				}
+			}
 		}
 
 		#region Implementation of IFilter
@@ -69,53 +116,5 @@ namespace Bricks.WebAPI.Filters
 		}
 
 		#endregion
-
-		private static void CheckRequired(HttpActionContext actionContext)
-		{
-			var parameterDescriptorRequiredAttributes =
-				actionContext.ActionDescriptor.GetParameters()
-					.Select(x => new { Parameter = x, Attribute = x.GetCustomAttributes<RequiredAttribute>().FirstOrDefault() })
-					.Where(x => x.Attribute != null);
-			foreach (var parameterDescriptorRequiredAttribute in parameterDescriptorRequiredAttributes)
-			{
-				HttpParameterDescriptor parameterDescriptor = parameterDescriptorRequiredAttribute.Parameter;
-				RequiredAttribute requiredAttribute = parameterDescriptorRequiredAttribute.Attribute;
-				string parameterName = parameterDescriptor.ParameterName;
-				object value;
-				if (!actionContext.ActionArguments.TryGetValue(parameterName, out value) || value == null || (!requiredAttribute.AllowEmptyStrings && (value as string) == string.Empty))
-				{
-					actionContext.ModelState.AddModelError(parameterName, Resources.NotNullErrorMessage);
-				}
-			}
-		}
-
-		private static void CheckDefaultIfNull(HttpActionContext actionContext)
-		{
-			IEnumerable<HttpParameterDescriptor> parameterDescriptors =
-				actionContext.ActionDescriptor.GetParameters().Where(x => x.GetCustomAttributes<DefaultIfNullAttribute>().Any());
-			foreach (HttpParameterDescriptor parameterDescriptor in parameterDescriptors)
-			{
-				string parameterName = parameterDescriptor.ParameterName;
-				object value;
-				if (!actionContext.ActionArguments.TryGetValue(parameterName, out value) || value == null)
-				{
-					value = Activator.CreateInstance(parameterDescriptor.ParameterType);
-					actionContext.ActionArguments[parameterName] = value;
-				}
-			}
-		}
-
-		private void BuildUpParameters(HttpActionContext actionContext)
-		{
-			foreach (HttpParameterDescriptor parameterDescriptor in actionContext.ActionDescriptor.GetParameters())
-			{
-				string parameterName = parameterDescriptor.ParameterName;
-				object value;
-				if (actionContext.ActionArguments.TryGetValue(parameterName, out value) && value is IInitializable)
-				{
-					_serviceLocator.BuildUp(value);
-				}
-			}
-		}
 	}
 }
