@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 
 namespace Bricks.Core.Impl.Auth.ExternalLogins.Facebook
 {
-	public sealed class FacebookUserPictureData
+	internal sealed class FacebookUserPictureData
 	{
 		[JsonProperty("url")]
 		public string Url { get; set; }

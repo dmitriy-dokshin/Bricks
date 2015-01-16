@@ -78,6 +78,17 @@
       <Link>CommonInfo.cs</Link>
     </Compile>
     <Compile Include="Auth\CodeGenerator.cs" />
+    <Compile Include="Auth\ExternalLogins\Facebook\FacebookSettings.cs" />
+    <Compile Include="Auth\ExternalLogins\Facebook\IFacebookSettings.cs" />
+    <Compile Include="Auth\ExternalLogins\VK\VkAccessTokenData.cs" />
+    <Compile Include="Auth\ExternalLogins\VK\VkAccessTokenParameters.cs" />
+    <Compile Include="Auth\ExternalLogins\VK\IVkSettings.cs" />
+    <Compile Include="Auth\ExternalLogins\VK\VkLoginProvider.cs" />
+    <Compile Include="Auth\ExternalLogins\VK\VkSettings.cs" />
+    <Compile Include="Auth\ExternalLogins\VK\VkUserData.cs" />
+    <Compile Include="Auth\ExternalLogins\VK\VkUserParameters.cs" />
+    <Compile Include="Auth\ExternalLogins\VK\VkParameters.cs" />
+    <Compile Include="Auth\ExternalLogins\VK\VkResponseData.cs" />
     <Compile Include="Auth\PasswordHasher.cs" />
     <Compile Include="Collections\CollectionHelper.cs" />
     <Compile Include="Collections\Container.cs" />
@@ -165,7 +176,9 @@
     <None Include="NuGet\content\Config\ModularitySettings.config.install.xdt" />
     <None Include="NuGet\content\Config\ModularitySettings.config.uninstall.xdt" />
     <None Include="NuGet\content\Config\RegexSettings.config.install.xdt" />
-    <None Include="NuGet\content\Config\UnitySettings.config.install.xdt" />
+    <None Include="NuGet\content\Config\UnitySettings.config.install.xdt">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="NuGet\content\Config\UnitySettings.config.uninstall.xdt" />
     <None Include="NuGet\content\Web.config.install.xdt" />
     <None Include="NuGet\content\Web.config.uninstall.xdt" />

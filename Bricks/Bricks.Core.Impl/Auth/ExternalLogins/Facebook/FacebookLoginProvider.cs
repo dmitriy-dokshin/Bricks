@@ -17,7 +17,7 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.Facebook
 	{
 		private static readonly Uri _meUrl = new Uri("https://graph.facebook.com/v2.2/me");
 		private static readonly Uri _mePictureUrl = new Uri("https://graph.facebook.com/v2.2/me/picture");
-		private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(30);
+		private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(10);
 		private readonly IResultFactory _resultFactory;
 		private readonly IWebHelper _webHelper;
 
@@ -28,6 +28,11 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.Facebook
 		}
 
 		#region Implementation of IExternalLoginProvider
+
+		public Task<IResult<IAccessTokenData>> GetAccessToken(string code, string redirectUrl)
+		{
+			throw new NotImplementedException();
+		}
 
 		public async Task<IResult<IExternalLoginData>> GetExternalLoginData(string accessToken)
 		{

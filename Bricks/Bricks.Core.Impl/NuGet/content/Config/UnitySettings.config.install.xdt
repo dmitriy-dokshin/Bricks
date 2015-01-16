@@ -50,6 +50,10 @@
 				  mapTo="Bricks.Core.Impl.Auth.ExternalLogins.Facebook.FacebookLoginProvider" name="facebook">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
+		<register type="Bricks.Core.Auth.ExternalLogins.IExternalLoginProvider"
+				  mapTo="Bricks.Core.Impl.Auth.ExternalLogins.VK.VkLoginProvider" name="vk">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
 
 		<!-- Collections -->
 		<register type="Bricks.Core.Collections.ICollectionHelper"

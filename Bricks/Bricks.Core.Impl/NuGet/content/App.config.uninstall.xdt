@@ -5,9 +5,13 @@
 		<section name="unity" xdt:Transform="Remove" xdt:Locator="Match(name)" />
 		<section name="modularitySettings" xdt:Transform="Remove" xdt:Locator="Match(name)" />
 		<section name="regexSettings" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+		<section name="vkSettings" xdt:Transform="Remove" xdt:Locator="Match(name)" />
+		<section name="facebookSettings" xdt:Transform="Remove" xdt:Locator="Match(name)" />
 	</configSections>
 
 	<unity xdt:Transform="Remove" />
 	<modularitySettings xdt:Transform="Remove" />
 	<regexSettings xdt:Transform="Remove" />
+	<vkSettings xdt:Transform="Remove" />
+	<facebookSettings xdt:Transform="Remove" />
 </configuration>
