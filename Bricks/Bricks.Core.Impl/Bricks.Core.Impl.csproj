@@ -83,6 +83,7 @@
     <Compile Include="Auth\ExternalLogins\VK\VkAccessTokenData.cs" />
     <Compile Include="Auth\ExternalLogins\VK\VkAccessTokenParameters.cs" />
     <Compile Include="Auth\ExternalLogins\VK\IVkSettings.cs" />
+    <Compile Include="Auth\ExternalLogins\VK\VkAuthorizeParameters.cs" />
     <Compile Include="Auth\ExternalLogins\VK\VkLoginProvider.cs" />
     <Compile Include="Auth\ExternalLogins\VK\VkSettings.cs" />
     <Compile Include="Auth\ExternalLogins\VK\VkUserData.cs" />

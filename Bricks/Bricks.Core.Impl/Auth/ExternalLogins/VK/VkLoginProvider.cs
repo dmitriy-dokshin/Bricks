@@ -21,19 +21,28 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.VK
 		private const string VkSettingsKey = "vkSettings";
 		private static readonly Uri _usersGetUrl = new Uri("https://api.vk.com/method/users.get");
 		private static readonly Uri _accessTokenUrl = new Uri("https://oauth.vk.com/access_token");
+		private static readonly Uri _authorizeUrl = new Uri("https://oauth.vk.com/authorize");
 		private static readonly TimeSpan _timeout = TimeSpan.FromSeconds(10);
 		private readonly IResultFactory _resultFactory;
+		private readonly IUrlHelper _urlHelper;
 		private readonly IVkSettings _vkSettings;
 		private readonly IWebHelper _webHelper;
 
-		public VkLoginProvider(IResultFactory resultFactory, IWebHelper webHelper, IConfigurationManager configurationManager)
+		public VkLoginProvider(IResultFactory resultFactory, IWebHelper webHelper, IConfigurationManager configurationManager, IUrlHelper urlHelper)
 		{
 			_resultFactory = resultFactory;
 			_webHelper = webHelper;
+			_urlHelper = urlHelper;
 			_vkSettings = configurationManager.GetSettings<IVkSettings>(VkSettingsKey);
 		}
 
 		#region Implementation of IExternalLoginProvider
+
+		public Uri GetAuthorizeUrl(string scope, string redirectUrl)
+		{
+			var vkAuthorizeParameters = new VkAuthorizeParameters(_vkSettings.ClientId, scope, redirectUrl);
+			return _urlHelper.GetUrl(_authorizeUrl, vkAuthorizeParameters);
+		}
 
 		public async Task<IResult<IAccessTokenData>> GetAccessToken(string code, string redirectUrl)
 		{

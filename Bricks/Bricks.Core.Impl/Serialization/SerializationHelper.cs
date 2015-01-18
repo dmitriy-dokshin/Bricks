@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.IO;
+using System.Text;
 
 using Bricks.Core.Serialization;
 
@@ -119,6 +120,17 @@ namespace Bricks.Core.Impl.Serialization
 					}
 				}
 			}
+		}
+
+		public string SerializeToJsonString<T>(T source)
+		{
+			var stringBuilder = new StringBuilder();
+			using (TextWriter textWriter = new StringWriter(stringBuilder))
+			{
+				_jsonSerializer.Serialize(textWriter, source);
+			}
+
+			return stringBuilder.ToString();
 		}
 
 		#endregion

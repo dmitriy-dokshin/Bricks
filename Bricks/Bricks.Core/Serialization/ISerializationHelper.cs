@@ -61,5 +61,7 @@ namespace Bricks.Core.Serialization
 		/// <param name="value">Новый объект <see cref="T" />.</param>
 		/// <returns>Признак успешной десериализации.</returns>
 		bool TryDeserializeJson<T>(Stream stream, out T value);
+
+		string SerializeToJsonString<T>(T source);
 	}
 }

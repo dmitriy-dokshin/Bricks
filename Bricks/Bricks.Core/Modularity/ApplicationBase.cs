@@ -22,7 +22,12 @@ namespace Bricks.Core.Modularity
 		/// </summary>
 		protected const string MODULARITY_SETTINGS_KEY = "modularitySettings";
 
-		private IUnityContainer _container;
+		private readonly IUnityContainer _container;
+
+		protected ApplicationBase(IUnityContainer container)
+		{
+			_container = container;
+		}
 
 		#region Implementation of IApplication
 
@@ -37,7 +42,7 @@ namespace Bricks.Core.Modularity
 				args = new UnityContainer();
 			}
 
-			_container = new UnityContainer().LoadConfiguration();
+			_container.LoadConfiguration();
 
 			var configurationManager = _container.Resolve<IConfigurationManager>();
 

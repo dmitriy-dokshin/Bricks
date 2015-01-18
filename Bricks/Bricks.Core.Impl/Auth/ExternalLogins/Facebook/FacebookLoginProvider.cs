@@ -29,6 +29,11 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.Facebook
 
 		#region Implementation of IExternalLoginProvider
 
+		public Uri GetAuthorizeUrl(string scope, string redirectUrl)
+		{
+			throw new NotImplementedException();
+		}
+
 		public Task<IResult<IAccessTokenData>> GetAccessToken(string code, string redirectUrl)
 		{
 			throw new NotImplementedException();
