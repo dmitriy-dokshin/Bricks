@@ -18,9 +18,9 @@
 				 xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
 	</configSections>
 
-	<unity configSource="Config\UnitySettings.config" xdt:Transform="InsertIfMissing" />
-	<modularitySettings configSource="Config\ModularitySettings.config" xdt:Transform="InsertIfMissing" />
-	<regexSettings configSource="Config\RegexSettings.config" xdt:Transform="InsertIfMissing" />
-	<vkSettings configSource="Config\VkSettings.config" xdt:Transform="InsertIfMissing" />
-	<facebookSettings configSource="Config\FacebookSettings.config" xdt:Transform="InsertIfMissing" />
+	<unity configSource="bin\Config\UnitySettings.config" xdt:Transform="InsertIfMissing" />
+	<modularitySettings configSource="bin\Config\ModularitySettings.config" xdt:Transform="InsertIfMissing" />
+	<regexSettings configSource="bin\Config\RegexSettings.config" xdt:Transform="InsertIfMissing" />
+	<vkSettings configSource="bin\Config\VkSettings.config" xdt:Transform="InsertIfMissing" />
+	<facebookSettings configSource="bin\Config\FacebookSettings.config" xdt:Transform="InsertIfMissing" />
 </configuration>

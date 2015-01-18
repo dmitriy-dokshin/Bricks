@@ -6,5 +6,5 @@
 				 xdt:Transform="Remove" xdt:Locator="Match(name)" />
 	</configSections>
 
-	<nexmoSettings Source="Config\NexmoSettings.config" xdt:Transform="Remove" />
+	<nexmoSettings xdt:Transform="Remove" />
 </configuration>
