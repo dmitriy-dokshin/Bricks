@@ -165,6 +165,7 @@
     <Compile Include="Web\IWebHelper.cs" />
     <Compile Include="Web\IWebResponse.cs" />
     <Compile Include="Web\IWebSerializationHelper.cs" />
+    <Compile Include="Web\JsonConverters\UnixTimeConverter.cs" />
     <Compile Include="Web\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
