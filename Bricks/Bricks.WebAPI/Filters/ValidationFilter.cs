@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 
+using Bricks.Core.ComponentModel;
 using Bricks.Core.IoC;
 
 using Microsoft.Practices.ServiceLocation;
@@ -29,21 +30,24 @@ namespace Bricks.WebAPI.Filters
 			_serviceLocator = serviceLocator;
 		}
 
-		private static void CheckRequired(HttpActionContext actionContext)
+		private static void CheckValidationAttributes(HttpActionContext actionContext)
 		{
-			var parameterDescriptorRequiredAttributes =
-				actionContext.ActionDescriptor.GetParameters()
-					.Select(x => new { Parameter = x, Attribute = x.GetCustomAttributes<RequiredAttribute>().FirstOrDefault() })
-					.Where(x => x.Attribute != null);
-			foreach (var parameterDescriptorRequiredAttribute in parameterDescriptorRequiredAttributes)
+			var parameters = actionContext.ActionDescriptor.GetParameters();
+			foreach (var parameter in parameters)
 			{
-				var parameterDescriptor = parameterDescriptorRequiredAttribute.Parameter;
-				var requiredAttribute = parameterDescriptorRequiredAttribute.Attribute;
-				var parameterName = parameterDescriptor.ParameterName;
-				object value;
-				if (!actionContext.ActionArguments.TryGetValue(parameterName, out value) || value == null || (!requiredAttribute.AllowEmptyStrings && (value as string) == string.Empty))
+				var validationAttributes = parameter.GetCustomAttributes<ValidationAttribute>();
+				foreach (var validationAttribute in validationAttributes)
 				{
-					actionContext.ModelState.AddModelError(parameterName, Resources.NotNullErrorMessage);
+					var displayNameAttribute = parameter.GetCustomAttributes<DisplayNameFromResourceAttribute>().FirstOrDefault();
+					var parameterName = displayNameAttribute != null ? displayNameAttribute.GetName() : parameter.ParameterName;
+					object parameterValue;
+					actionContext.ActionArguments.TryGetValue(parameter.ParameterName, out parameterValue);
+					if (!validationAttribute.IsValid(parameterValue))
+					{
+						var errorMessage = validationAttribute.FormatErrorMessage(parameterName);
+						actionContext.ModelState.AddModelError(parameterName, errorMessage);
+						break;
+					}
 				}
 			}
 		}
@@ -105,7 +109,7 @@ namespace Bricks.WebAPI.Filters
 		/// <param name="continuation">The delegate function to continue after the action method is invoked.</param>
 		public Task<HttpResponseMessage> ExecuteActionFilterAsync(HttpActionContext actionContext, CancellationToken cancellationToken, Func<Task<HttpResponseMessage>> continuation)
 		{
-			CheckRequired(actionContext);
+			CheckValidationAttributes(actionContext);
 			if (actionContext.ModelState.IsValid)
 			{
 				CheckDefaultIfNull(actionContext);
