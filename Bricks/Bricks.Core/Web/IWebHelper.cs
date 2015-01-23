@@ -3,6 +3,8 @@
 using System;
 using System.Threading.Tasks;
 
+using Bricks.Core.Results;
+
 #endregion
 
 namespace Bricks.Core.Web
@@ -24,8 +26,8 @@ namespace Bricks.Core.Web
 		/// <param name="parameters">Параметры запроса.</param>
 		/// <param name="contentType">Тип контента.</param>
 		/// <param name="timeout">Таймаут запроса.</param>
-		/// <returns>Кортеж результатов запроса.</returns>
-		Task<Tuple<TResult, TErrorResult>> Execute<TParameters, TResult, TErrorResult>(
+		/// <returns>Результат запроса.</returns>
+		Task<IResult<WebResponseData<TResult, TErrorResult>>> Execute<TParameters, TResult, TErrorResult>(
 			Uri address, HttpMethod method, TParameters parameters, ContentType contentType, TimeSpan? timeout = null);
 	}
 }

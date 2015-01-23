@@ -41,22 +41,22 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.Facebook
 
 		public async Task<IResult<IExternalLoginData>> GetExternalLoginData(string accessToken)
 		{
-			Tuple<FacebookUserData, JObject> meResult =
+			IResult<WebResponseData<FacebookUserData, JObject>> meResult =
 				await _webHelper.Execute<FacebookUserParameters, FacebookUserData, JObject>(
 					_meUrl, HttpMethod.Get, new FacebookUserParameters(accessToken), ContentType.Json, _timeout);
-			if (meResult.Item2 != null)
+			if (!meResult.Success)
 			{
-				var message = meResult.Item2["error"]["message"].Value<string>();
+				var message = meResult.Data.ErrorResult["error"]["message"].Value<string>();
 				return _resultFactory.CreateUnsuccessfulResult<IExternalLoginData>(message);
 			}
 
-			FacebookUserData facebookUserData = meResult.Item1;
-			Tuple<FacebookResponseData<FacebookUserPictureData>, JObject> mePictureResult =
+			FacebookUserData facebookUserData = meResult.Data.Result;
+			IResult<WebResponseData<FacebookResponseData<FacebookUserPictureData>, JObject>> mePictureResult =
 				await _webHelper.Execute<FacebookUserPictureParameters, FacebookResponseData<FacebookUserPictureData>, JObject>(
 					_mePictureUrl, HttpMethod.Get, new FacebookUserPictureParameters(accessToken), ContentType.Json, _timeout);
-			if (mePictureResult.Item2 == null)
+			if (mePictureResult.Success)
 			{
-				FacebookUserPictureData facebookUserPictureData = mePictureResult.Item1.Data;
+				FacebookUserPictureData facebookUserPictureData = mePictureResult.Data.Result.Data;
 				if (!facebookUserPictureData.IsDefault)
 				{
 					facebookUserData.ImageUrl = facebookUserPictureData.Url;

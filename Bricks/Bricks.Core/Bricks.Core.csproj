@@ -176,6 +176,7 @@
     <Compile Include="Web\ValueConverterAttribute.cs" />
     <Compile Include="Web\ValueConverterBase.cs" />
     <Compile Include="Web\WebExtensions.cs" />
+    <Compile Include="Web\WebResponseData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\BuildKey.pfx">

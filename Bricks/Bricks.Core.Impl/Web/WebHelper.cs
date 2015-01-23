@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 
+using Bricks.Core.Results;
 using Bricks.Core.Serialization;
 using Bricks.Core.Web;
 
@@ -16,33 +17,22 @@ namespace Bricks.Core.Impl.Web
 	/// </summary>
 	internal sealed class WebHelper : IWebHelper
 	{
+		private readonly IResultFactory _resultFactory;
 		private readonly ISerializationHelper _serializationHelper;
 		private readonly IWebClient _webClient;
 		private readonly IWebSerializationHelper _webSerializationHelper;
 
-		public WebHelper(IWebSerializationHelper webSerializationHelper, ISerializationHelper serializationHelper, IWebClient webClient)
+		public WebHelper(IWebSerializationHelper webSerializationHelper, ISerializationHelper serializationHelper, IWebClient webClient, IResultFactory resultFactory)
 		{
 			_webSerializationHelper = webSerializationHelper;
 			_serializationHelper = serializationHelper;
 			_webClient = webClient;
+			_resultFactory = resultFactory;
 		}
 
 		#region Implementation of IWebHelper
 
-		/// <summary>
-		/// Выполняет "типизированный" запрос по адресу <paramref name="address" /> методом <paramref name="method" />
-		/// с параметрами <paramref name="parameters" />.
-		/// </summary>
-		/// <typeparam name="TParameters">Тип параметров запроса.</typeparam>
-		/// <typeparam name="TResult">Тип ответа.</typeparam>
-		/// <typeparam name="TErrorResult">Тип ответа в случае ошибки.</typeparam>
-		/// <param name="address">Адрес web-сервиса.</param>
-		/// <param name="method">Метод запроса.</param>
-		/// <param name="parameters">Параметры запроса.</param>
-		/// <param name="contentType">Тип контента.</param>
-		/// <param name="timeout">Таймаут запроса.</param>
-		/// <returns>Кортеж результатов запроса.</returns>
-		public async Task<Tuple<TResult, TErrorResult>> Execute<TParameters, TResult, TErrorResult>(Uri address, HttpMethod method, TParameters parameters, ContentType contentType, TimeSpan? timeout = null)
+		public async Task<IResult<WebResponseData<TResult, TErrorResult>>> Execute<TParameters, TResult, TErrorResult>(Uri address, HttpMethod method, TParameters parameters, ContentType contentType, TimeSpan? timeout = null)
 		{
 			var data = _webSerializationHelper.ToNameValueCollection(parameters);
 			var webResponse = await _webClient.ExecuteRequestAsync(address, method, data, timeout: timeout);
@@ -93,7 +83,7 @@ namespace Bricks.Core.Impl.Web
 				result = default (TResult);
 			}
 
-			return new Tuple<TResult, TErrorResult>(result, errorResult);
+			return _resultFactory.Create(new WebResponseData<TResult, TErrorResult>(result, errorResult), webResponse.Success, exception: webResponse.Exception);
 		}
 
 		#endregion

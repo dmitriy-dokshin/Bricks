@@ -41,17 +41,16 @@ namespace Bricks.SMS.Nexmo
 			var smsParameters = new SmsParameters(phoneNumber, text);
 			_serviceLocator.BuildUp(smsParameters);
 
-			var tuple = await _webHelper.Execute<SmsParameters, SmsResult, JObject>(
+			var sendSmsResult = await _webHelper.Execute<SmsParameters, SmsResult, JObject>(
 				smsParameters.ServiceUrl, HttpMethod.Post, smsParameters, ContentType.Json);
-			var smsResult = tuple.Item1;
-			if (smsResult == null)
+			if (!sendSmsResult.Success)
 			{
 				// todo: Логировать.
 			}
 			else
 			{
 				var badMessages =
-					smsResult.Messages.Where(x => x.Status != NexmoResponseCode.Success);
+					sendSmsResult.Data.Result.Messages.Where(x => x.Status != NexmoResponseCode.Success);
 				foreach (var badMessage in badMessages)
 				{
 					// todo: Логировать.

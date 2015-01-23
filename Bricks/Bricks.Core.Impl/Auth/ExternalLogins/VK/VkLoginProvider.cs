@@ -47,30 +47,30 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.VK
 		public async Task<IResult<IAccessTokenData>> GetAccessToken(string code, string redirectUrl)
 		{
 			var vkAccessTokenParameters = new VkAccessTokenParameters(_vkSettings.ClientId, _vkSettings.ClientSecret, code, redirectUrl);
-			Tuple<VkAccessTokenData, JObject> accessTokenResult =
+			IResult<WebResponseData<VkAccessTokenData, JObject>> accessTokenResult =
 				await _webHelper.Execute<VkAccessTokenParameters, VkAccessTokenData, JObject>(
 					_accessTokenUrl, HttpMethod.Get, vkAccessTokenParameters, ContentType.Json, _timeout);
-			if (accessTokenResult.Item2 != null)
+			if (!accessTokenResult.Success)
 			{
-				var message = accessTokenResult.Item2["error_description"].Value<string>();
+				var message = accessTokenResult.Data.ErrorResult["error_description"].Value<string>();
 				return _resultFactory.CreateUnsuccessfulResult<IAccessTokenData>(message);
 			}
 
-			return _resultFactory.Create(accessTokenResult.Item1);
+			return _resultFactory.Create(accessTokenResult.Data.Result);
 		}
 
 		public async Task<IResult<IExternalLoginData>> GetExternalLoginData(string accessToken)
 		{
-			Tuple<VkResponseData<IReadOnlyCollection<VkUserData>>, JObject> usersGetResult =
+			IResult<WebResponseData<VkResponseData<IReadOnlyCollection<VkUserData>>, JObject>> usersGetResult =
 				await _webHelper.Execute<VkUserParameters, VkResponseData<IReadOnlyCollection<VkUserData>>, JObject>(
 					_usersGetUrl, HttpMethod.Get, new VkUserParameters(accessToken), ContentType.Json, _timeout);
-			if (usersGetResult.Item2 != null)
+			if (!usersGetResult.Success)
 			{
-				var message = usersGetResult.Item2["error"]["error_msg"].Value<string>();
+				var message = usersGetResult.Data.ErrorResult["error"]["error_msg"].Value<string>();
 				return _resultFactory.CreateUnsuccessfulResult<IExternalLoginData>(message);
 			}
 
-			return _resultFactory.Create(usersGetResult.Item1.Response.FirstOrDefault());
+			return _resultFactory.Create(usersGetResult.Data.Result.Response.FirstOrDefault());
 		}
 
 		#endregion
