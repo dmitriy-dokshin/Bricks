@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-using Bricks.DAL.Repository;
+using Bricks.Core.Repository;
 
 #endregion
 
@@ -30,47 +30,47 @@ namespace Bricks.DAL.EF
 
 		public Task<T> FirstOrDefaultAsync<T>(IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
 		{
-			return source.FirstOrDefaultAsync(predicate, cancellationToken);
+			return QueryableExtensions.FirstOrDefaultAsync(source, predicate, cancellationToken);
 		}
 
 		public Task<T> FirstOrDefaultAsync<T>(IQueryable<T> source, CancellationToken cancellationToken)
 		{
-			return source.FirstOrDefaultAsync(cancellationToken);
+			return QueryableExtensions.FirstOrDefaultAsync(source, cancellationToken);
 		}
 
 		public Task<T> FirstAsync<T>(IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
 		{
-			return source.FirstAsync(predicate, cancellationToken);
+			return QueryableExtensions.FirstAsync(source, predicate, cancellationToken);
 		}
 
 		public Task<T> FirstAsync<T>(IQueryable<T> source, CancellationToken cancellationToken)
 		{
-			return source.FirstAsync(cancellationToken);
+			return QueryableExtensions.FirstAsync(source, cancellationToken);
 		}
 
 		public Task<int> CountAsync<T>(IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
 		{
-			return source.CountAsync(predicate, cancellationToken);
+			return QueryableExtensions.CountAsync(source, predicate, cancellationToken);
 		}
 
 		public Task<int> CountAsync<T>(IQueryable<T> source, CancellationToken cancellationToken)
 		{
-			return source.CountAsync(cancellationToken);
+			return QueryableExtensions.CountAsync(source, cancellationToken);
 		}
 
 		public Task<bool> AnyAsync<T>(IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
 		{
-			return source.AnyAsync(predicate, cancellationToken);
+			return QueryableExtensions.AnyAsync(source, predicate, cancellationToken);
 		}
 
 		public Task<bool> AnyAsync<T>(IQueryable<T> source, CancellationToken cancellationToken)
 		{
-			return source.AnyAsync(cancellationToken);
+			return QueryableExtensions.AnyAsync(source, cancellationToken);
 		}
 
 		public IQueryable<T> Include<T, TProperty>(IQueryable<T> source, Expression<Func<T, TProperty>> path)
 		{
-			return source.Include(path);
+			return QueryableExtensions.Include(source, path);
 		}
 
 		#endregion

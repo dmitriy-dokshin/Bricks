@@ -8,13 +8,12 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using Bricks.Core.Results;
-using Bricks.DAL.Repository;
 
 using Microsoft.Practices.ServiceLocation;
 
 #endregion
 
-namespace Bricks.DAL.Extensions
+namespace Bricks.Core.Repository
 {
 	public static class RepositoryExtensions
 	{
@@ -111,6 +110,30 @@ namespace Bricks.DAL.Extensions
 		public static Task<IResult<TEntity>> UpdateAndSaveAsync<TEntity>(this IRepository repository, TEntity entity) where TEntity : class
 		{
 			return repository.ChangeAndSaveAsync(x => x.Update(entity));
+		}
+
+		public static Task<IResult<TEnumerable>> AddOrUpdateRangeAndSaveAsync<TEntity, TEnumerable>(this IRepository repository, TEnumerable entities)
+			where TEntity : class
+			where TEnumerable : IEnumerable<TEntity>
+		{
+			return repository.ChangeAndSaveAsync(x => x.AddOrUpdateRange<TEntity, TEnumerable>(entities));
+		}
+
+		public static Task<IResult<IEnumerable<TEntity>>> AddOrUpdateRangeAndSaveAsync<TEntity>(this IRepository repository, IEnumerable<TEntity> entities)
+			where TEntity : class
+		{
+			return repository.AddOrUpdateRangeAndSaveAsync<TEntity, IEnumerable<TEntity>>(entities);
+		}
+
+		public static Task<IResult<IReadOnlyCollection<TEntity>>> AddOrUpdateRangeAndSaveAsync<TEntity>(this IRepository repository, IReadOnlyCollection<TEntity> entities)
+			where TEntity : class
+		{
+			return repository.AddOrUpdateRangeAndSaveAsync<TEntity, IReadOnlyCollection<TEntity>>(entities);
+		}
+
+		public static Task<IResult<TEntity>> AddOrUpdateAndSaveAsync<TEntity>(this IRepository repository, TEntity entity) where TEntity : class
+		{
+			return repository.ChangeAndSaveAsync(x => x.AddOrUpdate(entity));
 		}
 
 		public static Task<IResult> RemoveRangeAndSaveAsync<TEntity, TEnumerable>(this IRepository repository, TEnumerable entities)

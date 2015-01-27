@@ -2,9 +2,9 @@
 
 using System;
 
-using Bricks.Core.Impl.Web.ValueConverters;
 using Bricks.Core.Modularity;
 using Bricks.Core.Web;
+using Bricks.Core.Web.ValueConverters;
 
 using Microsoft.Practices.Unity;
 
@@ -26,7 +26,7 @@ namespace Bricks.Core.Impl
 			base.Initialize(container, args);
 
 			var webSerializationHelper = container.Resolve<IWebSerializationHelper>();
-			webSerializationHelper.RegisterValueConverter<System.Enum, EnumToLowerStringValueConverter>();
+			webSerializationHelper.RegisterValueConverter<System.Enum, EnumToIntValueConverter>();
 			webSerializationHelper.RegisterValueConverter<Guid, GuidToStringValueConverter>();
 		}
 

@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Diagnostics;
 
 using Bricks.Core.Results;
 
@@ -97,7 +98,13 @@ namespace Bricks.Core.Impl.Results
 		/// <returns>Результат выполнения функции.</returns>
 		public IResult Create(bool success = true, string message = null, Exception exception = null, IResult innerResult = null)
 		{
-			return new Result(success, message, exception, innerResult);
+			var result = new Result(success, message, exception, innerResult);
+			if (!result.Success && (!string.IsNullOrEmpty(result.Message)))
+			{
+				Trace.TraceWarning(result.Message);
+			}
+
+			return result;
 		}
 
 		/// <summary>
@@ -112,7 +119,13 @@ namespace Bricks.Core.Impl.Results
 		/// <returns>Результат выполнения функции с данными.</returns>
 		public IResult<TData> Create<TData>(TData data = default (TData), bool success = true, string message = null, Exception exception = null, IResult innerResult = null)
 		{
-			return new Result<TData>(data, success, message, exception, innerResult);
+			var result = new Result<TData>(data, success, message, exception, innerResult);
+			if (!result.Success && (!string.IsNullOrEmpty(result.Message)))
+			{
+				Trace.TraceWarning(result.Message);
+			}
+
+			return result;
 		}
 
 		#endregion

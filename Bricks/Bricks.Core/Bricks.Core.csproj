@@ -65,6 +65,7 @@
     </Reference>
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +123,11 @@
     <Compile Include="Regex\IPhoneRegexSettings.cs" />
     <Compile Include="Regex\IRegexHelper.cs" />
     <Compile Include="Regex\IRegexSettings.cs" />
+    <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Repository\IRepositoryHelper.cs" />
+    <Compile Include="Repository\ISqlRepository.cs" />
+    <Compile Include="Repository\ITransactionScope.cs" />
+    <Compile Include="Repository\RepositoryExtensions.cs" />
     <Compile Include="Resources\ResourceHelper.cs" />
     <Compile Include="IoC\IInitializable.cs" />
     <Compile Include="IoC\ServiceLocatorExtensions.cs" />
@@ -148,12 +154,14 @@
     <Compile Include="Seams\IRandomProvider.cs" />
     <Compile Include="Serialization\ISerializationHelper.cs" />
     <Compile Include="Sync\IChangeResult.cs" />
+    <Compile Include="Sync\IDistributedLockManager.cs" />
     <Compile Include="Sync\IInterlockedHelper.cs" />
     <Compile Include="Sync\ILockAsync.cs" />
     <Compile Include="Sync\ILockContainer.cs" />
     <Compile Include="Sync\ILockStorage.cs" />
     <Compile Include="Sync\ISyncFactory.cs" />
     <Compile Include="Sync\ISyncStorage.cs" />
+    <Compile Include="Sync\Lock.cs" />
     <Compile Include="Sync\LockAsyncType.cs" />
     <Compile Include="Tasks\ICancellationTokenProvider.cs" />
     <Compile Include="Web\ContentType.cs" />
@@ -175,6 +183,12 @@
     <Compile Include="Web\ServiceUrl.cs" />
     <Compile Include="Web\ValueConverterAttribute.cs" />
     <Compile Include="Web\ValueConverterBase.cs" />
+    <Compile Include="Web\ValueConverters\EnumerableToStringConverter.cs" />
+    <Compile Include="Web\ValueConverters\DateTimeToUnixTimeValueConverter.cs" />
+    <Compile Include="Web\ValueConverters\EnumToIntValueConverter.cs" />
+    <Compile Include="Web\ValueConverters\EnumToLowerStringValueConverter.cs" />
+    <Compile Include="Web\ValueConverters\EnumToStringValueConverter.cs" />
+    <Compile Include="Web\ValueConverters\GuidToStringValueConverter.cs" />
     <Compile Include="Web\WebExtensions.cs" />
     <Compile Include="Web\WebResponseData.cs" />
   </ItemGroup>

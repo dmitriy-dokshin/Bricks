@@ -23,11 +23,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Properties", "Properties", 
 		CommonInfo.cs = CommonInfo.cs
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.DAL", "Bricks.DAL\Bricks.DAL.csproj", "{8FCE3989-41F9-4FC8-8994-888E136123D2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fakes", "Fakes", "{12FA0881-F54A-474C-AC9E-AFEFAB166823}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.DAL.Fakes", "Bricks.DAL.Fakes\Bricks.DAL.Fakes.csproj", "{FA2A083A-F113-4C69-8B0D-7BCF08E48868}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.Core.Fakes", "Bricks.Core.Fakes\Bricks.Core.Fakes.csproj", "{FA2A083A-F113-4C69-8B0D-7BCF08E48868}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bricks.DAL.EF", "Bricks.DAL.EF\Bricks.DAL.EF.csproj", "{FEB70780-4E90-47BC-851E-B7BB1D1F7EAC}"
 EndProject
@@ -65,10 +63,6 @@ Global
 		{1C660445-4422-4411-8A3B-FD5FAF377801}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C660445-4422-4411-8A3B-FD5FAF377801}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C660445-4422-4411-8A3B-FD5FAF377801}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8FCE3989-41F9-4FC8-8994-888E136123D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8FCE3989-41F9-4FC8-8994-888E136123D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8FCE3989-41F9-4FC8-8994-888E136123D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8FCE3989-41F9-4FC8-8994-888E136123D2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FA2A083A-F113-4C69-8B0D-7BCF08E48868}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FA2A083A-F113-4C69-8B0D-7BCF08E48868}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FA2A083A-F113-4C69-8B0D-7BCF08E48868}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 #endregion
 
-namespace Bricks.DAL.Repository
+namespace Bricks.Core.Repository
 {
 	public interface IRepositoryHelper
 	{

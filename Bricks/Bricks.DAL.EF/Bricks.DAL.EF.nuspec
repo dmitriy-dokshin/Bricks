@@ -17,7 +17,6 @@
 		<tags>Bricks Builders DAL EF</tags>
 		<dependencies>
 			<dependency id="Bricks.Core" version="0.1" />
-			<dependency id="Bricks.DAL" version="0.1" />
 		</dependencies>
 	</metadata>
 	<files>

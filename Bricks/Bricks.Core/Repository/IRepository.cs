@@ -9,7 +9,7 @@ using Bricks.Core.Results;
 
 #endregion
 
-namespace Bricks.DAL.Repository
+namespace Bricks.Core.Repository
 {
 	public interface IRepository
 	{
@@ -26,6 +26,12 @@ namespace Bricks.DAL.Repository
 			where TEnumerable : IEnumerable<TEntity>;
 
 		TEntity Update<TEntity>(TEntity entity) where TEntity : class;
+
+		TEnumerable AddOrUpdateRange<TEntity, TEnumerable>(TEnumerable entities)
+			where TEntity : class
+			where TEnumerable : IEnumerable<TEntity>;
+
+		TEntity AddOrUpdate<TEntity>(TEntity entity) where TEntity : class;
 
 		void RemoveRange<TEntity, TEnumerable>(TEnumerable entities)
 			where TEntity : class

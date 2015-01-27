@@ -4,7 +4,7 @@ using System;
 
 #endregion
 
-namespace Bricks.DAL.Repository
+namespace Bricks.Core.Repository
 {
 	/// <summary>
 	/// Определяет область транзакции.

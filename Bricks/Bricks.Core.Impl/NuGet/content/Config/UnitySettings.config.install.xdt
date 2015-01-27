@@ -167,6 +167,10 @@
 				  mapTo="Bricks.Core.Impl.Sync.LockStorage">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
+		<register type="Bricks.Core.Sync.IDistributedLockManager"
+				  mapTo="Bricks.Core.Impl.Sync.DistributedLockManager">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
 
 		<!-- Tasks -->
 		<register type="Bricks.Core.Tasks.ICancellationTokenProvider"

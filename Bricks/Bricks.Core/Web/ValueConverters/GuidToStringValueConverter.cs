@@ -2,11 +2,9 @@
 
 using System;
 
-using Bricks.Core.Web;
-
 #endregion
 
-namespace Bricks.Core.Impl.Web.ValueConverters
+namespace Bricks.Core.Web.ValueConverters
 {
 	/// <summary>
 	/// Конвертер значений <see cref="Guid" /> в строки.

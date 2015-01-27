@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="DateTime\DateTimeProvider.cs" />
     <Compile Include="Disposing\ActionDisposable.cs" />
+    <Compile Include="Disposing\DisposableExtensions.cs" />
     <Compile Include="Disposing\DisposableHelper.cs" />
     <Compile Include="Enum\EnumHelper.cs" />
     <Compile Include="Enum\EnumMetadataBase.cs" />
@@ -137,6 +138,7 @@
     <Compile Include="Results\ResultFactory.cs" />
     <Compile Include="Seams\RandomProvider.cs" />
     <Compile Include="Serialization\SerializationHelper.cs" />
+    <Compile Include="Sync\DistributedLockManager.cs" />
     <Compile Include="Sync\InterlockedHelper.cs" />
     <Compile Include="Sync\LockAsync.cs" />
     <Compile Include="Sync\LockContainer.cs" />
@@ -156,9 +158,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Web\UrlHelper.cs" />
-    <Compile Include="Web\ValueConverters\EnumToLowerStringValueConverter.cs" />
-    <Compile Include="Web\ValueConverters\EnumToStringValueConverter.cs" />
-    <Compile Include="Web\ValueConverters\GuidToStringValueConverter.cs" />
     <Compile Include="Web\WebClientImpl.cs" />
     <Compile Include="Web\WebHelper.cs" />
     <Compile Include="Web\WebResponse.cs" />

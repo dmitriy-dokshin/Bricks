@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Migrations;
 using System.Data.Entity.Validation;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -14,9 +15,10 @@ using System.Threading.Tasks;
 
 using Bricks.Core.Collections;
 using Bricks.Core.Exceptions;
+using Bricks.Core.Extensions;
+using Bricks.Core.Repository;
 using Bricks.Core.Results;
 using Bricks.Core.Tasks;
-using Bricks.DAL.Repository;
 
 #endregion
 
@@ -125,6 +127,19 @@ namespace Bricks.DAL.EF
 		{
 			var enumerable = _collectionHelper.Single(entity);
 			return UpdateRange<TEntity, IEnumerable<TEntity>>(enumerable).First();
+		}
+
+		public TEnumerable AddOrUpdateRange<TEntity, TEnumerable>(TEnumerable entities) where TEntity : class where TEnumerable : IEnumerable<TEntity>
+		{
+			var dbSet = _dbContext.Set<TEntity>();
+			dbSet.AddOrUpdate(entities.ToArrayIfNot());
+			return entities;
+		}
+
+		public TEntity AddOrUpdate<TEntity>(TEntity entity) where TEntity : class
+		{
+			var enumerable = _collectionHelper.Single(entity);
+			return AddOrUpdateRange<TEntity, IEnumerable<TEntity>>(enumerable).First();
 		}
 
 		public void RemoveRange<TEntity, TEnumerable>(TEnumerable entities) where TEntity : class where TEnumerable : IEnumerable<TEntity>

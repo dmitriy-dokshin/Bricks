@@ -5,13 +5,13 @@
 	<assembly name="Bricks.DAL.EF" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)" />
 
 	<container name="Bricks.DAL.EF" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)">
-		<register type="Bricks.DAL.Repository.IRepository"
+		<register type="Bricks.Core.Repository.IRepository"
 				  mapTo="Bricks.DAL.EF.Repository">
 		</register>
-		<register type="Bricks.DAL.Repository.ISqlRepository"
+		<register type="Bricks.Core.Repository.ISqlRepository"
 				  mapTo="Bricks.DAL.EF.Repository">
 		</register>
-		<register type="Bricks.DAL.Repository.IRepositoryHelper"
+		<register type="Bricks.Core.Repository.IRepositoryHelper"
 				  mapTo="Bricks.DAL.EF.RepositoryHelper">
 		</register>
 	</container>

@@ -70,6 +70,7 @@
     <Compile Include="..\CommonInfo.cs">
       <Link>CommonInfo.cs</Link>
     </Compile>
+    <Compile Include="ModelBuilderExtensions.cs" />
     <Compile Include="Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository.cs" />
@@ -95,10 +96,6 @@
     <ProjectReference Include="..\Bricks.Core\Bricks.Core.csproj">
       <Project>{1919938a-32a3-47d6-a8ba-dfe576bd38c1}</Project>
       <Name>Bricks.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Bricks.DAL\Bricks.DAL.csproj">
-      <Project>{8fce3989-41f9-4fc8-8994-888e136123d2}</Project>
-      <Name>Bricks.DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
