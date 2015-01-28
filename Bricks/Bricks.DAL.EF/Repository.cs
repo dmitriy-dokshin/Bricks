@@ -116,8 +116,9 @@ namespace Bricks.DAL.EF
 				{
 					dbSet.Attach(entity);
 					dbEntityEntry = _dbContext.Entry(entity);
-					dbEntityEntry.State = EntityState.Modified;
 				}
+
+				dbEntityEntry.State = EntityState.Modified;
 			}
 
 			return entities;
@@ -145,7 +146,17 @@ namespace Bricks.DAL.EF
 		public void RemoveRange<TEntity, TEnumerable>(TEnumerable entities) where TEntity : class where TEnumerable : IEnumerable<TEntity>
 		{
 			var dbSet = _dbContext.Set<TEntity>();
-			dbSet.RemoveRange(entities);
+			foreach (var entity in entities)
+			{
+				var dbEntityEntry = _dbContext.Entry(entity);
+				if (dbEntityEntry.State == EntityState.Detached)
+				{
+					dbSet.Attach(entity);
+					dbEntityEntry = _dbContext.Entry(entity);
+				}
+
+				dbEntityEntry.State = EntityState.Deleted;
+			}
 		}
 
 		public void Remove<TEntity>(TEntity entity) where TEntity : class

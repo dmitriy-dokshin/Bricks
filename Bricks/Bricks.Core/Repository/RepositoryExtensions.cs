@@ -215,6 +215,86 @@ namespace Bricks.Core.Repository
 			return _repositoryHelper.Value.Include(queryable, path);
 		}
 
+		public static Task<int> SumAsync<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, int>> selector, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, selector, cancellationToken);
+		}
+
+		public static Task<int?> SumAsync<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, int?>> selector, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, selector, cancellationToken);
+		}
+
+		public static Task<int> SumAsync(this IQueryable<int> source, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, cancellationToken);
+		}
+
+		public static Task<int?> SumAsync(this IQueryable<int?> source, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, cancellationToken);
+		}
+
+		public static Task<long> SumAsync<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, long>> selector, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, selector, cancellationToken);
+		}
+
+		public static Task<long?> SumAsync<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, long?>> selector, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, selector, cancellationToken);
+		}
+
+		public static Task<long> SumAsync(this IQueryable<long> source, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, cancellationToken);
+		}
+
+		public static Task<long?> SumAsync(this IQueryable<long?> source, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, cancellationToken);
+		}
+
+		public static Task<float> SumAsync<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, float>> selector, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, selector, cancellationToken);
+		}
+
+		public static Task<float?> SumAsync<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, float?>> selector, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, selector, cancellationToken);
+		}
+
+		public static Task<float> SumAsync(this IQueryable<float> source, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, cancellationToken);
+		}
+
+		public static Task<float?> SumAsync(this IQueryable<float?> source, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, cancellationToken);
+		}
+
+		public static Task<double> SumAsync<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, double>> selector, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, selector, cancellationToken);
+		}
+
+		public static Task<double?> SumAsync<TSource>(this IQueryable<TSource> source, Expression<Func<TSource, double?>> selector, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, selector, cancellationToken);
+		}
+
+		public static Task<double> SumAsync(this IQueryable<double> source, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, cancellationToken);
+		}
+
+		public static Task<double?> SumAsync(this IQueryable<double?> source, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.SumAsync(source, cancellationToken);
+		}
+
 		public static async Task<IResult<TData>> ChangeAndSaveAsync<TData>(this IRepository repository, Func<IRepository, TData> change)
 		{
 			var data = change(repository);

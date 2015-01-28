@@ -73,6 +73,87 @@ namespace Bricks.DAL.EF
 			return QueryableExtensions.Include(source, path);
 		}
 
+		public Task<int> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, int>> selector, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, selector, cancellationToken);
+		}
+
+		public Task<int?> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, int?>> selector, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, selector, cancellationToken);
+		}
+
+		public Task<int> SumAsync(IQueryable<int> source, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, cancellationToken);
+
+		}
+
+		public Task<int?> SumAsync(IQueryable<int?> source, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, cancellationToken);
+		}
+
+		public Task<long> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, long>> selector, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, selector, cancellationToken);
+		}
+
+		public Task<long?> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, long?>> selector, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, selector, cancellationToken);
+		}
+
+		public Task<long> SumAsync(IQueryable<long> source, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, cancellationToken);
+		}
+
+		public Task<long?> SumAsync(IQueryable<long?> source, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, cancellationToken);
+		}
+
+		public Task<float> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, float>> selector, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, selector, cancellationToken);
+		}
+
+		public Task<float?> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, float?>> selector, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, selector, cancellationToken);
+		}
+
+		public Task<float> SumAsync(IQueryable<float> source, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, cancellationToken);
+		}
+
+		public Task<float?> SumAsync(IQueryable<float?> source, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, cancellationToken);
+		}
+
+		public Task<double> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, double>> selector, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, selector, cancellationToken);
+		}
+
+		public Task<double?> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, double?>> selector, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, selector, cancellationToken);
+		}
+
+		public Task<double> SumAsync(IQueryable<double> source, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, cancellationToken);
+		}
+
+		public Task<double?> SumAsync(IQueryable<double?> source, CancellationToken cancellationToken)
+		{
+			return QueryableExtensions.SumAsync(source, cancellationToken);
+		}
+
 		#endregion
 	}
 }
