@@ -28,14 +28,28 @@ namespace Bricks.DAL.EF
 			return await queryable.ToDictionaryAsync(keySelector, valueSelector, cancellationToken);
 		}
 
-		public Task<T> FirstOrDefaultAsync<T>(IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
+		public async Task<T> FirstOrDefaultAsync<T>(IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
 		{
-			return QueryableExtensions.FirstOrDefaultAsync(source, predicate, cancellationToken);
+			try
+			{
+				return await QueryableExtensions.FirstOrDefaultAsync(source, predicate, cancellationToken);
+			}
+			catch (InvalidOperationException)
+			{
+				return default(T);
+			}
 		}
 
-		public Task<T> FirstOrDefaultAsync<T>(IQueryable<T> source, CancellationToken cancellationToken)
+		public async Task<T> FirstOrDefaultAsync<T>(IQueryable<T> source, CancellationToken cancellationToken)
 		{
-			return QueryableExtensions.FirstOrDefaultAsync(source, cancellationToken);
+			try
+			{
+				return await QueryableExtensions.FirstOrDefaultAsync(source, cancellationToken);
+			}
+			catch (InvalidOperationException)
+			{
+				return default(T);
+			}
 		}
 
 		public Task<T> FirstAsync<T>(IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken)
@@ -75,17 +89,14 @@ namespace Bricks.DAL.EF
 
 		public async Task<int> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, int>> selector, CancellationToken cancellationToken)
 		{
-			int sum;
 			try
 			{
-				sum = await QueryableExtensions.SumAsync(source, selector, cancellationToken);
+				return await QueryableExtensions.SumAsync(source, selector, cancellationToken);
 			}
 			catch (InvalidOperationException)
 			{
-				sum = default(int);
+				return default(int);
 			}
-
-			return sum;
 		}
 
 		public Task<int?> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, int?>> selector, CancellationToken cancellationToken)
@@ -95,17 +106,14 @@ namespace Bricks.DAL.EF
 
 		public async Task<int> SumAsync(IQueryable<int> source, CancellationToken cancellationToken)
 		{
-			int sum;
 			try
 			{
-				sum = await QueryableExtensions.SumAsync(source, cancellationToken);
+				return await QueryableExtensions.SumAsync(source, cancellationToken);
 			}
 			catch (InvalidOperationException)
 			{
-				sum = default(int);
+				return default(int);
 			}
-
-			return sum;
 		}
 
 		public Task<int?> SumAsync(IQueryable<int?> source, CancellationToken cancellationToken)
@@ -115,17 +123,14 @@ namespace Bricks.DAL.EF
 
 		public async Task<long> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, long>> selector, CancellationToken cancellationToken)
 		{
-			long sum;
 			try
 			{
-				sum = await QueryableExtensions.SumAsync(source, selector, cancellationToken);
+				return await QueryableExtensions.SumAsync(source, selector, cancellationToken);
 			}
 			catch (InvalidOperationException)
 			{
-				sum = default(int);
+				return default(long);
 			}
-
-			return sum;
 		}
 
 		public Task<long?> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, long?>> selector, CancellationToken cancellationToken)
@@ -135,17 +140,14 @@ namespace Bricks.DAL.EF
 
 		public async Task<long> SumAsync(IQueryable<long> source, CancellationToken cancellationToken)
 		{
-			long sum;
 			try
 			{
-				sum = await QueryableExtensions.SumAsync(source, cancellationToken);
+				return await QueryableExtensions.SumAsync(source, cancellationToken);
 			}
 			catch (InvalidOperationException)
 			{
-				sum = default(int);
+				return default(long);
 			}
-
-			return sum;
 		}
 
 		public Task<long?> SumAsync(IQueryable<long?> source, CancellationToken cancellationToken)
@@ -155,17 +157,14 @@ namespace Bricks.DAL.EF
 
 		public async Task<float> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, float>> selector, CancellationToken cancellationToken)
 		{
-			float sum;
 			try
 			{
-				sum = await QueryableExtensions.SumAsync(source, selector, cancellationToken);
+				return await QueryableExtensions.SumAsync(source, selector, cancellationToken);
 			}
 			catch (InvalidOperationException)
 			{
-				sum = default(int);
+				return default(float);
 			}
-
-			return sum;
 		}
 
 		public Task<float?> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, float?>> selector, CancellationToken cancellationToken)
@@ -175,17 +174,14 @@ namespace Bricks.DAL.EF
 
 		public async Task<float> SumAsync(IQueryable<float> source, CancellationToken cancellationToken)
 		{
-			float sum;
 			try
 			{
-				sum = await QueryableExtensions.SumAsync(source, cancellationToken);
+				return await QueryableExtensions.SumAsync(source, cancellationToken);
 			}
 			catch (InvalidOperationException)
 			{
-				sum = default(int);
+				return default(float);
 			}
-
-			return sum;
 		}
 
 		public Task<float?> SumAsync(IQueryable<float?> source, CancellationToken cancellationToken)
@@ -195,17 +191,14 @@ namespace Bricks.DAL.EF
 
 		public async Task<double> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, double>> selector, CancellationToken cancellationToken)
 		{
-			double sum;
 			try
 			{
-				sum = await QueryableExtensions.SumAsync(source, selector, cancellationToken);
+				return await QueryableExtensions.SumAsync(source, selector, cancellationToken);
 			}
 			catch (InvalidOperationException)
 			{
-				sum = default(int);
+				return default(double);
 			}
-
-			return sum;
 		}
 
 		public Task<double?> SumAsync<TSource>(IQueryable<TSource> source, Expression<Func<TSource, double?>> selector, CancellationToken cancellationToken)
@@ -215,17 +208,14 @@ namespace Bricks.DAL.EF
 
 		public async Task<double> SumAsync(IQueryable<double> source, CancellationToken cancellationToken)
 		{
-			double sum;
 			try
 			{
-				sum = await QueryableExtensions.SumAsync(source, cancellationToken);
+				return await QueryableExtensions.SumAsync(source, cancellationToken);
 			}
 			catch (InvalidOperationException)
 			{
-				sum = default(int);
+				return default(double);
 			}
-
-			return sum;
 		}
 
 		public Task<double?> SumAsync(IQueryable<double?> source, CancellationToken cancellationToken)
