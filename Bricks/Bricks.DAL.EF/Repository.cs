@@ -178,7 +178,12 @@ namespace Bricks.DAL.EF
 
 		public Task<IResult> SaveAsync()
 		{
-			return _exceptionHelper.CatchAsync(() => (Task)_dbContext.SaveChangesAsync(_cancellationToken), Resources.Repository_SaveAsync_ExceptionMessage, typeof(DbEntityValidationException), typeof(DbUpdateException));
+			return _exceptionHelper.CatchAsync(() => (Task)_dbContext.SaveChangesAsync(_cancellationToken), Resources.Repository_Save_ExceptionMessage, typeof(DbEntityValidationException), typeof(DbUpdateException));
+		}
+
+		public IResult Save()
+		{
+			return _exceptionHelper.Catch(() => _dbContext.SaveChanges(), Resources.Repository_Save_ExceptionMessage, typeof(DbEntityValidationException), typeof(DbUpdateException));
 		}
 
 		#endregion
@@ -203,6 +208,18 @@ namespace Bricks.DAL.EF
 		public Task<int> ExecuteSqlCommandAsync(string sql, params KeyValuePair<string, object>[] parameters)
 		{
 			return _dbContext.Database.ExecuteSqlCommandAsync(sql, _cancellationToken, parameters);
+		}
+
+		#endregion
+
+		#region Implementation of IDisposable
+
+		/// <summary>
+		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+		/// </summary>
+		public void Dispose()
+		{
+			_dbContext.Dispose();
 		}
 
 		#endregion

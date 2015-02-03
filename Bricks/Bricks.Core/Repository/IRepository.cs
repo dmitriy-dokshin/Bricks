@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -11,7 +12,7 @@ using Bricks.Core.Results;
 
 namespace Bricks.Core.Repository
 {
-	public interface IRepository
+	public interface IRepository : IDisposable
 	{
 		IQueryable<TEntity> Select<TEntity>() where TEntity : class;
 
@@ -44,5 +45,7 @@ namespace Bricks.Core.Repository
 		ITransactionScope GetTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);
 
 		Task<IResult> SaveAsync();
+
+		IResult Save();
 	}
 }

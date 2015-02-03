@@ -63,9 +63,9 @@ namespace Bricks.DAL.EF {
         /// <summary>
         ///   Looks up a localized string similar to Не удалось сохранить данные..
         /// </summary>
-        internal static string Repository_SaveAsync_ExceptionMessage {
+        internal static string Repository_Save_ExceptionMessage {
             get {
-                return ResourceManager.GetString("Repository_SaveAsync_ExceptionMessage", resourceCulture);
+                return ResourceManager.GetString("Repository_Save_ExceptionMessage", resourceCulture);
             }
         }
     }
