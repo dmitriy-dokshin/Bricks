@@ -22,7 +22,9 @@ namespace Bricks.Core.Events
 		/// Отправитель события. Если не указан, обрабатываются все события с аргументами типа
 		/// <typeparamref name="TEventArgs" />.
 		/// </param>
-		void Subscribe<TEventArgs>(IEventHandler<TEventArgs> eventHandler, object sender = null) where TEventArgs : EventArgs;
+		/// <returns>Объект <see cref="IDisposable" />, который может использоваться для удаления подписки.</returns>
+		IDisposable Subscribe<TEventArgs>(IEventHandler<TEventArgs> eventHandler, object sender = null)
+			where TEventArgs : EventArgs;
 
 		/// <summary>
 		/// Подписывается на события с аргументами типа <typeparamref name="TEventArgs" />.
@@ -33,7 +35,13 @@ namespace Bricks.Core.Events
 		/// Отправитель события. Если не указан, обрабатываются все события с аргументами типа
 		/// <typeparamref name="TEventArgs" />.
 		/// </param>
-		void Subscribe<TEventArgs, TEventHandler>(object sender = null) where TEventArgs : EventArgs where TEventHandler : IEventHandler<TEventArgs>;
+		/// <returns>Объект <see cref="IDisposable" />, который может использоваться для удаления подписки.</returns>
+		IDisposable Subscribe<TEventArgs, TEventHandler>(object sender = null)
+			where TEventArgs : EventArgs
+			where TEventHandler : IEventHandler<TEventArgs>;
+
+		IDisposable Subscribe<TEventArgs>(out IObservable<TEventArgs> observable, EventHandlerObservableInvokeMode invokeMode = EventHandlerObservableInvokeMode.Series, object sender = null)
+			where TEventArgs : EventArgs;
 
 		/// <summary>
 		/// Создаёт событие с аргументами <paramref name="args" /> от отправителя <paramref name="sender" />.
@@ -42,7 +50,9 @@ namespace Bricks.Core.Events
 		/// <param name="sender">Отправитель события.</param>
 		/// <param name="args">Аргументы события.</param>
 		/// <param name="cancellationToken">Токен отмены.</param>
+		/// <param name="mode">Режим, в котором будут вызваны обработчики.</param>
 		/// <returns>Задача обработки события.</returns>
-		Task Raise<TEventArgs>(object sender, TEventArgs args, CancellationToken cancellationToken) where TEventArgs : EventArgs;
+		Task Raise<TEventArgs>(object sender, TEventArgs args, CancellationToken cancellationToken, RaiseMode mode = RaiseMode.Series)
+			where TEventArgs : EventArgs;
 	}
 }

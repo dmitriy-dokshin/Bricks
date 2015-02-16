@@ -27,6 +27,11 @@ namespace Bricks.Core.Impl.Mapping
 		/// <returns>Новый объект типа <typeparamref name="TDestination" />.</returns>
 		public TDestination DynamicMap<TSource, TDestination>(TSource source)
 		{
+			if (source == null)
+			{
+				return default(TDestination);
+			}
+
 			return Mapper.DynamicMap<TSource, TDestination>(source);
 		}
 
@@ -55,6 +60,16 @@ namespace Bricks.Core.Impl.Mapping
 		/// <param name="destination">Целевой объект.</param>
 		public void DynamicMap<TSource, TDestination>(TSource source, TDestination destination)
 		{
+			if (source == null)
+			{
+				throw new ArgumentNullException("source");
+			}
+
+			if (destination == null)
+			{
+				throw new ArgumentNullException("destination");
+			}
+
 			Mapper.DynamicMap(source, destination);
 		}
 

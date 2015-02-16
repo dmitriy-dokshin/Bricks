@@ -6,13 +6,14 @@
 
 	<container name="Bricks.DAL.EF" xdt:Transform="InsertIfMissing" xdt:Locator="Match(name)">
 		<register type="Bricks.Core.Repository.IRepository"
-				  mapTo="Bricks.DAL.EF.Repository">
-		</register>
+				  mapTo="Bricks.DAL.EF.Repository" />
 		<register type="Bricks.Core.Repository.ISqlRepository"
-				  mapTo="Bricks.DAL.EF.Repository">
-		</register>
+				  mapTo="Bricks.DAL.EF.Repository" />
 		<register type="Bricks.Core.Repository.IRepositoryHelper"
-				  mapTo="Bricks.DAL.EF.RepositoryHelper">
+				  mapTo="Bricks.DAL.EF.RepositoryHelper" />
+		<register type="Bricks.Core.Repository.IRepositoryFactory"
+				  mapTo="Bricks.DAL.EF.RepositoryFactory">
+			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
 	</container>
 </unity>

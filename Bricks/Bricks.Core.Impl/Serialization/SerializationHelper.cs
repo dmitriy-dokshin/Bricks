@@ -29,10 +29,9 @@ namespace Bricks.Core.Impl.Serialization
 		/// <summary>
 		/// Создаёт объект <see cref="JObject" /> на основе объекта <paramref name="source" />.
 		/// </summary>
-		/// <typeparam name="T">Тип исходного объекта.</typeparam>
 		/// <param name="source">Исходный объект.</param>
 		/// <returns>Новый объект <see cref="JObject" />.</returns>
-		public JObject CreateJObject<T>(T source)
+		public JObject CreateJObject(object source)
 		{
 			return JObject.FromObject(source, _jsonSerializer);
 		}
@@ -40,10 +39,9 @@ namespace Bricks.Core.Impl.Serialization
 		/// <summary>
 		/// Создаёт объект <see cref="JToken" /> на основе объекта <paramref name="source" />.
 		/// </summary>
-		/// <typeparam name="T">Тип исходного объекта.</typeparam>
 		/// <param name="source">Исходный объект.</param>
 		/// <returns>Новый объект <see cref="JToken" />.</returns>
-		public JToken CreateJToken<T>(T source)
+		public JToken CreateJToken(object source)
 		{
 			return JToken.FromObject(source, _jsonSerializer);
 		}

@@ -1,8 +1,6 @@
 ﻿#region
 
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
-using System.Data.Entity.Infrastructure.Annotations;
 
 using Bricks.Core.Sync;
 
@@ -16,8 +14,9 @@ namespace Bricks.DAL.EF
 		{
 			var configuration = modelBuilder.Entity<Lock>();
 			configuration.ToTable("Locks");
-			configuration.HasKey(x => x.Id);
-			configuration.Property(x => x.Key).HasColumnAnnotation("Index", new IndexAnnotation(new IndexAttribute("UX_Key") { IsUnique = true }));
+			configuration.HasKey(x => new { x.Key, x.Key1 });
+			configuration.Property(x => x.Key).HasMaxLength(50);
+			configuration.Property(x => x.Key1).HasMaxLength(50);
 		}
 	}
 }

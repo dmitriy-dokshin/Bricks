@@ -32,6 +32,30 @@ namespace Bricks.Core.Extensions
 			return Convert.ToInt32(Math.Round(timeSpan.TotalMinutes));
 		}
 
+		public static TimeSpan Multiply(this TimeSpan timeSpan, int multiplier)
+		{
+			long ticks = timeSpan.Ticks * multiplier;
+			return TimeSpan.FromTicks(ticks);
+		}
+
+		public static TimeSpan Multiply(this TimeSpan timeSpan, long multiplier)
+		{
+			long ticks = timeSpan.Ticks * multiplier;
+			return TimeSpan.FromTicks(ticks);
+		}
+
+		public static TimeSpan Multiply(this TimeSpan timeSpan, float multiplier)
+		{
+			float ticks = timeSpan.Ticks * multiplier;
+			return TimeSpan.FromTicks(Convert.ToInt64(ticks));
+		}
+
+		public static TimeSpan Multiply(this TimeSpan timeSpan, double multiplier)
+		{
+			double ticks = timeSpan.Ticks * multiplier;
+			return TimeSpan.FromTicks(Convert.ToInt64(ticks));
+		}
+
 		public static string ToDetailedString(this TimeSpan target)
 		{
 			var stringBuilder = new StringBuilder();

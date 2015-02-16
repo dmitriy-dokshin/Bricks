@@ -116,7 +116,6 @@
     <Compile Include="Enum\ResourceEnumValueMetadata.cs" />
     <Compile Include="Enum\ResourceFlagsMetadata.cs" />
     <Compile Include="Enum\ResourceFlagsValueMetadata.cs" />
-    <Compile Include="Events\EventHandlerAdapter.cs" />
     <Compile Include="Events\EventManager.cs" />
     <Compile Include="Exceptions\ExceptionHelper.cs" />
     <Compile Include="Images\ImageProcessor.cs" />

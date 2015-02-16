@@ -2,6 +2,7 @@
 
 using System;
 
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 
 #endregion
@@ -18,5 +19,7 @@ namespace Bricks.Core.Modularity
 		/// </summary>
 		/// <param name="args">The <see cref="IUnityContainer" /> that contains initialization arguments.</param>
 		void Initialize(IUnityContainer args = null);
+
+		IServiceLocator ServiceLocator { get; }
 	}
 }

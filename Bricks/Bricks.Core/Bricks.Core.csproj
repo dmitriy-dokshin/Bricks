@@ -102,10 +102,17 @@
     <Compile Include="Enum\IFlagsMetadata.cs" />
     <Compile Include="Enum\IFlagsValueMetadata.cs" />
     <Compile Include="Environment\IEnvironment.cs" />
+    <Compile Include="Events\EventHandlerObservable.cs" />
+    <Compile Include="Events\EventHandlerObservableInvokeMode.cs" />
+    <Compile Include="Tasks\EventCancellationTokenProvider.cs" />
+    <Compile Include="Events\EventHandlerAdapter.cs" />
+    <Compile Include="Events\EventManagerExtensions.cs" />
     <Compile Include="Events\IEventHandler.cs" />
     <Compile Include="Events\IEventManager.cs" />
+    <Compile Include="Events\RaiseMode.cs" />
     <Compile Include="Extensions\CollectionExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -116,6 +123,7 @@
     <Compile Include="Exceptions\IExceptionHelper.cs" />
     <Compile Include="Images\IImageProcessor.cs" />
     <Compile Include="Images\ImageExtensions.cs" />
+    <Compile Include="IoC\UnityContainerFixed.cs" />
     <Compile Include="IO\IOExtensions.cs" />
     <Compile Include="Modularity\ApplicationBase.cs" />
     <Compile Include="Modularity\ModuleBase.cs" />
@@ -125,6 +133,7 @@
     <Compile Include="Regex\IRegexHelper.cs" />
     <Compile Include="Regex\IRegexSettings.cs" />
     <Compile Include="Repository\IRepository.cs" />
+    <Compile Include="Repository\IRepositoryFactory.cs" />
     <Compile Include="Repository\IRepositoryHelper.cs" />
     <Compile Include="Repository\ISqlRepository.cs" />
     <Compile Include="Repository\ITransactionScope.cs" />

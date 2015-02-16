@@ -4,7 +4,9 @@ using System.Linq;
 
 using Bricks.Core.Configuration;
 using Bricks.Core.Disposing;
+using Bricks.Core.IoC;
 
+using Microsoft.Practices.ServiceLocation;
 using Microsoft.Practices.Unity;
 using Microsoft.Practices.Unity.Configuration;
 
@@ -24,44 +26,10 @@ namespace Bricks.Core.Modularity
 
 		private readonly IUnityContainer _container;
 
-		protected ApplicationBase(IUnityContainer container)
+		protected ApplicationBase(IUnityContainer container = null)
 		{
-			_container = container;
+			_container = container ?? new UnityContainerFixed();
 		}
-
-		#region Implementation of IApplication
-
-		/// <summary>
-		/// Initializes the application.
-		/// </summary>
-		/// <param name="args">The <see cref="IUnityContainer" /> that contains initialization arguments.</param>
-		public virtual void Initialize(IUnityContainer args = null)
-		{
-			if (args == null)
-			{
-				args = new UnityContainer();
-			}
-
-			_container.LoadConfiguration();
-
-			var configurationManager = _container.Resolve<IConfigurationManager>();
-
-			var modularitySettings = configurationManager.GetSettings<IModularitySettings>(MODULARITY_SETTINGS_KEY);
-			foreach (var moduleSettings in modularitySettings.Modules.OrderBy(x => x.Order))
-			{
-				_container.RegisterType(typeof(IModule), moduleSettings.Type, moduleSettings.Name, new ContainerControlledLifetimeManager());
-				var module = _container.Resolve<IModule>(moduleSettings.Name);
-				using (args.CreateChildContainer())
-				{
-					args.RegisterInstance(moduleSettings);
-					module.Initialize(_container, args);
-				}
-			}
-
-			Initialize(_container, args);
-		}
-
-		#endregion
 
 		#region Overrides of DisposableBase
 
@@ -97,5 +65,48 @@ namespace Bricks.Core.Modularity
 		#endregion
 
 		protected abstract void Initialize(IUnityContainer container, IUnityContainer args);
+
+		#region Implementation of IApplication
+
+		/// <summary>
+		/// Initializes the application.
+		/// </summary>
+		/// <param name="args">The <see cref="IUnityContainer" /> that contains initialization arguments.</param>
+		public virtual void Initialize(IUnityContainer args = null)
+		{
+			if (args == null)
+			{
+				args = new UnityContainer();
+			}
+
+			_container.LoadConfiguration();
+
+			var configurationManager = _container.Resolve<IConfigurationManager>();
+
+			var modularitySettings = configurationManager.GetSettings<IModularitySettings>(MODULARITY_SETTINGS_KEY);
+			foreach (var moduleSettings in modularitySettings.Modules.OrderBy(x => x.Order))
+			{
+				_container.RegisterType(typeof(IModule), moduleSettings.Type, moduleSettings.Name, new ContainerControlledLifetimeManager());
+				var module = _container.Resolve<IModule>(moduleSettings.Name);
+				using (args.CreateChildContainer())
+				{
+					args.RegisterInstance(moduleSettings);
+					module.Initialize(_container, args);
+				}
+			}
+
+			ServiceLocator.SetLocatorProvider(() => _container.Resolve<IServiceLocator>());
+			Initialize(_container, args);
+		}
+
+		IServiceLocator IApplication.ServiceLocator
+		{
+			get
+			{
+				return _container.Resolve<IServiceLocator>();
+			}
+		}
+
+		#endregion
 	}
 }

@@ -120,4 +120,7 @@
   <data name="Repository_Save_ExceptionMessage" xml:space="preserve">
     <value>Не удалось сохранить данные.</value>
   </data>
+  <data name="Repository_TraceSwitch_Description" xml:space="preserve">
+    <value>Сообщения репозитория.</value>
+  </data>
 </root>

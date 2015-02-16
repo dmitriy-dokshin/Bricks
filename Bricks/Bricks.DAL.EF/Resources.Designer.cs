@@ -68,5 +68,14 @@ namespace Bricks.DAL.EF {
                 return ResourceManager.GetString("Repository_Save_ExceptionMessage", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Сообщения репозитория..
+        /// </summary>
+        internal static string Repository_TraceSwitch_Description {
+            get {
+                return ResourceManager.GetString("Repository_TraceSwitch_Description", resourceCulture);
+            }
+        }
     }
 }

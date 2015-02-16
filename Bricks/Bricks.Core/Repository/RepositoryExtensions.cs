@@ -40,6 +40,12 @@ namespace Bricks.Core.Repository
 			return repository.UpdateRange<TEntity, IEnumerable<TEntity>>(entities);
 		}
 
+		public static IEnumerable<TEntity> AddOrUpdateRange<TEntity>(this IRepository repository, IEnumerable<TEntity> entities)
+			where TEntity : class
+		{
+			return repository.AddOrUpdateRange<TEntity, IEnumerable<TEntity>>(entities);
+		}
+
 		public static void RemoveRange<TEntity>(this IRepository repository, IEnumerable<TEntity> entities)
 			where TEntity : class
 		{
@@ -56,6 +62,12 @@ namespace Bricks.Core.Repository
 			where TEntity : class
 		{
 			return repository.UpdateRange<TEntity, IReadOnlyCollection<TEntity>>(entities);
+		}
+
+		public static IReadOnlyCollection<TEntity> AddOrUpdateRange<TEntity>(this IRepository repository, IReadOnlyCollection<TEntity> entities)
+			where TEntity : class
+		{
+			return repository.AddOrUpdateRange<TEntity, IReadOnlyCollection<TEntity>>(entities);
 		}
 
 		public static void RemoveRange<TEntity>(this IRepository repository, IReadOnlyCollection<TEntity> entities)

@@ -11,6 +11,11 @@ namespace Bricks.Core.Exceptions
 {
 	public static class ExceptionExtensions
 	{
+		public static Exception GetInnerException(this Exception exception)
+		{
+			return exception.InnerException != null ? GetInnerException(exception.InnerException) : exception;
+		}
+
 		#region Func
 
 		public static IResult<TResult> Catch<TResult>(this IExceptionHelper exceptionHelper, Func<TResult> func, string message = null, params Type[] exceptionTypes)

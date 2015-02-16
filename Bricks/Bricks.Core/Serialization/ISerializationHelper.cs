@@ -16,18 +16,16 @@ namespace Bricks.Core.Serialization
 		/// <summary>
 		/// Создаёт объект <see cref="JObject" /> на основе объекта <paramref name="source" />.
 		/// </summary>
-		/// <typeparam name="T">Тип исходного объекта.</typeparam>
 		/// <param name="source">Исходный объект.</param>
 		/// <returns>Новый объект <see cref="JObject" />.</returns>
-		JObject CreateJObject<T>(T source);
+		JObject CreateJObject(object source);
 
 		/// <summary>
 		/// Создаёт объект <see cref="JToken" /> на основе объекта <paramref name="source" />.
 		/// </summary>
-		/// <typeparam name="T">Тип исходного объекта.</typeparam>
 		/// <param name="source">Исходный объект.</param>
 		/// <returns>Новый объект <see cref="JToken" />.</returns>
-		JToken CreateJToken<T>(T source);
+		JToken CreateJToken(object source);
 
 		/// <summary>
 		/// Выполняет десериализацию объекта из потока с данными в формате JSON.

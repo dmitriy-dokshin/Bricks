@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,7 +11,7 @@ namespace Bricks.Core.Repository
 	/// <summary>
 	/// Представляет SQL-репозиторий.
 	/// </summary>
-	public interface ISqlRepository
+	public interface ISqlRepository : IDisposable
 	{
 		/// <summary>
 		/// Выполняет SQL-скрипт <paramref name="sql" /> с параметрами <paramref name="parameters" />.
