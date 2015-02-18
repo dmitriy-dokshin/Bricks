@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -180,8 +181,27 @@ namespace Bricks.DAL.EF
 			RemoveRange<TEntity, IEnumerable<TEntity>>(enumerable);
 		}
 
+		public void Reload<TEntity>(TEntity entity) where TEntity : class
+		{
+			var dbEntityEntry = _dbContext.Entry(entity);
+			if (dbEntityEntry.State == EntityState.Detached)
+			{
+				var dbSet = _dbContext.Set<TEntity>();
+				dbSet.Attach(entity);
+			}
+
+			_dbContext.Entry(entity).Reload();
+		}
+
 		public Task ReloadAsync<TEntity>(TEntity entity) where TEntity : class
 		{
+			var dbEntityEntry = _dbContext.Entry(entity);
+			if (dbEntityEntry.State == EntityState.Detached)
+			{
+				var dbSet = _dbContext.Set<TEntity>();
+				dbSet.Attach(entity);
+			}
+
 			return _dbContext.Entry(entity).ReloadAsync(_cancellationToken);
 		}
 
@@ -193,13 +213,25 @@ namespace Bricks.DAL.EF
 
 		public async Task<IResult> SaveAsync()
 		{
-			IResult result = await _exceptionHelper.CatchAsync(() => (Task)_dbContext.SaveChangesAsync(_cancellationToken), Resources.Repository_Save_ExceptionMessage, typeof(DbEntityValidationException), typeof(DbUpdateException));
+			IResult result =
+				await _exceptionHelper.CatchAsync(
+					() => (Task)_dbContext.SaveChangesAsync(_cancellationToken),
+					Resources.Repository_Save_ExceptionMessage,
+					typeof(DbEntityValidationException),
+					typeof(DbUpdateException),
+					typeof(DBConcurrencyException));
 			return TraceIfNeeded(result);
 		}
 
 		public IResult Save()
 		{
-			IResult<int> result = _exceptionHelper.Catch(() => _dbContext.SaveChanges(), Resources.Repository_Save_ExceptionMessage, typeof(DbEntityValidationException), typeof(DbUpdateException));
+			IResult<int> result =
+				_exceptionHelper.Catch(
+					() => _dbContext.SaveChanges(),
+					Resources.Repository_Save_ExceptionMessage,
+					typeof(DbEntityValidationException),
+					typeof(DbUpdateException),
+					typeof(DBConcurrencyException));
 			return TraceIfNeeded(result);
 		}
 
@@ -208,10 +240,18 @@ namespace Bricks.DAL.EF
 		{
 			if (!result.Success && _traceSwitch.TraceVerbose)
 			{
-				Exception innerException = result.GetInnerException();
-				if (innerException != null)
+				IResult innerResult = result.GetInnerResult();
+				if (innerResult.Exception != null)
 				{
-					Trace.WriteLine(innerException.Message, _traceCategory);
+					StringBuilder messageBuilder = new StringBuilder();
+					IEnumerable<Exception> exceptionHierarchy = innerResult.Exception.GetExceptionHierarchy();
+					foreach (var summary in exceptionHierarchy.Select(x => _exceptionHelper.GetSummary(x)))
+					{
+						messageBuilder.AppendLine(summary);
+					}
+
+					string message = messageBuilder.ToString();
+					Trace.WriteLine(message, _traceCategory);
 				}
 			}
 

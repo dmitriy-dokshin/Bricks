@@ -141,6 +141,10 @@
 				  mapTo="Bricks.Core.Impl.Results.ResultFactory">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
+		<register type="Bricks.Core.Results.IResultHelper"
+				  mapTo="Bricks.Core.Impl.Results.ResultHelper">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
 
 		<!-- Seams -->
 		<register type="Bricks.Core.Seams.IRandomProvider"
@@ -175,6 +179,10 @@
 		<!-- Tasks -->
 		<register type="Bricks.Core.Tasks.ICancellationTokenProvider"
 				  mapTo="Bricks.Core.Impl.Tasks.NoneCancellationTokenProvider">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+		<register type="Bricks.Core.Tasks.ITaskHelper"
+				  mapTo="Bricks.Core.Impl.Tasks.TaskHelper">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
 

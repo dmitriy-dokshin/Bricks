@@ -40,6 +40,8 @@ namespace Bricks.Core.Repository
 
 		void Remove<TEntity>(TEntity entity) where TEntity : class;
 
+		void Reload<TEntity>(TEntity entity) where TEntity : class;
+
 		Task ReloadAsync<TEntity>(TEntity entity) where TEntity : class;
 
 		ITransactionScope GetTransaction(IsolationLevel isolationLevel = IsolationLevel.ReadCommitted);

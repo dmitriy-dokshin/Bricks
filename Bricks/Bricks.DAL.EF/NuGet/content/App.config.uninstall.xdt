@@ -3,7 +3,7 @@
 <configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
 	<system.diagnostics>
 		<switches>
-			<add name="Repository" value="4" xdt:Transform="Remove" />
+			<add name="Repository" value="4" xdt:Transform="Remove" xdt:Locator="Match(name)" />
 		</switches>
 	</system.diagnostics>
 </configuration>

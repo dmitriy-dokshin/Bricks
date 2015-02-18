@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 using Bricks.Core.Exceptions;
@@ -26,7 +27,21 @@ namespace Bricks.Core.Impl.Exceptions
 
 		#region Implementation of IExceptionHelper
 
-		public IResult<TResult> Catch<TResult>(Func<TResult> func, IEnumerable<Type> exceptionTypes, string message = null)
+		public string GetSummary(Exception exception, bool stackTrace = false)
+		{
+			StringBuilder summaryBuilder = new StringBuilder();
+			summaryBuilder.Append(exception.GetType().Name);
+			summaryBuilder.Append(": ");
+			summaryBuilder.AppendLine(exception.Message);
+			if (stackTrace)
+			{
+				summaryBuilder.AppendLine(exception.StackTrace);
+			}
+
+			return exception.Message;
+		}
+
+		public IResult<TResult> Catch<TResult>(Func<TResult> func, IReadOnlyCollection<Type> exceptionTypes, string message = null)
 		{
 			TResult result;
 			try
@@ -35,7 +50,7 @@ namespace Bricks.Core.Impl.Exceptions
 			}
 			catch (Exception exception)
 			{
-				if (exceptionTypes.Contains(exception.GetType()))
+				if (exceptionTypes.Any(x => x.IsInstanceOfType(exception)))
 				{
 					return _resultFactory.CreateUnsuccessfulResult<TResult>(message, exception);
 				}
@@ -46,7 +61,7 @@ namespace Bricks.Core.Impl.Exceptions
 			return _resultFactory.Create(result);
 		}
 
-		public IResult Catch(Action action, IEnumerable<Type> exceptionTypes, string message = null)
+		public IResult Catch(Action action, IReadOnlyCollection<Type> exceptionTypes, string message = null)
 		{
 			try
 			{
@@ -54,7 +69,7 @@ namespace Bricks.Core.Impl.Exceptions
 			}
 			catch (Exception exception)
 			{
-				if (exceptionTypes.Contains(exception.GetType()))
+				if (exceptionTypes.Any(x => x.IsInstanceOfType(exception)))
 				{
 					return _resultFactory.CreateUnsuccessfulResult(message, exception);
 				}
@@ -65,7 +80,7 @@ namespace Bricks.Core.Impl.Exceptions
 			return _resultFactory.Create();
 		}
 
-		public TResult SimpleCatch<TResult>(Func<TResult> func, IEnumerable<Type> exceptionTypes)
+		public TResult SimpleCatch<TResult>(Func<TResult> func, IReadOnlyCollection<Type> exceptionTypes)
 		{
 			try
 			{
@@ -73,7 +88,7 @@ namespace Bricks.Core.Impl.Exceptions
 			}
 			catch (Exception exception)
 			{
-				if (exceptionTypes.Contains(exception.GetType()))
+				if (exceptionTypes.Any(x => x.IsInstanceOfType(exception)))
 				{
 					return default(TResult);
 				}
@@ -82,7 +97,7 @@ namespace Bricks.Core.Impl.Exceptions
 			}
 		}
 
-		public void SimpleCatch(Action action, IEnumerable<Type> exceptionTypes)
+		public void SimpleCatch(Action action, IReadOnlyCollection<Type> exceptionTypes)
 		{
 			try
 			{
@@ -90,7 +105,7 @@ namespace Bricks.Core.Impl.Exceptions
 			}
 			catch (Exception exception)
 			{
-				if (exceptionTypes.Contains(exception.GetType()))
+				if (exceptionTypes.Any(x => x.IsInstanceOfType(exception)))
 				{
 					return;
 				}
@@ -99,7 +114,7 @@ namespace Bricks.Core.Impl.Exceptions
 			}
 		}
 
-		public async Task<IResult<TResult>> CatchAsync<TResult>(Func<Task<TResult>> func, IEnumerable<Type> exceptionTypes, string message = null)
+		public async Task<IResult<TResult>> CatchAsync<TResult>(Func<Task<TResult>> func, IReadOnlyCollection<Type> exceptionTypes, string message = null)
 		{
 			TResult result;
 			try
@@ -108,7 +123,13 @@ namespace Bricks.Core.Impl.Exceptions
 			}
 			catch (Exception exception)
 			{
-				if (exceptionTypes.Contains(exception.GetType()))
+				if (exceptionTypes.Any(x => x.IsInstanceOfType(exception)))
+				{
+					return _resultFactory.CreateUnsuccessfulResult<TResult>(message, exception);
+				}
+
+				var aggregateException = exception as AggregateException;
+				if (aggregateException != null && aggregateException.InnerExceptions.All(e => exceptionTypes.Any(x => x.IsInstanceOfType(e))))
 				{
 					return _resultFactory.CreateUnsuccessfulResult<TResult>(message, exception);
 				}
@@ -119,7 +140,7 @@ namespace Bricks.Core.Impl.Exceptions
 			return _resultFactory.Create(result);
 		}
 
-		public async Task<IResult> CatchAsync(Func<Task> action, IEnumerable<Type> exceptionTypes, string message = null)
+		public async Task<IResult> CatchAsync(Func<Task> action, IReadOnlyCollection<Type> exceptionTypes, string message = null)
 		{
 			try
 			{
@@ -127,7 +148,13 @@ namespace Bricks.Core.Impl.Exceptions
 			}
 			catch (Exception exception)
 			{
-				if (exceptionTypes.Contains(exception.GetType()))
+				if (exceptionTypes.Any(x => x.IsInstanceOfType(exception)))
+				{
+					return _resultFactory.CreateUnsuccessfulResult(message, exception);
+				}
+
+				var aggregateException = exception as AggregateException;
+				if (aggregateException != null && aggregateException.InnerExceptions.All(e => exceptionTypes.Any(x => x.IsInstanceOfType(e))))
 				{
 					return _resultFactory.CreateUnsuccessfulResult(message, exception);
 				}
@@ -138,7 +165,7 @@ namespace Bricks.Core.Impl.Exceptions
 			return _resultFactory.Create();
 		}
 
-		public async Task<TResult> SimpleCatchAsync<TResult>(Func<Task<TResult>> func, IEnumerable<Type> exceptionTypes)
+		public async Task<TResult> SimpleCatchAsync<TResult>(Func<Task<TResult>> func, IReadOnlyCollection<Type> exceptionTypes)
 		{
 			try
 			{
@@ -146,7 +173,13 @@ namespace Bricks.Core.Impl.Exceptions
 			}
 			catch (Exception exception)
 			{
-				if (exceptionTypes.Contains(exception.GetType()))
+				if (exceptionTypes.Any(x => x.IsInstanceOfType(exception)))
+				{
+					return default(TResult);
+				}
+
+				var aggregateException = exception as AggregateException;
+				if (aggregateException != null && aggregateException.InnerExceptions.All(e => exceptionTypes.Any(x => x.IsInstanceOfType(e))))
 				{
 					return default(TResult);
 				}
@@ -155,7 +188,7 @@ namespace Bricks.Core.Impl.Exceptions
 			}
 		}
 
-		public async Task SimpleCatchAsync(Func<Task> action, IEnumerable<Type> exceptionTypes)
+		public async Task SimpleCatchAsync(Func<Task> action, IReadOnlyCollection<Type> exceptionTypes)
 		{
 			try
 			{
@@ -163,7 +196,110 @@ namespace Bricks.Core.Impl.Exceptions
 			}
 			catch (Exception exception)
 			{
-				if (exceptionTypes.Contains(exception.GetType()))
+				if (exceptionTypes.Any(x => x.IsInstanceOfType(exception)))
+				{
+					return;
+				}
+
+				var aggregateException = exception as AggregateException;
+				if (aggregateException != null && aggregateException.InnerExceptions.All(e => exceptionTypes.Any(x => x.IsInstanceOfType(e))))
+				{
+					return;
+				}
+
+				throw;
+			}
+		}
+
+		public async Task<IResult<TResult>> CatchAsync<TResult>(Task<TResult> task, IReadOnlyCollection<Type> exceptionTypes, string message = null)
+		{
+			TResult result;
+			try
+			{
+				result = await task;
+			}
+			catch (Exception exception)
+			{
+				if (exceptionTypes.Any(x => x.IsInstanceOfType(exception)))
+				{
+					return _resultFactory.CreateUnsuccessfulResult<TResult>(message, exception);
+				}
+
+				var aggregateException = exception as AggregateException;
+				if (aggregateException != null && aggregateException.InnerExceptions.All(e => exceptionTypes.Any(x => x.IsInstanceOfType(e))))
+				{
+					return _resultFactory.CreateUnsuccessfulResult<TResult>(message, exception);
+				}
+
+				throw;
+			}
+
+			return _resultFactory.Create(result);
+		}
+
+		public async Task<IResult> CatchAsync(Task task, IReadOnlyCollection<Type> exceptionTypes, string message = null)
+		{
+			try
+			{
+				await task;
+			}
+			catch (Exception exception)
+			{
+				if (exceptionTypes.Any(x => x.IsInstanceOfType(exception)))
+				{
+					return _resultFactory.CreateUnsuccessfulResult(message, exception);
+				}
+
+				var aggregateException = exception as AggregateException;
+				if (aggregateException != null && aggregateException.InnerExceptions.All(e => exceptionTypes.Any(x => x.IsInstanceOfType(e))))
+				{
+					return _resultFactory.CreateUnsuccessfulResult(message, exception);
+				}
+
+				throw;
+			}
+
+			return _resultFactory.Create();
+		}
+
+		public async Task<TResult> SimpleCatchAsync<TResult>(Task<TResult> task, IReadOnlyCollection<Type> exceptionTypes)
+		{
+			try
+			{
+				return await task;
+			}
+			catch (Exception exception)
+			{
+				if (exceptionTypes.Any(x => x.IsInstanceOfType(exception)))
+				{
+					return default(TResult);
+				}
+
+				var aggregateException = exception as AggregateException;
+				if (aggregateException != null && aggregateException.InnerExceptions.All(e => exceptionTypes.Any(x => x.IsInstanceOfType(e))))
+				{
+					return default(TResult);
+				}
+
+				throw;
+			}
+		}
+
+		public async Task SimpleCatchAsync(Task task, IReadOnlyCollection<Type> exceptionTypes)
+		{
+			try
+			{
+				await task;
+			}
+			catch (Exception exception)
+			{
+				if (exceptionTypes.Any(x => x.IsInstanceOfType(exception)))
+				{
+					return;
+				}
+
+				var aggregateException = exception as AggregateException;
+				if (aggregateException != null && aggregateException.InnerExceptions.All(e => exceptionTypes.Any(x => x.IsInstanceOfType(e))))
 				{
 					return;
 				}

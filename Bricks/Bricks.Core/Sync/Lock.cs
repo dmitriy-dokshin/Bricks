@@ -12,12 +12,11 @@ namespace Bricks.Core.Sync
 		{
 		}
 
-		public Lock(string key, string key1, DateTimeOffset createdAt, Guid ownerId)
+		public Lock(string key, string key1, DateTimeOffset createdAt)
 		{
 			Key = key;
 			Key1 = key1;
 			CreatedAt = createdAt;
-			OwnerId = ownerId;
 		}
 
 		public string Key { get; private set; }
@@ -25,7 +24,5 @@ namespace Bricks.Core.Sync
 		public string Key1 { get; private set; }
 
 		public DateTimeOffset CreatedAt { get; private set; }
-
-		public Guid OwnerId { get; private set; }
 	}
 }

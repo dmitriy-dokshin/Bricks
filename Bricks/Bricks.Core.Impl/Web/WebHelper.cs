@@ -38,49 +38,58 @@ namespace Bricks.Core.Impl.Web
 			var webResponse = await _webClient.ExecuteRequestAsync(address, method, data, timeout: timeout);
 			TResult result;
 			TErrorResult errorResult;
-			if (webResponse.Success)
+			if (webResponse.Stream != null)
 			{
-				switch (contentType)
+				if (webResponse.Success)
 				{
-					case ContentType.String:
-						if (typeof(TResult) != typeof(string))
-						{
-							throw new InvalidCastException();
-						}
+					switch (contentType)
+					{
+						case ContentType.String:
+							if (typeof(TResult) != typeof(string))
+							{
+								throw new InvalidCastException();
+							}
 
-						var streamReader = new StreamReader(webResponse.Stream);
-						result = (TResult)(object)await streamReader.ReadToEndAsync();
-						break;
-					case ContentType.Json:
-						result = _serializationHelper.DeserializeJson<TResult>(webResponse.Stream);
-						break;
-					default:
-						throw new ArgumentOutOfRangeException("contentType");
+							var streamReader = new StreamReader(webResponse.Stream);
+							result = (TResult)(object)await streamReader.ReadToEndAsync();
+							break;
+						case ContentType.Json:
+							result = _serializationHelper.DeserializeJson<TResult>(webResponse.Stream);
+							break;
+						default:
+							throw new ArgumentOutOfRangeException("contentType");
+					}
+
+					errorResult = default(TErrorResult);
 				}
+				else
+				{
+					switch (contentType)
+					{
+						case ContentType.String:
+							if (typeof(TErrorResult) != typeof(string))
+							{
+								throw new InvalidCastException();
+							}
 
-				errorResult = default (TErrorResult);
+							var streamReader = new StreamReader(webResponse.Stream);
+							errorResult = (TErrorResult)(object)await streamReader.ReadToEndAsync();
+							break;
+						case ContentType.Json:
+							errorResult = _serializationHelper.DeserializeJson<TErrorResult>(webResponse.Stream);
+							break;
+						default:
+							throw new ArgumentOutOfRangeException("contentType");
+					}
+
+
+					result = default(TResult);
+				}
 			}
 			else
 			{
-				switch (contentType)
-				{
-					case ContentType.String:
-						if (typeof(TErrorResult) != typeof(string))
-						{
-							throw new InvalidCastException();
-						}
-
-						var streamReader = new StreamReader(webResponse.Stream);
-						errorResult = (TErrorResult)(object)await streamReader.ReadToEndAsync();
-						break;
-					case ContentType.Json:
-						errorResult = _serializationHelper.DeserializeJson<TErrorResult>(webResponse.Stream);
-						break;
-					default:
-						throw new ArgumentOutOfRangeException("contentType");
-				}
-
 				result = default (TResult);
+				errorResult = default(TErrorResult);
 			}
 
 			return _resultFactory.Create(new WebResponseData<TResult, TErrorResult>(result, errorResult), webResponse.Success, exception: webResponse.Exception);

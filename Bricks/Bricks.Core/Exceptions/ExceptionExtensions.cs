@@ -1,6 +1,8 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Bricks.Core.Results;
@@ -14,6 +16,29 @@ namespace Bricks.Core.Exceptions
 		public static Exception GetInnerException(this Exception exception)
 		{
 			return exception.InnerException != null ? GetInnerException(exception.InnerException) : exception;
+		}
+
+		public static IEnumerable<Exception> GetExceptionHierarchy(this Exception exception)
+		{
+			yield return exception;
+			var aggregateException = exception as AggregateException;
+			if (aggregateException != null)
+			{
+				IEnumerable<Exception> innerExceptions = aggregateException.InnerExceptions.SelectMany(GetExceptionHierarchy);
+				foreach (var innerException in innerExceptions)
+				{
+					yield return innerException;
+				}
+			}
+
+			if (exception.InnerException != null && aggregateException == null)
+			{
+				IEnumerable<Exception> innerExceptions = GetExceptionHierarchy(exception.InnerException);
+				foreach (var innerException in innerExceptions)
+				{
+					yield return innerException;
+				}
+			}
 		}
 
 		#region Func
@@ -86,6 +111,38 @@ namespace Bricks.Core.Exceptions
 			return exceptionHelper.SimpleCatchAsync<TResult, Exception>(func);
 		}
 
+		public static Task<IResult<TResult>> CatchAsync<TResult>(this IExceptionHelper exceptionHelper, Task<TResult> task, string message = null, params Type[] exceptionTypes)
+		{
+			return exceptionHelper.CatchAsync(task, exceptionTypes, message);
+		}
+
+		public static Task<TResult> SimpleCatchAsync<TResult>(this IExceptionHelper exceptionHelper, Task<TResult> task, params Type[] exceptionTypes)
+		{
+			return exceptionHelper.SimpleCatchAsync(task, exceptionTypes);
+		}
+
+		public static Task<IResult<TResult>> CatchAsync<TResult, TException>(this IExceptionHelper exceptionHelper, Task<TResult> task, string message = null)
+			where TException : Exception
+		{
+			return exceptionHelper.CatchAsync(task, message, typeof(TException));
+		}
+
+		public static Task<TResult> SimpleCatchAsync<TResult, TException>(this IExceptionHelper exceptionHelper, Task<TResult> task)
+			where TException : Exception
+		{
+			return exceptionHelper.SimpleCatchAsync(task, typeof(TException));
+		}
+
+		public static Task<IResult<TResult>> CatchAsync<TResult>(this IExceptionHelper exceptionHelper, Task<TResult> task, string message = null)
+		{
+			return exceptionHelper.CatchAsync<TResult, Exception>(task, message);
+		}
+
+		public static Task<TResult> SimpleCatchAsync<TResult>(this IExceptionHelper exceptionHelper, Task<TResult> task)
+		{
+			return exceptionHelper.SimpleCatchAsync<TResult, Exception>(task);
+		}
+
 		#endregion
 
 		#region Action
@@ -156,6 +213,38 @@ namespace Bricks.Core.Exceptions
 		public static Task SimpleCatchAsync(this IExceptionHelper exceptionHelper, Func<Task> action)
 		{
 			return exceptionHelper.SimpleCatchAsync<Exception>(action);
+		}
+
+		public static Task<IResult> CatchAsync(this IExceptionHelper exceptionHelper, Task task, string message = null, params Type[] exceptionTypes)
+		{
+			return exceptionHelper.CatchAsync(task, exceptionTypes, message);
+		}
+
+		public static Task SimpleCatchAsync(this IExceptionHelper exceptionHelper, Task task, params Type[] exceptionTypes)
+		{
+			return exceptionHelper.SimpleCatchAsync(task, exceptionTypes);
+		}
+
+		public static Task<IResult> CatchAsync<TException>(this IExceptionHelper exceptionHelper, Task task, string message = null)
+			where TException : Exception
+		{
+			return exceptionHelper.CatchAsync(task, message, typeof(TException));
+		}
+
+		public static Task SimpleCatchAsync<TException>(this IExceptionHelper exceptionHelper, Task task)
+			where TException : Exception
+		{
+			return exceptionHelper.SimpleCatchAsync(task, typeof(TException));
+		}
+
+		public static Task<IResult> CatchAsync(this IExceptionHelper exceptionHelper, Task task, string message = null)
+		{
+			return exceptionHelper.CatchAsync<Exception>(task, message);
+		}
+
+		public static Task SimpleCatchAsync(this IExceptionHelper exceptionHelper, Task task)
+		{
+			return exceptionHelper.SimpleCatchAsync<Exception>(task);
 		}
 
 		#endregion

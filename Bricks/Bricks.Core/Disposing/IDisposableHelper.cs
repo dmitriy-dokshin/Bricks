@@ -19,5 +19,7 @@ namespace Bricks.Core.Disposing
 		/// An <see cref="IDisposable" /> object that executes action <paramref name="dispose" /> when releasing resources.
 		/// </returns>
 		IDisposable Action(Action dispose);
+
+		IDisposable GetEmpty();
 	}
 }

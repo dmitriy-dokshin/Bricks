@@ -20,15 +20,9 @@ namespace Bricks.Core.Results
 			return resultFactory.Create(false, message, exception, innerResult);
 		}
 
-		public static Exception GetException(this IResult result)
+		public static IResult GetInnerResult(this IResult result)
 		{
-			return result.Exception ?? (result.InnerResult != null ? GetException(result.InnerResult) : null);
-		}
-
-		public static Exception GetInnerException(this IResult result)
-		{
-			Exception exception = result.GetException();
-			return exception != null ? exception.GetInnerException() : null;
+			return result.InnerResult != null ? GetInnerResult(result.InnerResult) : result;
 		}
 	}
 }

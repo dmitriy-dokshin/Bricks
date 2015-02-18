@@ -135,6 +135,7 @@
     <Compile Include="Resources\ResourceManagerImpl.cs" />
     <Compile Include="Resources\ResourceProvider.cs" />
     <Compile Include="Results\ResultFactory.cs" />
+    <Compile Include="Results\ResultHelper.cs" />
     <Compile Include="Seams\RandomProvider.cs" />
     <Compile Include="Serialization\SerializationHelper.cs" />
     <Compile Include="Sync\DistributedLockManager.cs" />
@@ -151,6 +152,7 @@
     <Compile Include="Auth\ExternalLogins\Facebook\FacebookUserParameters.cs" />
     <Compile Include="Auth\ExternalLogins\Facebook\FacebookUserPictureData.cs" />
     <Compile Include="Auth\ExternalLogins\Facebook\FacebookUserPictureParameters.cs" />
+    <Compile Include="Tasks\TaskHelper.cs" />
     <Compile Include="Web\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
       <AutoGen>True</AutoGen>

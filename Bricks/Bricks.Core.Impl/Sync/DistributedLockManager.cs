@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 
 using Bricks.Core.DateTime;
 using Bricks.Core.Disposing;
-using Bricks.Core.Extensions;
 using Bricks.Core.Impl.Disposing;
 using Bricks.Core.Repository;
 using Bricks.Core.Results;
@@ -34,12 +33,12 @@ namespace Bricks.Core.Impl.Sync
 
 		private sealed class LockDisposable : DisposableBase
 		{
+			private readonly Func<IRepository> _getRepository;
 			private readonly Lock _lock;
-			private readonly IRepository _repository;
 
-			public LockDisposable(IRepository repository, Lock @lock)
+			public LockDisposable(Func<IRepository> getRepository, Lock @lock)
 			{
-				_repository = repository;
+				_getRepository = getRepository;
 				_lock = @lock;
 			}
 
@@ -52,7 +51,11 @@ namespace Bricks.Core.Impl.Sync
 					return;
 				}
 
-				_repository.RemoveAndSaveAsync(_lock).Wait();
+				using (IRepository repository = _getRepository())
+				{
+					repository.Remove(_lock);
+					repository.Save();
+				}
 
 				base.Dispose(disposing);
 			}
@@ -62,7 +65,7 @@ namespace Bricks.Core.Impl.Sync
 
 		#region Implementation of IDistributedLockManager
 
-		public async Task<IDisposable> TryGetLock(IRepository repository, object key, Guid ownerId, object key1 = null, TimeSpan? timeout = null)
+		public async Task<IDisposable> TryGetLock(Func<IRepository> getRepository, object key, object key1 = null, TimeSpan? timeout = null)
 		{
 			if (!timeout.HasValue)
 			{
@@ -71,7 +74,7 @@ namespace Bricks.Core.Impl.Sync
 
 			if (key == null)
 			{
-				key = _defaultKey;
+				throw new ArgumentNullException("key");
 			}
 
 			if (key1 == null)
@@ -80,34 +83,37 @@ namespace Bricks.Core.Impl.Sync
 			}
 
 			string keyString = key.ToString();
-			string key1String = key1.ToStringOrNull();
-			var @lock = await repository.Select<Lock>().FirstOrDefaultAsync(x => x.Key == keyString && x.Key1 == key1String, CancellationToken.None);
-			if (@lock != null)
+			string key1String = key1.ToString();
+			using (IRepository repository = getRepository())
 			{
-				if (_dateTimeProvider.Now - @lock.CreatedAt > timeout.Value)
+				var @lock = await repository.Select<Lock>().FirstOrDefaultAsync(x => x.Key == keyString && x.Key1 == key1String, CancellationToken.None);
+				if (@lock != null)
 				{
-					IResult removeLockResult = await repository.RemoveAndSaveAsync(@lock);
-					if (removeLockResult.Success)
+					if (_dateTimeProvider.Now - @lock.CreatedAt > timeout.Value)
 					{
-						@lock = null;
+						IResult removeLockResult = await repository.RemoveAndSaveAsync(@lock);
+						if (removeLockResult.Success)
+						{
+							@lock = null;
+						}
 					}
 				}
-			}
 
-			IDisposable lockDisposable = null;
-			if (@lock == null)
-			{
-				IResult<Lock> addLockResult = await repository.AddAndSaveAsync(new Lock(keyString, key1String, _dateTimeProvider.Now, ownerId));
-				if (addLockResult.Success)
+				IDisposable lockDisposable = null;
+				if (@lock == null)
 				{
-					lockDisposable = new LockDisposable(repository, addLockResult.Data);
+					IResult<Lock> addLockResult = await repository.AddAndSaveAsync(new Lock(keyString, key1String, _dateTimeProvider.Now));
+					if (addLockResult.Success)
+					{
+						lockDisposable = new LockDisposable(getRepository, addLockResult.Data);
+					}
 				}
-			}
 
-			return lockDisposable;
+				return lockDisposable;
+			}
 		}
 
-		public async Task<IDisposable> GetLock(IRepository repository, object key, Guid ownerId, object key1 = null, TimeSpan? timeout = null, TimeSpan? checkPeriod = null)
+		public async Task<IDisposable> GetLock(Func<IRepository> getRepository, object key, object key1 = null, TimeSpan? timeout = null, TimeSpan? checkPeriod = null)
 		{
 			if (!timeout.HasValue)
 			{
@@ -116,7 +122,7 @@ namespace Bricks.Core.Impl.Sync
 
 			if (key == null)
 			{
-				key = _defaultKey;
+				throw new ArgumentNullException("key");
 			}
 
 			if (key1 == null)
@@ -136,7 +142,7 @@ namespace Bricks.Core.Impl.Sync
 				var localDisposable = await @lockAsync.Enter(cancellationTokenSource.Token);
 				while (true)
 				{
-					var ditributedDisposable = await TryGetLock(repository, key, ownerId, key1, timeout);
+					var ditributedDisposable = await TryGetLock(getRepository, key, key1, timeout);
 					if (ditributedDisposable != null)
 					{
 						return ditributedDisposable.After(localDisposable.Dispose);
@@ -147,13 +153,23 @@ namespace Bricks.Core.Impl.Sync
 			}
 		}
 
-		public async Task<IResult> CleanUp(IRepository repository, TimeSpan lifetime)
+		public async Task<IResult> CleanUp(IRepository repository, TimeSpan lifetime, object key = null, object key1 = null)
 		{
 			DateTimeOffset createdAtFrom = _dateTimeProvider.Now - lifetime;
-			IReadOnlyCollection<Lock> locks =
-				await repository.Select<Lock>()
-						  .Where(x => x.CreatedAt < createdAtFrom)
-						  .ToReadOnlyCollectionAsync(CancellationToken.None);
+			IQueryable<Lock> locksQuery = repository.Select<Lock>().Where(x => x.CreatedAt < createdAtFrom);
+			if (key != null)
+			{
+				string keyString = key.ToString();
+				locksQuery = locksQuery.Where(x => x.Key == keyString);
+			}
+
+			if (key1 != null)
+			{
+				string key1String = key1.ToString();
+				locksQuery = locksQuery.Where(x => x.Key1 == key1String);
+			}
+
+			IReadOnlyCollection<Lock> locks = await locksQuery.ToReadOnlyCollectionAsync(CancellationToken.None);
 			return await repository.RemoveRangeAndSaveAsync(locks);
 		}
 

@@ -92,6 +92,7 @@
     <Compile Include="Configuration\IKeyConfigurationElement.cs" />
     <Compile Include="DateTime\IDateTimeProvider.cs" />
     <Compile Include="Disposing\DisposableBase.cs" />
+    <Compile Include="Disposing\EmptyDisposable.cs" />
     <Compile Include="Disposing\IDisposableHelper.cs" />
     <Compile Include="Enum\EnumExtensions.cs" />
     <Compile Include="Enum\EnumResourceAttribute.cs" />
@@ -104,6 +105,7 @@
     <Compile Include="Environment\IEnvironment.cs" />
     <Compile Include="Events\EventHandlerObservable.cs" />
     <Compile Include="Events\EventHandlerObservableInvokeMode.cs" />
+    <Compile Include="Results\IResultHelper.cs" />
     <Compile Include="Tasks\EventCancellationTokenProvider.cs" />
     <Compile Include="Events\EventHandlerAdapter.cs" />
     <Compile Include="Events\EventManagerExtensions.cs" />
@@ -174,6 +176,8 @@
     <Compile Include="Sync\Lock.cs" />
     <Compile Include="Sync\LockAsyncType.cs" />
     <Compile Include="Tasks\ICancellationTokenProvider.cs" />
+    <Compile Include="Tasks\ITaskHelper.cs" />
+    <Compile Include="Tasks\TaskExtensions.cs" />
     <Compile Include="Web\ContentType.cs" />
     <Compile Include="Auth\ExternalLogins\IExternalLoginData.cs" />
     <Compile Include="Auth\ExternalLogins\IExternalLoginProvider.cs" />

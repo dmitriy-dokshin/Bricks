@@ -12,10 +12,10 @@ namespace Bricks.Core.Sync
 {
 	public interface IDistributedLockManager
 	{
-		Task<IDisposable> TryGetLock(IRepository repository, object key, Guid ownerId, object key1 = null, TimeSpan? timeout = null);
+		Task<IDisposable> TryGetLock(Func<IRepository> getRepository, object key, object key1 = null, TimeSpan? timeout = null);
 
-		Task<IDisposable> GetLock(IRepository repository, object key, Guid ownerId, object key1 = null, TimeSpan? timeout = null, TimeSpan? checkPeriod = null);
+		Task<IDisposable> GetLock(Func<IRepository> getRepository, object key, object key1 = null, TimeSpan? timeout = null, TimeSpan? checkPeriod = null);
 
-		Task<IResult> CleanUp(IRepository repository, TimeSpan lifetime);
+		Task<IResult> CleanUp(IRepository repository, TimeSpan lifetime, object key = null, object key1 = null);
 	}
 }

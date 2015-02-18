@@ -13,6 +13,13 @@ namespace Bricks.Core.Impl.Disposing
 	/// </summary>
 	internal sealed class DisposableHelper : IDisposableHelper
 	{
+		private readonly IDisposable _emptyDisposable;
+
+		public DisposableHelper()
+		{
+			_emptyDisposable = new EmptyDisposable();
+		}
+
 		#region Implementation of IDisposableHelper
 
 		/// <summary>
@@ -25,6 +32,11 @@ namespace Bricks.Core.Impl.Disposing
 		public IDisposable Action(Action dispose)
 		{
 			return new ActionDisposable(dispose);
+		}
+
+		public IDisposable GetEmpty()
+		{
+			return _emptyDisposable;
 		}
 
 		#endregion
