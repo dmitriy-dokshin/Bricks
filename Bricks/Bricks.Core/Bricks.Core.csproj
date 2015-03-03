@@ -103,6 +103,7 @@
     <Compile Include="Enum\IFlagsMetadata.cs" />
     <Compile Include="Enum\IFlagsValueMetadata.cs" />
     <Compile Include="Environment\IEnvironment.cs" />
+    <Compile Include="Events\EventHandlerBase.cs" />
     <Compile Include="Events\EventHandlerObservable.cs" />
     <Compile Include="Events\EventHandlerObservableInvokeMode.cs" />
     <Compile Include="Results\IResultHelper.cs" />

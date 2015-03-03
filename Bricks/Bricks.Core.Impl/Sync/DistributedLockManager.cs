@@ -153,9 +153,14 @@ namespace Bricks.Core.Impl.Sync
 			}
 		}
 
-		public async Task<IResult> CleanUp(IRepository repository, TimeSpan lifetime, object key = null, object key1 = null)
+		public async Task<IResult> CleanUp(IRepository repository, TimeSpan? lifetime = null, object key = null, object key1 = null)
 		{
-			DateTimeOffset createdAtFrom = _dateTimeProvider.Now - lifetime;
+			if (!lifetime.HasValue)
+			{
+				lifetime = _defaultTimeout;
+			}
+
+			DateTimeOffset createdAtFrom = _dateTimeProvider.Now - lifetime.Value;
 			IQueryable<Lock> locksQuery = repository.Select<Lock>().Where(x => x.CreatedAt < createdAtFrom);
 			if (key != null)
 			{

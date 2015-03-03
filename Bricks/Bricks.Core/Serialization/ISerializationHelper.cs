@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.IO;
 
 using Newtonsoft.Json.Linq;
@@ -60,6 +61,12 @@ namespace Bricks.Core.Serialization
 		/// <returns>Признак успешной десериализации.</returns>
 		bool TryDeserializeJson<T>(Stream stream, out T value);
 
-		string SerializeToJsonString<T>(T source);
+		string SerializeToJson(object source);
+
+		string SerializeToXml(object source);
+
+		T DeserializeXml<T>(string xml);
+
+		object DeserializeXml(string xml, Type type);
 	}
 }

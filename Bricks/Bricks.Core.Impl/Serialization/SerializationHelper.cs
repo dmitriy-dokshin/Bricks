@@ -1,9 +1,14 @@
 ﻿#region
 
+using System;
+using System.Collections.Immutable;
 using System.IO;
 using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 
 using Bricks.Core.Serialization;
+using Bricks.Core.Sync;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -17,11 +22,15 @@ namespace Bricks.Core.Impl.Serialization
 	/// </summary>
 	internal sealed class SerializationHelper : ISerializationHelper
 	{
+		private IImmutableDictionary<Type, XmlSerializer> _xmlSerializersByType;
+		private readonly IInterlockedHelper _interlockedHelper;
 		private readonly JsonSerializer _jsonSerializer;
 
-		public SerializationHelper(JsonSerializer jsonSerializer)
+		public SerializationHelper(JsonSerializer jsonSerializer, IInterlockedHelper interlockedHelper)
 		{
 			_jsonSerializer = jsonSerializer;
+			_interlockedHelper = interlockedHelper;
+			_xmlSerializersByType = ImmutableDictionary<Type, XmlSerializer>.Empty;
 		}
 
 		#region Implementation of ISerializationHelper
@@ -120,7 +129,7 @@ namespace Bricks.Core.Impl.Serialization
 			}
 		}
 
-		public string SerializeToJsonString<T>(T source)
+		public string SerializeToJson(object source)
 		{
 			var stringBuilder = new StringBuilder();
 			using (TextWriter textWriter = new StringWriter(stringBuilder))
@@ -129,6 +138,67 @@ namespace Bricks.Core.Impl.Serialization
 			}
 
 			return stringBuilder.ToString();
+		}
+
+		public string SerializeToXml(object source)
+		{
+			if (source == null)
+			{
+				return null;
+			}
+
+			XmlSerializer xmlSerializer = GetXmlSerializer(source.GetType());
+			StringBuilder stringBuilder = new StringBuilder();
+			using (XmlWriter xmlWriter = XmlWriter.Create(stringBuilder))
+			{
+				xmlSerializer.Serialize(xmlWriter, source);
+			}
+
+			return stringBuilder.ToString();
+		}
+
+		public T DeserializeXml<T>(string xml)
+		{
+			if (xml == null)
+			{
+				return default(T);
+			}
+
+			return (T)DeserializeXml(xml, typeof(T));
+		}
+
+		public object DeserializeXml(string xml, Type type)
+		{
+			if (xml == null)
+			{
+				return null;
+			}
+
+			XmlSerializer xmlSerializer = GetXmlSerializer(type);
+			using (var stringReader = new StringReader(xml))
+			{
+				return xmlSerializer.Deserialize(stringReader);
+			}
+		}
+
+		private XmlSerializer GetXmlSerializer(Type type)
+		{
+			return _interlockedHelper.CompareExchange(ref _xmlSerializersByType, x =>
+				{
+					XmlSerializer xmlSerializer;
+					IImmutableDictionary<Type, XmlSerializer> newValue;
+					if (!x.TryGetValue(type, out xmlSerializer))
+					{
+						xmlSerializer = new XmlSerializer(type);
+						newValue = x.Add(type, xmlSerializer);
+					}
+					else
+					{
+						newValue = x;
+					}
+
+					return _interlockedHelper.CreateChangeResult(newValue, xmlSerializer);
+				});
 		}
 
 		#endregion
