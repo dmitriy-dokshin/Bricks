@@ -2,8 +2,6 @@
 
 using System;
 
-using Bricks.Core.Exceptions;
-
 #endregion
 
 namespace Bricks.Core.Results
@@ -23,6 +21,22 @@ namespace Bricks.Core.Results
 		public static IResult GetInnerResult(this IResult result)
 		{
 			return result.InnerResult != null ? GetInnerResult(result.InnerResult) : result;
+		}
+
+		public static string GetMessage(this IResult result, bool innerResult = true, bool exception = true)
+		{
+			string message = result.Message;
+			if (string.IsNullOrEmpty(message) && innerResult && result.InnerResult != null)
+			{
+				message = GetMessage(result.InnerResult);
+			}
+
+			if (string.IsNullOrEmpty(message) && exception && result.Exception != null)
+			{
+				message = result.Exception.Message;
+			}
+
+			return message;
 		}
 	}
 }
