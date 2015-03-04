@@ -43,38 +43,12 @@ namespace Bricks.Core.Impl.Enum
 		private const string EnumValueDescriptionResourceKeyTemplate = "{0}_{1}_Description";
 
 		private readonly Type _enumType;
-		private readonly IResourceManager _resourceManager;
+		private readonly IResourceProvider _resourceProvider;
 
 		public EnumResourceHelper(Type enumType, IResourceProvider resourceProvider)
 		{
 			_enumType = enumType;
-
-			var enumResourceAttribute =
-				enumType.GetCustomAttribute<EnumResourceAttribute>(false);
-			if (enumResourceAttribute != null)
-			{
-				if (!string.IsNullOrEmpty(enumResourceAttribute.BaseName))
-				{
-					var resourceAssembly =
-						!string.IsNullOrEmpty(enumResourceAttribute.AssemblyString)
-							? Assembly.Load(enumResourceAttribute.AssemblyString)
-							: enumType.Assembly;
-					_resourceManager = resourceProvider.GetResourceManager(enumResourceAttribute.BaseName, resourceAssembly);
-				}
-				else
-				{
-					var resourceType = enumResourceAttribute.ResourceType;
-					if (resourceType == null && !string.IsNullOrEmpty(enumResourceAttribute.ResourceTypeFullName))
-					{
-						resourceType = Type.GetType(enumResourceAttribute.ResourceTypeFullName);
-					}
-
-					if (resourceType != null)
-					{
-						_resourceManager = resourceProvider.GetResourceManager(resourceType);
-					}
-				}
-			}
+			_resourceProvider = resourceProvider;
 		}
 
 		#region Implementation of IEnumResourceHelper
@@ -91,10 +65,11 @@ namespace Bricks.Core.Impl.Enum
 				return _enumType.Name;
 			}
 
-			if (_resourceManager != null)
+			IResourceManager resourceManager = GetResourceManager();
+			if (resourceManager != null)
 			{
 				var resourceName = string.Format(CultureInfo.InvariantCulture, EnumNameResourceKeyTemplate, _enumType.Name);
-				return _resourceManager.GetString(resourceName, cultureInfo);
+				return resourceManager.GetString(resourceName, cultureInfo);
 			}
 
 			return _enumType.Name;
@@ -107,10 +82,11 @@ namespace Bricks.Core.Impl.Enum
 		/// <returns>Локализованное описание типа перечисления.</returns>
 		public string GetEnumDescription(CultureInfo cultureInfo)
 		{
-			if (_resourceManager != null)
+			IResourceManager resourceManager = GetResourceManager();
+			if (resourceManager != null)
 			{
 				var resourceName = string.Format(CultureInfo.InvariantCulture, EnumDescriptionResourceKeyTemplate, _enumType.Name);
-				return _resourceManager.GetString(resourceName, cultureInfo);
+				return resourceManager.GetString(resourceName, cultureInfo);
 			}
 
 			return null;
@@ -124,10 +100,11 @@ namespace Bricks.Core.Impl.Enum
 		/// <returns>Локализованное название значения типа перечисления.</returns>
 		public string GetEnumValueName(string enumValueName, CultureInfo cultureInfo)
 		{
-			if (_resourceManager != null)
+			IResourceManager resourceManager = GetResourceManager();
+			if (resourceManager != null)
 			{
 				var resourceName = string.Format(CultureInfo.InvariantCulture, EnumValueNameResourceKeyTemplate, _enumType.Name, enumValueName);
-				return _resourceManager.GetString(resourceName, cultureInfo);
+				return resourceManager.GetString(resourceName, cultureInfo);
 			}
 
 			return enumValueName;
@@ -141,15 +118,48 @@ namespace Bricks.Core.Impl.Enum
 		/// <returns>Локализованное описание значения типа перечисления.</returns>
 		public string GetEnumValueDescription(string enumValueName, CultureInfo cultureInfo)
 		{
-			if (_resourceManager != null)
+			IResourceManager resourceManager = GetResourceManager();
+			if (resourceManager != null)
 			{
 				var resourceName = string.Format(CultureInfo.InvariantCulture, EnumValueDescriptionResourceKeyTemplate, _enumType.Name, enumValueName);
-				return _resourceManager.GetString(resourceName, cultureInfo);
+				return resourceManager.GetString(resourceName, cultureInfo);
 			}
 
 			return null;
 		}
 
 		#endregion
+
+		private IResourceManager GetResourceManager()
+		{
+			IResourceManager resourceManager = null;
+			var enumResourceAttribute =
+				_enumType.GetCustomAttribute<EnumResourceAttribute>(false);
+			if (enumResourceAttribute != null)
+			{
+				if (!string.IsNullOrEmpty(enumResourceAttribute.BaseName))
+				{
+					var resourceAssembly =
+						!string.IsNullOrEmpty(enumResourceAttribute.AssemblyString)
+							? Assembly.Load(enumResourceAttribute.AssemblyString)
+							: _enumType.Assembly;
+					resourceManager = _resourceProvider.GetResourceManager(enumResourceAttribute.BaseName, resourceAssembly);
+				}
+				else
+				{
+					var resourceType = enumResourceAttribute.ResourceType;
+					if (resourceType == null && !string.IsNullOrEmpty(enumResourceAttribute.ResourceTypeFullName))
+					{
+						resourceType = Type.GetType(enumResourceAttribute.ResourceTypeFullName);
+					}
+
+					if (resourceType != null)
+					{
+						resourceManager = _resourceProvider.GetResourceManager(resourceType);
+					}
+				}
+			}
+			return resourceManager;
+		}
 	}
 }

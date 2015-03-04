@@ -1,10 +1,12 @@
 ﻿#region
 
 using System;
+using System.Collections.Immutable;
 using System.Reflection;
 using System.Resources;
 
 using Bricks.Core.Resources;
+using Bricks.Core.Sync;
 
 #endregion
 
@@ -15,6 +17,44 @@ namespace Bricks.Core.Impl.Resources
 	/// </summary>
 	internal sealed class ResourceProvider : IResourceProvider
 	{
+		private IImmutableDictionary<ResourceManagerKey, IResourceManager> _resourceManagers;
+		private readonly IInterlockedHelper _interlockedHelper;
+
+		public ResourceProvider(IInterlockedHelper interlockedHelper)
+		{
+			_interlockedHelper = interlockedHelper;
+			_resourceManagers = ImmutableDictionary.Create<ResourceManagerKey, IResourceManager>();
+		}
+
+		private sealed class ResourceManagerKey
+		{
+			private readonly Assembly _assembly;
+			private readonly string _baseName;
+
+			public ResourceManagerKey(string baseName, Assembly assembly)
+			{
+				_baseName = baseName;
+				_assembly = assembly;
+			}
+
+			public override bool Equals(object obj)
+			{
+				if (obj == null || GetType() != obj.GetType())
+				{
+					return false;
+				}
+
+				var resourceManagerKey = (ResourceManagerKey)obj;
+				bool result = _baseName.Equals(resourceManagerKey._baseName) && _assembly.Equals(resourceManagerKey._assembly);
+				return result;
+			}
+
+			public override int GetHashCode()
+			{
+				return _baseName.GetHashCode() | _assembly.GetHashCode();
+			}
+		}
+
 		#region Implementation of IResourceProvider
 
 		/// <summary>
@@ -24,9 +64,9 @@ namespace Bricks.Core.Impl.Resources
 		/// <returns>Менеджер ресурсов.</returns>
 		public IResourceManager GetResourceManager(Type resourceType)
 		{
-			var propertyInfo = resourceType.GetProperty("ResourceManager", BindingFlags.Static | BindingFlags.NonPublic);
-			var resourceManager = propertyInfo.GetValue(null);
-			return new ResourceManagerImpl((ResourceManager)resourceManager);
+			string baseName = resourceType.FullName;
+			Assembly assembly = resourceType.Assembly;
+			return GetResourceManager(baseName, assembly);
 		}
 
 		/// <summary>
@@ -38,8 +78,24 @@ namespace Bricks.Core.Impl.Resources
 		/// <returns>Менеджер ресурсов.</returns>
 		public IResourceManager GetResourceManager(string baseName, Assembly assembly)
 		{
-			var resourceManager = new ResourceManager(baseName, assembly);
-			return new ResourceManagerImpl(resourceManager);
+			var resourceManagerKey = new ResourceManagerKey(baseName, assembly);
+			return _interlockedHelper.CompareExchange(ref _resourceManagers, x =>
+				{
+					IResourceManager result;
+					IImmutableDictionary<ResourceManagerKey, IResourceManager> newValue;
+					if (!_resourceManagers.TryGetValue(resourceManagerKey, out result))
+					{
+						var resourceManager = new ResourceManager(baseName, assembly);
+						result = new ResourceManagerImpl(resourceManager);
+						newValue = x.Add(resourceManagerKey, result);
+					}
+					else
+					{
+						newValue = x;
+					}
+
+					return _interlockedHelper.CreateChangeResult(newValue, result);
+				});
 		}
 
 		#endregion

@@ -76,9 +76,7 @@
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
 		<register type="Bricks.Core.Impl.Enum.IEnumResourceHelper"
-				  mapTo="Bricks.Core.Impl.Enum.EnumResourceHelper">
-			<lifetime type="ContainerControlledLifetimeManager" />
-		</register>
+				  mapTo="Bricks.Core.Impl.Enum.EnumResourceHelper" />
 		<register type="Bricks.Core.Enum.IFlagsMetadata"
 				  mapTo="Bricks.Core.Impl.Enum.ResourceFlagsMetadata" />
 		<register type="Bricks.Core.Enum.IEnumMetadata"

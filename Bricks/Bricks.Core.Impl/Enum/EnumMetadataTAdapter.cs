@@ -65,7 +65,7 @@ namespace Bricks.Core.Impl.Enum
 
 		public string GetDescription(CultureInfo cultureInfo = null)
 		{
-			return _enumMetadata.GetName(cultureInfo);
+			return _enumMetadata.GetDescription(cultureInfo);
 		}
 
 		#endregion
