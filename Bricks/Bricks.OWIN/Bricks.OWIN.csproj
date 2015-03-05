@@ -70,9 +70,12 @@
     </Compile>
     <Compile Include="Auth\IAccessTokenProvider.cs" />
     <Compile Include="Auth\OAuthTokenProvider.cs" />
-    <Compile Include="Middeware\BasicAuthenticationExtensions.cs" />
+    <Compile Include="Extensions\OwinContextExtensions.cs" />
+    <Compile Include="Middeware\AppBuilderExtensions.cs" />
     <Compile Include="Middeware\BasicAuthenticationMiddleware.cs" />
     <Compile Include="Middeware\BasicAuthenticationOptions.cs" />
+    <Compile Include="Middeware\GlobalizationMiddleware.cs" />
+    <Compile Include="Middeware\GlobalizationOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

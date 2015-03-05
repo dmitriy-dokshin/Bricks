@@ -98,6 +98,16 @@
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
 
+		<!-- Globalization -->
+		<register type="Bricks.Core.Globalization.ICultureHelper"
+				  mapTo="Bricks.Core.Impl.Globalization.CultureHelper">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+		<register type="Bricks.Core.Globalization.ICultureProvider"
+				  mapTo="Bricks.Core.Impl.Globalization.CultureProvider">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
+
 		<!-- Images -->
 		<register type="Bricks.Core.Images.IImageProcessor"
 				  mapTo="Bricks.Core.Impl.Images.ImageProcessor">

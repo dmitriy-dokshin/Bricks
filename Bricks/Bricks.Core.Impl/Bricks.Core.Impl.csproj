@@ -118,6 +118,8 @@
     <Compile Include="Enum\ResourceFlagsValueMetadata.cs" />
     <Compile Include="Events\EventManager.cs" />
     <Compile Include="Exceptions\ExceptionHelper.cs" />
+    <Compile Include="Globalization\CultureHelper.cs" />
+    <Compile Include="Globalization\CultureProvider.cs" />
     <Compile Include="Images\ImageProcessor.cs" />
     <Compile Include="IoC\SimpleUnityServiceLocator.cs" />
     <Compile Include="IO\FileSystemProvider.cs" />

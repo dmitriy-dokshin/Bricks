@@ -23,7 +23,7 @@ namespace Bricks.OWIN.Middeware
 			_options = options;
 		}
 
-		public Task Invoke(IDictionary<string, object> environment)
+		public async Task Invoke(IDictionary<string, object> environment)
 		{
 			var context = new OwinContext(environment);
 			var isAuthenticated = false;
@@ -49,10 +49,10 @@ namespace Bricks.OWIN.Middeware
 			{
 				context.Response.Headers.Add("WWW-Authenticate", new[] { string.Format(CultureInfo.InvariantCulture, "Basic realm=\"{0}\"", _options.Realm) });
 				context.Response.StatusCode = 401;
-				return Task.FromResult((object)null);
+				return;
 			}
 
-			return _next(environment);
+			await _next(environment);
 		}
 	}
 }
