@@ -106,6 +106,7 @@
     <Compile Include="Events\EventHandlerBase.cs" />
     <Compile Include="Events\EventHandlerObservable.cs" />
     <Compile Include="Events\EventHandlerObservableInvokeMode.cs" />
+    <Compile Include="Extensions\PredicateBuilder.cs" />
     <Compile Include="Globalization\CultureExtensions.cs" />
     <Compile Include="Globalization\ICultureHelper.cs" />
     <Compile Include="Globalization\ICultureProvider.cs" />

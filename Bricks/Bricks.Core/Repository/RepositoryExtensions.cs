@@ -328,5 +328,10 @@ namespace Bricks.Core.Repository
 					: _resultFactory.Value.CreateUnsuccessfulResult(innerResult: saveResult);
 			return result;
 		}
+
+		public static IQueryable<TSource> AsExpandable<TSource>(this IQueryable<TSource> source)
+		{
+			return _repositoryHelper.Value.AsExpandable(source);
+		}
 	}
 }

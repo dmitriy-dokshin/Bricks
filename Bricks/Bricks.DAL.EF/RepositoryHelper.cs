@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 using Bricks.Core.Repository;
 
+using LinqKit;
+
 #endregion
 
 namespace Bricks.DAL.EF
@@ -221,6 +223,11 @@ namespace Bricks.DAL.EF
 		public Task<double?> SumAsync(IQueryable<double?> source, CancellationToken cancellationToken)
 		{
 			return QueryableExtensions.SumAsync(source, cancellationToken);
+		}
+
+		public IQueryable<TSource> AsExpandable<TSource>(IQueryable<TSource> source)
+		{
+			return Extensions.AsExpandable(source);
 		}
 
 		#endregion

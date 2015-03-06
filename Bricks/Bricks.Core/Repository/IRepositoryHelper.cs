@@ -66,5 +66,7 @@ namespace Bricks.Core.Repository
 		Task<double> SumAsync(IQueryable<double> source, CancellationToken cancellationToken);
 
 		Task<double?> SumAsync(IQueryable<double?> source, CancellationToken cancellationToken);
+
+		IQueryable<TSource> AsExpandable<TSource>(IQueryable<TSource> source);
 	}
 }

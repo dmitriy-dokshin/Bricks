@@ -39,16 +39,14 @@ namespace Bricks.Core.Globalization
 			return _cultureHelper.Execute(func, cultureProvider.CurrentCulture);
 		}
 
-		public static int? GetCurrentCultureLCID(this ICultureProvider cultureProvider)
+		public static CultureInfo GetParentCulture(this CultureInfo cultureInfo)
 		{
-			CultureInfo currentCulture = cultureProvider.CurrentCulture;
-			return currentCulture != null ? currentCulture.LCID : (int?)null;
-		}
+			if (!Equals(cultureInfo.Parent, CultureInfo.InvariantCulture))
+			{
+				return cultureInfo.GetParentCulture();
+			}
 
-		public static int? GetCurrentUICultureLCID(this ICultureProvider cultureProvider)
-		{
-			CultureInfo currentUICulture = cultureProvider.CurrentUICulture;
-			return currentUICulture != null ? currentUICulture.LCID : (int?)null;
+			return cultureInfo;
 		}
 	}
 }
