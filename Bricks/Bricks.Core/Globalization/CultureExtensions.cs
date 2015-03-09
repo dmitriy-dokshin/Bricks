@@ -43,7 +43,7 @@ namespace Bricks.Core.Globalization
 		{
 			if (!Equals(cultureInfo.Parent, CultureInfo.InvariantCulture))
 			{
-				return cultureInfo.GetParentCulture();
+				return cultureInfo.Parent.GetParentCulture();
 			}
 
 			return cultureInfo;
