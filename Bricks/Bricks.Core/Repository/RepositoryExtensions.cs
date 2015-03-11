@@ -177,6 +177,11 @@ namespace Bricks.Core.Repository
 			return _repositoryHelper.Value.ToReadOnlyCollectionAsync(queryable, cancellationToken);
 		}
 
+		public static Task<IReadOnlyList<T>> ToReadOnlyListAsync<T>(this IQueryable<T> queryable, CancellationToken cancellationToken)
+		{
+			return _repositoryHelper.Value.ToReadOnlyListAsync(queryable, cancellationToken);
+		}
+
 		public static Task<IReadOnlyDictionary<TKey, TValue>> ToReadOnlyDictionaryAsync<T, TKey, TValue>(this IQueryable<T> queryable, Func<T, TKey> keySelector, Func<T, TValue> valueSelector, CancellationToken cancellationToken)
 		{
 			return _repositoryHelper.Value.ToReadOnlyDictionaryAsync(queryable, keySelector, valueSelector, cancellationToken);

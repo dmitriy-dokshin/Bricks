@@ -77,6 +77,9 @@
     <Compile Include="Auth\ExternalLogins\ExternalLoginDataExtensions.cs" />
     <Compile Include="Auth\ExternalLogins\ExternalLoginProviders.cs" />
     <Compile Include="Auth\ExternalLogins\IAccessTokenData.cs" />
+    <Compile Include="Auth\ExternalLogins\IFacebookSettings.cs" />
+    <Compile Include="Auth\ExternalLogins\IVkSettings.cs" />
+    <Compile Include="Auth\ExternalLogins\SettingsKeys.cs" />
     <Compile Include="Auth\ICodeGenerator.cs" />
     <Compile Include="Auth\IPasswordHasher.cs" />
     <Compile Include="Collections\ICollectionHelper.cs" />

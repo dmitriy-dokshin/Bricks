@@ -1,4 +1,4 @@
-﻿namespace Bricks.Core.Impl.Auth.ExternalLogins.Facebook
+﻿namespace Bricks.Core.Auth.ExternalLogins
 {
 	/// <summary>
 	/// Настройки Facebook.

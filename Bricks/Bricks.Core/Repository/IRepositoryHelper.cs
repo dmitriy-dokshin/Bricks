@@ -15,6 +15,8 @@ namespace Bricks.Core.Repository
 	{
 		Task<IReadOnlyCollection<T>> ToReadOnlyCollectionAsync<T>(IQueryable<T> queryable, CancellationToken cancellationToken);
 
+		Task<IReadOnlyList<T>> ToReadOnlyListAsync<T>(IQueryable<T> queryable, CancellationToken cancellationToken);
+
 		Task<IReadOnlyDictionary<TKey, TValue>> ToReadOnlyDictionaryAsync<T, TKey, TValue>(IQueryable<T> queryable, Func<T, TKey> keySelector, Func<T, TValue> valueSelector, CancellationToken cancellationToken);
 
 		Task<T> FirstOrDefaultAsync<T>(IQueryable<T> source, Expression<Func<T, bool>> predicate, CancellationToken cancellationToken);

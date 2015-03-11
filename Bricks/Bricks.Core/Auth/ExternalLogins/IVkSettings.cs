@@ -1,4 +1,4 @@
-﻿namespace Bricks.Core.Impl.Auth.ExternalLogins.VK
+﻿namespace Bricks.Core.Auth.ExternalLogins
 {
 	/// <summary>
 	/// Настройки VK.

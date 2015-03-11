@@ -18,7 +18,6 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.VK
 {
 	internal sealed class VkLoginProvider : IExternalLoginProvider
 	{
-		private const string VkSettingsKey = "vkSettings";
 		private static readonly Uri _usersGetUrl = new Uri("https://api.vk.com/method/users.get");
 		private static readonly Uri _accessTokenUrl = new Uri("https://oauth.vk.com/access_token");
 		private static readonly Uri _authorizeUrl = new Uri("https://oauth.vk.com/authorize");
@@ -33,7 +32,7 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.VK
 			_resultFactory = resultFactory;
 			_webHelper = webHelper;
 			_urlHelper = urlHelper;
-			_vkSettings = configurationManager.GetSettings<IVkSettings>(VkSettingsKey);
+			_vkSettings = configurationManager.GetSettings<IVkSettings>(SettingsKeys.VkSettingsKey);
 		}
 
 		#region Implementation of IExternalLoginProvider

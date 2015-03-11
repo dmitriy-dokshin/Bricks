@@ -25,6 +25,11 @@ namespace Bricks.DAL.EF
 			return await queryable.ToArrayAsync(cancellationToken);
 		}
 
+		public async Task<IReadOnlyList<T>> ToReadOnlyListAsync<T>(IQueryable<T> queryable, CancellationToken cancellationToken)
+		{
+			return await queryable.ToArrayAsync(cancellationToken);
+		}
+
 		public async Task<IReadOnlyDictionary<TKey, TValue>> ToReadOnlyDictionaryAsync<T, TKey, TValue>(IQueryable<T> queryable, Func<T, TKey> keySelector, Func<T, TValue> valueSelector, CancellationToken cancellationToken)
 		{
 			return await queryable.ToDictionaryAsync(keySelector, valueSelector, cancellationToken);

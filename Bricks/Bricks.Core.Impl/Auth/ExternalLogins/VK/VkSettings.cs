@@ -2,6 +2,8 @@
 
 using System.Configuration;
 
+using Bricks.Core.Auth.ExternalLogins;
+
 #endregion
 
 namespace Bricks.Core.Impl.Auth.ExternalLogins.VK
