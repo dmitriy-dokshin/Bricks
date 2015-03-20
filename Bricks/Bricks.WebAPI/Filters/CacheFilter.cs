@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,10 +23,10 @@ namespace Bricks.WebAPI.Filters
 {
 	public sealed class CacheFilter : IActionFilter
 	{
-		private IImmutableDictionary<string, ICacheManager> _cacheMangers;
 		private readonly IInterlockedHelper _interlockedHelper;
 		private readonly ILockStorage _lockStorage;
 		private readonly IReflectionHelper _reflectionHelper;
+		private IImmutableDictionary<string, ICacheManager> _cacheMangers;
 
 		public CacheFilter(IInterlockedHelper interlockedHelper, ILockStorage lockStorage, IReflectionHelper reflectionHelper)
 		{
@@ -34,6 +35,19 @@ namespace Bricks.WebAPI.Filters
 			_reflectionHelper = reflectionHelper;
 
 			_cacheMangers = ImmutableDictionary.Create<string, ICacheManager>();
+		}
+
+		private static void SetClentCacheControl(HttpResponseMessage httpResponseMessage, CacheAttribute cacheAttribute)
+		{
+			var cacheControl = httpResponseMessage.Headers.CacheControl;
+			if (cacheControl == null)
+			{
+				cacheControl = new CacheControlHeaderValue();
+				httpResponseMessage.Headers.CacheControl = cacheControl;
+			}
+
+			cacheControl.Private = true;
+			cacheControl.MaxAge = TimeSpan.FromSeconds(cacheAttribute.ClientLifetime);
 		}
 
 		#region Implementation of IFilter
@@ -69,9 +83,10 @@ namespace Bricks.WebAPI.Filters
 				var cacheAttribute = actionContext.ActionDescriptor.GetCustomAttributes<CacheAttribute>().FirstOrDefault();
 				if (cacheAttribute != null)
 				{
-					if (cacheAttribute.ServerLifetime.HasValue)
+					if (cacheAttribute.ServerLifetime > 0)
 					{
-						var cacheManagerKey = actionContext.ControllerContext.ControllerDescriptor.ControllerName + "." + actionContext.ActionDescriptor.ActionName;
+						var cacheManagerKey =
+							cacheAttribute.CacheManagerKey ?? actionContext.ControllerContext.ControllerDescriptor.ControllerName + "_" + actionContext.ActionDescriptor.ActionName;
 						var cacheManager = _interlockedHelper.CompareExchange(ref _cacheMangers, x =>
 							{
 								ICacheManager result;
@@ -105,15 +120,13 @@ namespace Bricks.WebAPI.Filters
 										if (httpResponseMessageData == null)
 										{
 											var httpResponseMessage = await continuation();
-											if (cacheAttribute.ClientLifetime.HasValue)
+											if (cacheAttribute.ClientLifetime > 0)
 											{
-												var cacheControlHeaderValue = httpResponseMessage.Headers.CacheControl;
-												cacheControlHeaderValue.Private = true;
-												cacheControlHeaderValue.MaxAge = cacheAttribute.ClientLifetime.Value;
+												SetClentCacheControl(httpResponseMessage, cacheAttribute);
 											}
 
 											httpResponseMessageData = await HttpResponseMessageData.Create(httpResponseMessage);
-											cacheManager.Add(key, httpResponseMessageData, CacheItemPriority.Normal, null, new AbsoluteTime(cacheAttribute.ServerLifetime.Value));
+											cacheManager.Add(key, httpResponseMessageData, CacheItemPriority.Normal, null, new AbsoluteTime(TimeSpan.FromSeconds(cacheAttribute.ServerLifetime)));
 										}
 									}
 								}
@@ -123,12 +136,10 @@ namespace Bricks.WebAPI.Filters
 						return httpResponseMessageData.ToResponseMessage();
 					}
 
-					if (cacheAttribute.ClientLifetime.HasValue)
+					if (cacheAttribute.ClientLifetime > 0)
 					{
 						var httpResponseMessage = await continuation();
-						var cacheControlHeaderValue = httpResponseMessage.Headers.CacheControl;
-						cacheControlHeaderValue.Private = true;
-						cacheControlHeaderValue.MaxAge = cacheAttribute.ClientLifetime.Value;
+						SetClentCacheControl(httpResponseMessage, cacheAttribute);
 						return httpResponseMessage;
 					}
 				}
