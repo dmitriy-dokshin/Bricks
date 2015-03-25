@@ -13,9 +13,9 @@ namespace Bricks.Core.Impl.Collections
 {
 	internal sealed class Container<TKey, TValue> : IContainer<TKey, TValue>
 	{
-		private IImmutableDictionary<TKey, ValueCount<TValue>> _keyValuePairs;
 		private readonly IDisposableHelper _disposableHelper;
 		private readonly IInterlockedHelper _interlockedHelper;
+		private IImmutableDictionary<TKey, ValueCount<TValue>> _keyValuePairs;
 
 		public Container(IInterlockedHelper interlockedHelper, IDisposableHelper disposableHelper)
 		{
@@ -38,7 +38,7 @@ namespace Bricks.Core.Impl.Collections
 				});
 			return _disposableHelper.Action(() => _interlockedHelper.CompareExchange(ref _keyValuePairs, x =>
 				{
-					var valueCount = x[key];
+					ValueCount<TValue> valueCount = x[key];
 					return valueCount.Count > 1 ? x.SetItem(key, valueCount.Decrement()) : x.Remove(key);
 				}));
 		}

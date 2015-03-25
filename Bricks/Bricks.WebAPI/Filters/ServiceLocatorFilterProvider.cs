@@ -38,8 +38,8 @@ namespace Bricks.WebAPI.Filters
 		/// <param name="actionDescriptor">The action descriptor.</param>
 		IEnumerable<FilterInfo> IFilterProvider.GetFilters(HttpConfiguration configuration, HttpActionDescriptor actionDescriptor)
 		{
-			var filterInfos = GetFilters(configuration, actionDescriptor);
-			foreach (var filterInfo in filterInfos)
+			IEnumerable<FilterInfo> filterInfos = GetFilters(configuration, actionDescriptor);
+			foreach (FilterInfo filterInfo in filterInfos)
 			{
 				_serviceLocator.BuildUp(filterInfo.Instance);
 				yield return filterInfo;

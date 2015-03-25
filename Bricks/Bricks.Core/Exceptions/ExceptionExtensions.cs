@@ -25,7 +25,7 @@ namespace Bricks.Core.Exceptions
 			if (aggregateException != null)
 			{
 				IEnumerable<Exception> innerExceptions = aggregateException.InnerExceptions.SelectMany(GetExceptionHierarchy);
-				foreach (var innerException in innerExceptions)
+				foreach (Exception innerException in innerExceptions)
 				{
 					yield return innerException;
 				}
@@ -34,7 +34,7 @@ namespace Bricks.Core.Exceptions
 			if (exception.InnerException != null && aggregateException == null)
 			{
 				IEnumerable<Exception> innerExceptions = GetExceptionHierarchy(exception.InnerException);
-				foreach (var innerException in innerExceptions)
+				foreach (Exception innerException in innerExceptions)
 				{
 					yield return innerException;
 				}

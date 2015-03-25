@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-using Bricks.Core.Enum;
+using Bricks.Core.Enumerations;
 
 #endregion
 
-namespace Bricks.Core.Impl.Enum
+namespace Bricks.Core.Impl.Enumerations
 {
 	/// <summary>
 	/// Базовый класс метаданных перечисления.
@@ -19,7 +19,7 @@ namespace Bricks.Core.Impl.Enum
 		protected EnumMetadataBase(Type enumType, bool isFlags = false)
 		{
 			IsFlags = isFlags;
-			ValueNameDictionary = System.Enum.GetValues(enumType).Cast<System.Enum>().ToDictionary(x => x, x => System.Enum.GetName(enumType, x));
+			ValueNameDictionary = Enum.GetValues(enumType).Cast<Enum>().ToDictionary(x => x, x => Enum.GetName(enumType, x));
 		}
 
 		#region Implementation of IEnumMetadata
@@ -32,14 +32,14 @@ namespace Bricks.Core.Impl.Enum
 		/// <summary>
 		/// Словарь значений-названий перечисления.
 		/// </summary>
-		public IReadOnlyDictionary<System.Enum, string> ValueNameDictionary { get; private set; }
+		public IReadOnlyDictionary<Enum, string> ValueNameDictionary { get; private set; }
 
 		/// <summary>
 		/// Получает метаданные значения перечисления <paramref name="enumValue" />.
 		/// </summary>
 		/// <param name="enumValue">Значение перечисления.</param>
 		/// <returns>Метаданные значения перечисления.</returns>
-		public abstract IEnumValueMetadata GetEnumValueMetadata(System.Enum enumValue);
+		public abstract IEnumValueMetadata GetEnumValueMetadata(Enum enumValue);
 
 		/// <summary>
 		/// Получает название перечисления.

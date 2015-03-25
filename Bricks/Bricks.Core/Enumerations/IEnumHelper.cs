@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 #endregion
 
-namespace Bricks.Core.Enum
+namespace Bricks.Core.Enumerations
 {
 	/// <summary>
 	/// Помощник работы с перечислениями.

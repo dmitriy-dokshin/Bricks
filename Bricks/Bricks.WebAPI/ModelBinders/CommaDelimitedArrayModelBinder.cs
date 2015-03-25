@@ -42,9 +42,9 @@ namespace Bricks.WebAPI.ModelBinders
 
 				if (attemptedValue != null)
 				{
-					var converter = TypeDescriptor.GetConverter(elementType);
-					var values = Array.ConvertAll(attemptedValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries), x => converter.ConvertFromString(x != null ? x.Trim() : null));
-					var typedValues = Array.CreateInstance(elementType, values.Length);
+					TypeConverter converter = TypeDescriptor.GetConverter(elementType);
+					object[] values = Array.ConvertAll(attemptedValue.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries), x => converter.ConvertFromString(x != null ? x.Trim() : null));
+					Array typedValues = Array.CreateInstance(elementType, values.Length);
 					values.CopyTo(typedValues, 0);
 					bindingContext.Model = typedValues;
 				}

@@ -1,6 +1,8 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
@@ -32,19 +34,19 @@ namespace Bricks.WebAPI.Filters
 
 		private static void CheckValidationAttributes(HttpActionContext actionContext)
 		{
-			var parameters = actionContext.ActionDescriptor.GetParameters();
-			foreach (var parameter in parameters)
+			Collection<HttpParameterDescriptor> parameters = actionContext.ActionDescriptor.GetParameters();
+			foreach (HttpParameterDescriptor parameter in parameters)
 			{
-				var validationAttributes = parameter.GetCustomAttributes<ValidationAttribute>();
-				foreach (var validationAttribute in validationAttributes)
+				Collection<ValidationAttribute> validationAttributes = parameter.GetCustomAttributes<ValidationAttribute>();
+				foreach (ValidationAttribute validationAttribute in validationAttributes)
 				{
-					var displayNameAttribute = parameter.GetCustomAttributes<DisplayNameFromResourceAttribute>().FirstOrDefault();
-					var parameterName = displayNameAttribute != null ? displayNameAttribute.GetName() : parameter.ParameterName;
+					DisplayNameFromResourceAttribute displayNameAttribute = parameter.GetCustomAttributes<DisplayNameFromResourceAttribute>().FirstOrDefault();
+					string parameterName = displayNameAttribute != null ? displayNameAttribute.GetName() : parameter.ParameterName;
 					object parameterValue;
 					actionContext.ActionArguments.TryGetValue(parameter.ParameterName, out parameterValue);
 					if (!validationAttribute.IsValid(parameterValue))
 					{
-						var errorMessage = validationAttribute.FormatErrorMessage(parameterName);
+						string errorMessage = validationAttribute.FormatErrorMessage(parameterName);
 						actionContext.ModelState.AddModelError(parameterName, errorMessage);
 						break;
 					}
@@ -54,11 +56,11 @@ namespace Bricks.WebAPI.Filters
 
 		private static void CheckDefaultIfNull(HttpActionContext actionContext)
 		{
-			var parameterDescriptors =
+			IEnumerable<HttpParameterDescriptor> parameterDescriptors =
 				actionContext.ActionDescriptor.GetParameters().Where(x => x.GetCustomAttributes<DefaultIfNullAttribute>().Any());
-			foreach (var parameterDescriptor in parameterDescriptors)
+			foreach (HttpParameterDescriptor parameterDescriptor in parameterDescriptors)
 			{
-				var parameterName = parameterDescriptor.ParameterName;
+				string parameterName = parameterDescriptor.ParameterName;
 				object value;
 				if (!actionContext.ActionArguments.TryGetValue(parameterName, out value) || value == null)
 				{
@@ -70,9 +72,9 @@ namespace Bricks.WebAPI.Filters
 
 		private void BuildUpParameters(HttpActionContext actionContext)
 		{
-			foreach (var parameterDescriptor in actionContext.ActionDescriptor.GetParameters())
+			foreach (HttpParameterDescriptor parameterDescriptor in actionContext.ActionDescriptor.GetParameters())
 			{
-				var parameterName = parameterDescriptor.ParameterName;
+				string parameterName = parameterDescriptor.ParameterName;
 				object value;
 				if (actionContext.ActionArguments.TryGetValue(parameterName, out value) && value is IInitializable)
 				{

@@ -18,7 +18,7 @@ namespace Bricks.Core.Extensions
 		public static int IndexOf<T>(this IReadOnlyList<T> items, Func<T, bool> predicate)
 		{
 			int index = -1;
-			for (int i = 0; i < items.Count; i++)
+			for (var i = 0; i < items.Count; i++)
 			{
 				if (predicate(items[i]))
 				{

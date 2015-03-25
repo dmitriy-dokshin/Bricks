@@ -47,7 +47,7 @@ namespace Bricks.Core.Modularity
 				var configurationManager = _container.Resolve<IConfigurationManager>();
 
 				var modularitySettings = configurationManager.GetSettings<IModularitySettings>(MODULARITY_SETTINGS_KEY);
-				foreach (var moduleSettings in modularitySettings.Modules.OrderByDescending(x => x.Order))
+				foreach (IModuleSettings moduleSettings in modularitySettings.Modules.OrderByDescending(x => x.Order))
 				{
 					if (moduleSettings.Type != null)
 					{
@@ -84,7 +84,7 @@ namespace Bricks.Core.Modularity
 			var configurationManager = _container.Resolve<IConfigurationManager>();
 
 			var modularitySettings = configurationManager.GetSettings<IModularitySettings>(MODULARITY_SETTINGS_KEY);
-			foreach (var moduleSettings in modularitySettings.Modules.OrderBy(x => x.Order))
+			foreach (IModuleSettings moduleSettings in modularitySettings.Modules.OrderBy(x => x.Order))
 			{
 				_container.RegisterType(typeof(IModule), moduleSettings.Type, moduleSettings.Name, new ContainerControlledLifetimeManager());
 				var module = _container.Resolve<IModule>(moduleSettings.Name);

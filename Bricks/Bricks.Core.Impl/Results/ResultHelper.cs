@@ -24,7 +24,7 @@ namespace Bricks.Core.Impl.Results
 
 		public string GetSummary(IResult result, bool stackTrace = false, bool exception = false, bool exceptionStackTrace = false)
 		{
-			StringBuilder summaryBuilder = new StringBuilder();
+			var summaryBuilder = new StringBuilder();
 			if (!string.IsNullOrEmpty(result.Message))
 			{
 				summaryBuilder.AppendLine(result.Message);
@@ -38,7 +38,7 @@ namespace Bricks.Core.Impl.Results
 			if (exception)
 			{
 				IEnumerable<Exception> exceptionHierarchy = result.Exception.GetExceptionHierarchy();
-				foreach (var e in exceptionHierarchy)
+				foreach (Exception e in exceptionHierarchy)
 				{
 					summaryBuilder.AppendLine(_exceptionHelper.GetSummary(e, exceptionStackTrace));
 				}

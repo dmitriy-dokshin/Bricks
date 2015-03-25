@@ -23,7 +23,7 @@ namespace Bricks.Core.ComponentModel
 
 		public string GetName(CultureInfo cultureInfo = null)
 		{
-			var propertyInfo = ResourceType.GetProperty("ResourceManager", BindingFlags.Static | BindingFlags.NonPublic);
+			PropertyInfo propertyInfo = ResourceType.GetProperty("ResourceManager", BindingFlags.Static | BindingFlags.NonPublic);
 			var resourceManager = (ResourceManager)propertyInfo.GetValue(null);
 			return resourceManager.GetString(ResourceName, cultureInfo ?? CultureInfo.CurrentCulture);
 		}

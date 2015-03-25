@@ -1,12 +1,13 @@
 ﻿#region
 
+using System;
 using System.Globalization;
 
-using Bricks.Core.Enum;
+using Bricks.Core.Enumerations;
 
 #endregion
 
-namespace Bricks.Core.Impl.Enum
+namespace Bricks.Core.Impl.Enumerations
 {
 	/// <summary>
 	/// Метаданные значения перечисления, получаемые из ресурсов.
@@ -15,9 +16,9 @@ namespace Bricks.Core.Impl.Enum
 	{
 		private readonly IEnumMetadata _enumMetadata;
 		private readonly IEnumResourceHelper _enumResourceHelper;
-		private readonly System.Enum _enumValue;
+		private readonly Enum _enumValue;
 
-		public ResourceEnumValueMetadata(IEnumMetadata enumMetadata, IEnumResourceHelper enumResourceHelper, System.Enum enumValue)
+		public ResourceEnumValueMetadata(IEnumMetadata enumMetadata, IEnumResourceHelper enumResourceHelper, Enum enumValue)
 		{
 			_enumMetadata = enumMetadata;
 			_enumResourceHelper = enumResourceHelper;
@@ -35,7 +36,7 @@ namespace Bricks.Core.Impl.Enum
 		{
 			if (_enumMetadata.ValueNameDictionary.ContainsKey(_enumValue))
 			{
-				var enumValueName = _enumMetadata.ValueNameDictionary[_enumValue];
+				string enumValueName = _enumMetadata.ValueNameDictionary[_enumValue];
 				if (cultureInfo != null && cultureInfo.Equals(CultureInfo.InvariantCulture))
 				{
 					return enumValueName;
@@ -56,7 +57,7 @@ namespace Bricks.Core.Impl.Enum
 		{
 			if (_enumMetadata.ValueNameDictionary.ContainsKey(_enumValue))
 			{
-				var enumValueName = _enumMetadata.ValueNameDictionary[_enumValue];
+				string enumValueName = _enumMetadata.ValueNameDictionary[_enumValue];
 				return _enumResourceHelper.GetEnumValueDescription(enumValueName, cultureInfo);
 			}
 

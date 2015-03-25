@@ -45,7 +45,7 @@ namespace Bricks.Core.Events
 			switch (InvokeMode)
 			{
 				case EventHandlerObservableInvokeMode.Series:
-					foreach (var observer in _observers)
+					foreach (IObserver<EventArgs> observer in _observers)
 					{
 						observer.OnNext(args);
 					}
@@ -106,7 +106,7 @@ namespace Bricks.Core.Events
 			switch (InvokeMode)
 			{
 				case EventHandlerObservableInvokeMode.Series:
-					foreach (var observer in _observers)
+					foreach (IObserver<TEventArgs> observer in _observers)
 					{
 						observer.OnNext(args);
 					}

@@ -10,7 +10,7 @@ namespace Bricks.Core.Resources
 	{
 		public static string ReadString<T>(string resourceName)
 		{
-			using (var stream = typeof(T).Assembly.GetManifestResourceStream(resourceName))
+			using (Stream stream = typeof(T).Assembly.GetManifestResourceStream(resourceName))
 			{
 				if (stream != null)
 				{

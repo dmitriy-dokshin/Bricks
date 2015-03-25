@@ -104,7 +104,7 @@ namespace Bricks.Core.Configuration
 		/// <exception cref="T:System.ArgumentNullException"><paramref name="key" /> is null.</exception>
 		public bool TryGetValue(string key, out TValue value)
 		{
-			var keyValueConfigurationElement = _source[key];
+			KeyValueConfigurationElement keyValueConfigurationElement = _source[key];
 			if (keyValueConfigurationElement != null)
 			{
 				value = _createValue(keyValueConfigurationElement.Value);

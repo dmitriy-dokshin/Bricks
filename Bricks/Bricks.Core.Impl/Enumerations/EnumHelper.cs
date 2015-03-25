@@ -6,11 +6,11 @@ using System.Linq;
 using System.Reflection;
 
 using Bricks.Core.Collections;
-using Bricks.Core.Enum;
+using Bricks.Core.Enumerations;
 
 #endregion
 
-namespace Bricks.Core.Impl.Enum
+namespace Bricks.Core.Impl.Enumerations
 {
 	/// <summary>
 	/// Помощник работы с перечислениями.
@@ -32,7 +32,7 @@ namespace Bricks.Core.Impl.Enum
 		/// <returns>Признак флагового перечисления.</returns>
 		public bool IsFlags(Type enumType)
 		{
-			var isFlags = enumType.GetCustomAttribute<FlagsAttribute>(false) != null;
+			bool isFlags = enumType.GetCustomAttribute<FlagsAttribute>(false) != null;
 			return isFlags;
 		}
 
@@ -47,7 +47,7 @@ namespace Bricks.Core.Impl.Enum
 		/// <returns>Коллекция с элементами перечисления <typeparamref name="TEnum" />.</returns>
 		public IReadOnlyCollection<TEnum> ToEnumCollection<TEnum>(string source) where TEnum : struct
 		{
-			var enumType = typeof(TEnum);
+			Type enumType = typeof(TEnum);
 			if (!enumType.IsEnum)
 			{
 				throw new InvalidOperationException();
@@ -58,24 +58,24 @@ namespace Bricks.Core.Impl.Enum
 				return _collectionHelper.GetEmptyReadOnlyCollection<TEnum>();
 			}
 
-			HashSet<System.Enum> flags = null;
-			var isFlags = IsFlags(enumType);
+			HashSet<Enum> flags = null;
+			bool isFlags = IsFlags(enumType);
 			if (isFlags)
 			{
-				flags = new HashSet<System.Enum>(System.Enum.GetValues(enumType).Cast<System.Enum>());
-				flags = new HashSet<System.Enum>(flags.Where(x => flags.Count(x.HasFlag) == 1));
+				flags = new HashSet<Enum>(Enum.GetValues(enumType).Cast<Enum>());
+				flags = new HashSet<Enum>(flags.Where(x => flags.Count(x.HasFlag) == 1));
 			}
 
 			var values = new HashSet<TEnum>();
-			foreach (var property in source.Split(_arrayParamSeparators, StringSplitOptions.RemoveEmptyEntries))
+			foreach (string property in source.Split(_arrayParamSeparators, StringSplitOptions.RemoveEmptyEntries))
 			{
 				TEnum value;
-				if (System.Enum.TryParse(property, true, out value))
+				if (Enum.TryParse(property, true, out value))
 				{
-					var @enum = value.ToEnum();
+					Enum @enum = value.ToEnum();
 					if (isFlags)
 					{
-						foreach (var flag in flags.Where(@enum.HasFlag))
+						foreach (Enum flag in flags.Where(@enum.HasFlag))
 						{
 							values.Add(flag.ToTEnum<TEnum>());
 						}

@@ -15,7 +15,7 @@ namespace Bricks.Core.Auth.ExternalLogins
 	{
 		public static string GetFullName(this IExternalLoginData externalLoginData)
 		{
-			StringBuilder nameBuilder = new StringBuilder();
+			var nameBuilder = new StringBuilder();
 			if (!string.IsNullOrEmpty(externalLoginData.FirstName))
 			{
 				nameBuilder.Append(externalLoginData.FirstName);
@@ -40,7 +40,7 @@ namespace Bricks.Core.Auth.ExternalLogins
 			Image image = null;
 			if (!string.IsNullOrEmpty(externalLoginData.ImageUrl))
 			{
-				var webResponse = await webClient.ExecuteRequestAsync(new Uri(externalLoginData.ImageUrl), HttpMethod.Get);
+				IWebResponse webResponse = await webClient.ExecuteRequestAsync(new Uri(externalLoginData.ImageUrl), HttpMethod.Get);
 				if (webResponse.Success)
 				{
 					image = Image.FromStream(webResponse.Stream);

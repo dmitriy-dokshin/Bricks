@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 
 using Bricks.Core.Images;
+using Bricks.Core.Results;
 
 #endregion
 
@@ -17,11 +18,11 @@ namespace Bricks.Core.Impl.Images
 			Size newSize;
 			if (preserveAspectRatio)
 			{
-				var originalWidth = image.Width;
-				var originalHeight = image.Height;
-				var percentWidth = width / (double)originalWidth;
-				var percentHeight = height / (double)originalHeight;
-				var percent = percentHeight < percentWidth ? percentHeight : percentWidth;
+				int originalWidth = image.Width;
+				int originalHeight = image.Height;
+				double percentWidth = width / (double)originalWidth;
+				double percentHeight = height / (double)originalHeight;
+				double percent = percentHeight < percentWidth ? percentHeight : percentWidth;
 				newSize = new Size((int)(Math.Round(originalWidth * percent)), (int)(Math.Round(originalHeight * percent)));
 			}
 			else
@@ -41,14 +42,14 @@ namespace Bricks.Core.Impl.Images
 				return data;
 			}
 
-			var getImageResult = data.GetImage();
+			IResult<Image> getImageResult = data.GetImage();
 			if (!getImageResult.Success)
 			{
 				return data;
 			}
 
-			var image = getImageResult.Data;
-			var newImage = Resize(image, width, height, preserveAspectRatio);
+			Image image = getImageResult.Data;
+			Image newImage = Resize(image, width, height, preserveAspectRatio);
 			return newImage.GetBytes();
 		}
 
@@ -59,21 +60,21 @@ namespace Bricks.Core.Impl.Images
 				return image;
 			}
 
-			var maxWidth = image.Width * 2;
+			int maxWidth = image.Width * 2;
 			if (width.HasValue && width.Value > maxWidth)
 			{
 				width = maxWidth;
 			}
 
-			var maxHeight = image.Height * 2;
+			int maxHeight = image.Height * 2;
 			if (height.HasValue && height.Value > maxHeight)
 			{
 				height = maxHeight;
 			}
 
-			var newSize = GetNewSize(image, width ?? image.Width, height ?? image.Height, preserveAspectRatio);
+			Size newSize = GetNewSize(image, width ?? image.Width, height ?? image.Height, preserveAspectRatio);
 			Image newImage = new Bitmap(newSize.Width, newSize.Height);
-			using (var graphicsHandle = Graphics.FromImage(newImage))
+			using (Graphics graphicsHandle = Graphics.FromImage(newImage))
 			{
 				graphicsHandle.InterpolationMode = InterpolationMode.Bilinear;
 				graphicsHandle.DrawImage(image, 0, 0, newSize.Width, newSize.Height);

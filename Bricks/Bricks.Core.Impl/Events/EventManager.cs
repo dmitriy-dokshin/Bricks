@@ -23,12 +23,12 @@ namespace Bricks.Core.Impl.Events
 	/// </summary>
 	public sealed class EventManager : IEventManager
 	{
-		private IImmutableDictionary<Type, IImmutableDictionary<object, IImmutableSet<IEventHandler>>> _eventHandlersByEventArgsType;
-		private IImmutableDictionary<Type, IImmutableDictionary<object, IImmutableSet<Type>>> _eventHandlerTypesByEventArgsType;
 		private readonly IDisposableHelper _disposableHelper;
 		private readonly IInterlockedHelper _interlockedHelper;
 		private readonly object _nullSender = new object();
 		private readonly IServiceLocator _serviceLocator;
+		private IImmutableDictionary<Type, IImmutableDictionary<object, IImmutableSet<IEventHandler>>> _eventHandlersByEventArgsType;
+		private IImmutableDictionary<Type, IImmutableDictionary<object, IImmutableSet<Type>>> _eventHandlerTypesByEventArgsType;
 
 		public EventManager(IServiceLocator serviceLocator, IInterlockedHelper interlockedHelper, IDisposableHelper disposableHelper)
 		{
@@ -66,7 +66,7 @@ namespace Bricks.Core.Impl.Events
 			IEventHandler<TEventArgs> eventHandler, object sender, IImmutableDictionary<Type, IImmutableDictionary<object, IImmutableSet<IEventHandler>>> eventHandlersByEventArgsType)
 			where TEventArgs : EventArgs
 		{
-			var type = typeof(TEventArgs);
+			Type type = typeof(TEventArgs);
 			IImmutableDictionary<object, IImmutableSet<IEventHandler>> eventHandlersBySender;
 			if (!eventHandlersByEventArgsType.TryGetValue(type, out eventHandlersBySender))
 			{
@@ -88,7 +88,7 @@ namespace Bricks.Core.Impl.Events
 			IEventHandler<TEventArgs> eventHandler, object sender, IImmutableDictionary<Type, IImmutableDictionary<object, IImmutableSet<IEventHandler>>> eventHandlersByEventArgsType)
 			where TEventArgs : EventArgs
 		{
-			var type = typeof(TEventArgs);
+			Type type = typeof(TEventArgs);
 			IImmutableDictionary<object, IImmutableSet<IEventHandler>> eventHandlersBySender;
 			if (eventHandlersByEventArgsType.TryGetValue(type, out eventHandlersBySender))
 			{
@@ -116,7 +116,7 @@ namespace Bricks.Core.Impl.Events
 			where TEventArgs : EventArgs
 			where TEventHandler : IEventHandler<TEventArgs>
 		{
-			var type = typeof(TEventArgs);
+			Type type = typeof(TEventArgs);
 			IImmutableDictionary<object, IImmutableSet<Type>> eventHandlerTypesBySender;
 			if (!eventHandlerTypesByEventArgsType.TryGetValue(type, out eventHandlerTypesBySender))
 			{
@@ -139,7 +139,7 @@ namespace Bricks.Core.Impl.Events
 			where TEventArgs : EventArgs
 			where TEventHandler : IEventHandler<TEventArgs>
 		{
-			var type = typeof(TEventArgs);
+			Type type = typeof(TEventArgs);
 			IImmutableDictionary<object, IImmutableSet<Type>> eventHandlerTypesBySender;
 			if (eventHandlerTypesByEventArgsType.TryGetValue(type, out eventHandlerTypesBySender))
 			{
@@ -201,7 +201,7 @@ namespace Bricks.Core.Impl.Events
 		public async Task Raise<TEventArgs>(object sender, TEventArgs args, CancellationToken cancellationToken, RaiseMode mode = RaiseMode.Series) where TEventArgs : EventArgs
 		{
 			IImmutableDictionary<object, IImmutableSet<IEventHandler>> eventHandlersBySender;
-			List<IEventHandler<TEventArgs>> eventHandlers = new List<IEventHandler<TEventArgs>>();
+			var eventHandlers = new List<IEventHandler<TEventArgs>>();
 			IImmutableSet<IEventHandler> eventHandlerSet;
 			if (_eventHandlersByEventArgsType.TryGetValue(typeof(TEventArgs), out eventHandlersBySender)
 				&& ((eventHandlersBySender.TryGetValue(sender, out eventHandlerSet)
@@ -222,7 +222,7 @@ namespace Bricks.Core.Impl.Events
 			switch (mode)
 			{
 				case RaiseMode.Series:
-					foreach (var eventHandler in eventHandlers)
+					foreach (IEventHandler<TEventArgs> eventHandler in eventHandlers)
 					{
 						cancellationToken.ThrowIfCancellationRequested();
 						await eventHandler.InvokeAsync(sender, args, cancellationToken);

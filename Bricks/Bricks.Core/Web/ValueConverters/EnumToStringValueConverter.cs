@@ -1,8 +1,9 @@
 ﻿#region
 
+using System;
 using System.Globalization;
 
-using Bricks.Core.Enum;
+using Bricks.Core.Enumerations;
 
 #endregion
 
@@ -11,7 +12,7 @@ namespace Bricks.Core.Web.ValueConverters
 	/// <summary>
 	/// Конвертер значений перечислений в строки.
 	/// </summary>
-	public class EnumToStringValueConverter : ValueConverterBase<System.Enum, string>
+	public class EnumToStringValueConverter : ValueConverterBase<Enum, string>
 	{
 		private readonly IEnumMetadataContainer _enumMetadataContainer;
 
@@ -27,10 +28,10 @@ namespace Bricks.Core.Web.ValueConverters
 		/// </summary>
 		/// <param name="source">Исходное значение.</param>
 		/// <returns>Результат конвертации.</returns>
-		protected override string Convert(System.Enum source)
+		protected override string Convert(Enum source)
 		{
-			var enumMetadata = _enumMetadataContainer.GetEnumMetadata(source.GetType());
-			var enumValueMetadata = enumMetadata.GetEnumValueMetadata(source);
+			IEnumMetadata enumMetadata = _enumMetadataContainer.GetEnumMetadata(source.GetType());
+			IEnumValueMetadata enumValueMetadata = enumMetadata.GetEnumValueMetadata(source);
 			return enumValueMetadata.GetName(CultureInfo.InvariantCulture);
 		}
 

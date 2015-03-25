@@ -23,9 +23,9 @@ namespace Bricks.Core.Impl.Configuration
 	/// </summary>
 	internal sealed class ConfigurationManagerImpl : IConfigurationManager
 	{
-		private IImmutableDictionary<Type, IImmutableDictionary<string, object>> _settings;
 		private readonly IConverter _converter;
 		private readonly IServiceLocator _serviceLocator;
+		private IImmutableDictionary<Type, IImmutableDictionary<string, object>> _settings;
 
 		public ConfigurationManagerImpl(IServiceLocator serviceLocator, IConverter converter)
 		{
@@ -254,7 +254,7 @@ namespace Bricks.Core.Impl.Configuration
 				key = string.Empty;
 			}
 
-			var type = typeof(TSettings);
+			Type type = typeof(TSettings);
 			IImmutableDictionary<string, object> settingsByKey;
 			if (!_settings.TryGetValue(type, out settingsByKey))
 			{

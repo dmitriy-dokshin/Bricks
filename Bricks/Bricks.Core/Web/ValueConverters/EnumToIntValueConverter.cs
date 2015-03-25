@@ -1,6 +1,12 @@
-﻿namespace Bricks.Core.Web.ValueConverters
+﻿#region
+
+using System;
+
+#endregion
+
+namespace Bricks.Core.Web.ValueConverters
 {
-	public sealed class EnumToIntValueConverter : ValueConverterBase<System.Enum, int>
+	public sealed class EnumToIntValueConverter : ValueConverterBase<Enum, int>
 	{
 		#region Overrides of ValueConverterBase<Enum,int>
 
@@ -9,7 +15,7 @@
 		/// </summary>
 		/// <param name="source">Исходное значение.</param>
 		/// <returns>Результат конвертации.</returns>
-		protected override int Convert(System.Enum source)
+		protected override int Convert(Enum source)
 		{
 			return (int)(object)source;
 		}

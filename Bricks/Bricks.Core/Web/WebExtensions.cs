@@ -22,7 +22,7 @@ namespace Bricks.Core.Web
 
 		public static void AppendQuery(this UriBuilder uriBuilder, IEnumerable<KeyValuePair<string, string>> parameters)
 		{
-			var queryToAppend =
+			string queryToAppend =
 				string.Join(QueryParamsSeparator, parameters.Select(x => string.Format(CultureInfo.InvariantCulture, QueryParamFormat, x.Key, Uri.EscapeDataString(x.Value))));
 			if (uriBuilder.Query.Length > 1)
 			{

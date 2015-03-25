@@ -3,24 +3,24 @@
 using System;
 using System.Collections.Immutable;
 
-using Bricks.Core.Enum;
+using Bricks.Core.Enumerations;
 using Bricks.Core.Sync;
 
 using Microsoft.Practices.Unity;
 
 #endregion
 
-namespace Bricks.Core.Impl.Enum
+namespace Bricks.Core.Impl.Enumerations
 {
 	/// <summary>
 	/// Реализация по умолчанию <see cref="IEnumMetadataContainer" />.
 	/// </summary>
 	internal sealed class EnumMetadataContainer : IEnumMetadataContainer
 	{
-		private IImmutableDictionary<Type, IEnumMetadata> _enumMetadatasByType;
 		private readonly IEnumHelper _enumHelper;
 		private readonly IInterlockedHelper _interlockedHelper;
 		private readonly IUnityContainer _unityContainer;
+		private IImmutableDictionary<Type, IEnumMetadata> _enumMetadatasByType;
 
 		public EnumMetadataContainer(IInterlockedHelper interlockedHelper, IEnumHelper enumHelper, IUnityContainer unityContainer)
 		{
@@ -33,7 +33,7 @@ namespace Bricks.Core.Impl.Enum
 		private IEnumMetadata CreateEnumMetadata(Type enumType)
 		{
 			var dependencyOverride = new DependencyOverride(typeof(Type), new InjectionParameter(enumType));
-			var enumMetadata =
+			IEnumMetadata enumMetadata =
 				_enumHelper.IsFlags(enumType)
 					? _unityContainer.Resolve<IFlagsMetadata>(dependencyOverride)
 					: _unityContainer.Resolve<IEnumMetadata>(dependencyOverride);
@@ -49,9 +49,9 @@ namespace Bricks.Core.Impl.Enum
 		/// <returns>Метаданные перечисления.</returns>
 		public IEnumMetadata GetEnumMetadata(Type enumType)
 		{
-			var result = _interlockedHelper.CompareExchange(ref _enumMetadatasByType, x =>
+			IEnumMetadata result = _interlockedHelper.CompareExchange(ref _enumMetadatasByType, x =>
 				{
-					var enumMetadatasByType = _enumMetadatasByType;
+					IImmutableDictionary<Type, IEnumMetadata> enumMetadatasByType = _enumMetadatasByType;
 					IEnumMetadata enumMetadata;
 					if (!_enumMetadatasByType.TryGetValue(enumType, out enumMetadata))
 					{

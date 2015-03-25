@@ -47,8 +47,8 @@ namespace Bricks.WebAPI.Results
 		{
 			byte[] imageData = _imageProcessor.Resize(_imageData, _width, _height, _preserveAspectRatio);
 			var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(imageData) };
-			var httpContentHeaders = httpResponseMessage.Content.Headers;
-			var contentType = string.Format("image/{0}", _imageFormat);
+			HttpContentHeaders httpContentHeaders = httpResponseMessage.Content.Headers;
+			string contentType = string.Format("image/{0}", _imageFormat);
 			httpContentHeaders.ContentType = new MediaTypeHeaderValue(contentType);
 			return Task.FromResult(httpResponseMessage);
 		}

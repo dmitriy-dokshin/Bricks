@@ -49,8 +49,8 @@ namespace Bricks.WebAPI.Formatters
 			var image = (Image)value;
 			byte[] imageData = image.GetBytes();
 			var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(imageData) };
-			var httpContentHeaders = httpResponseMessage.Content.Headers;
-			var contentType = string.Format("image/{0}", image.RawFormat.ToStringFixed());
+			HttpContentHeaders httpContentHeaders = httpResponseMessage.Content.Headers;
+			string contentType = string.Format("image/{0}", image.RawFormat.ToStringFixed());
 			httpContentHeaders.ContentType = new MediaTypeHeaderValue(contentType);
 			return Task.FromResult(httpResponseMessage);
 		}

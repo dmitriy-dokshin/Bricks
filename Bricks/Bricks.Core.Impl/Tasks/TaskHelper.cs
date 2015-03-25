@@ -13,9 +13,9 @@ namespace Bricks.Core.Impl.Tasks
 {
 	internal sealed class TaskHelper : ITaskHelper
 	{
-		private IImmutableDictionary<Type, Task> _emptyTasks;
 		private readonly Task _emptyTask;
 		private readonly IInterlockedHelper _interlockedHelper;
+		private IImmutableDictionary<Type, Task> _emptyTasks;
 
 		public TaskHelper(IInterlockedHelper interlockedHelper)
 		{

@@ -3,11 +3,11 @@
 using System;
 using System.Globalization;
 
-using Bricks.Core.Enum;
+using Bricks.Core.Enumerations;
 
 #endregion
 
-namespace Bricks.Core.Impl.Enum
+namespace Bricks.Core.Impl.Enumerations
 {
 	/// <summary>
 	/// Класс метаданных перечисления, получаемых из ресурсов.
@@ -29,7 +29,7 @@ namespace Bricks.Core.Impl.Enum
 		/// </summary>
 		/// <param name="enumValue">Значение перечисления.</param>
 		/// <returns>Метаданные значения перечисления.</returns>
-		public override IEnumValueMetadata GetEnumValueMetadata(System.Enum enumValue)
+		public override IEnumValueMetadata GetEnumValueMetadata(Enum enumValue)
 		{
 			return new ResourceEnumValueMetadata(this, _enumResourceHelper, enumValue);
 		}

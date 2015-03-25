@@ -15,10 +15,10 @@ namespace Bricks.Core.Web
 	{
 		public ValueConverterAttribute(Type valueConverterType)
 		{
-			var valueConverterInterfaceType = typeof(IValueConverter);
+			Type valueConverterInterfaceType = typeof(IValueConverter);
 			if (!valueConverterInterfaceType.IsAssignableFrom(valueConverterType))
 			{
-				var message = string.Format(
+				string message = string.Format(
 					CultureInfo.InvariantCulture,
 					Resources.ValueConverterAttribute_Ctr_ValueConverterType_ArgumentExceptionMessage,
 					valueConverterInterfaceType.FullName);

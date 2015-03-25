@@ -4,7 +4,7 @@ using System.Globalization;
 
 #endregion
 
-namespace Bricks.Core.Impl.Enum
+namespace Bricks.Core.Impl.Enumerations
 {
 	/// <summary>
 	/// Содержит вспомогательные методы для работы с ресурсами перечислений.

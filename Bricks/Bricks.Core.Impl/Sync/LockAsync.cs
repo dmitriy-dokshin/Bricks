@@ -20,12 +20,12 @@ namespace Bricks.Core.Impl.Sync
 	/// </summary>
 	internal sealed class LockAsync : ILockAsync
 	{
+		private readonly LockAsyncType _type;
 		private int _currentCompletedTcsIndex;
 		private IDisposableHelper _disposableHelper;
 		private IInterlockedHelper _interlockedHelper;
 		private Random _random;
 		private IImmutableList<TaskCompletionSource<IDisposable>> _taskCompletionSources;
-		private readonly LockAsyncType _type;
 
 		public LockAsync(LockAsyncType type = LockAsyncType.Random)
 		{
@@ -52,11 +52,11 @@ namespace Bricks.Core.Impl.Sync
 
 		private void RemoveAndSetNextResult()
 		{
-			var tcsIndex =
+			int tcsIndex =
 				_interlockedHelper.CompareExchange(ref _taskCompletionSources,
 												   x =>
 													   {
-														   var newValue = x.RemoveAt(_currentCompletedTcsIndex);
+														   IImmutableList<TaskCompletionSource<IDisposable>> newValue = x.RemoveAt(_currentCompletedTcsIndex);
 														   return _interlockedHelper.CreateChangeResult(newValue, newValue.Count > 0 ? GetNextTcsIndex(newValue) : -1);
 													   });
 			if (tcsIndex >= 0)
@@ -118,7 +118,7 @@ namespace Bricks.Core.Impl.Sync
 		/// <returns>An <see cref="IDisposable" /> object that is used to release the lock.</returns>
 		public Task<IDisposable> Enter(CancellationToken cancellationToken)
 		{
-			var tcs1 =
+			TaskCompletionSource<IDisposable> tcs1 =
 				_interlockedHelper.CompareExchange(ref _taskCompletionSources,
 												   x =>
 													   {
@@ -161,7 +161,7 @@ namespace Bricks.Core.Impl.Sync
 		/// <returns>If the lock is not acquired returns <c>true</c>; otherwise, <c>false</c>.</returns>
 		public bool TryEnter(out IDisposable disposable)
 		{
-			var tcs1 =
+			TaskCompletionSource<IDisposable> tcs1 =
 				_interlockedHelper.CompareExchange(ref _taskCompletionSources,
 												   x =>
 													   {

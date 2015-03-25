@@ -48,12 +48,12 @@ namespace Bricks.Core.Impl.Sync
 		/// <param name="change">Функция изменения значения.</param>
 		public void CompareExchange<T>(ref T target, Func<T, T> change) where T : class
 		{
-			var currentValue = Volatile.Read(ref target);
+			T currentValue = Volatile.Read(ref target);
 			T oldValue;
 			do
 			{
 				oldValue = currentValue;
-				var newValue = change(currentValue);
+				T newValue = change(currentValue);
 				currentValue = Interlocked.CompareExchange(ref target, newValue, currentValue);
 			}
 			while (!Equals(oldValue, currentValue));
@@ -70,13 +70,13 @@ namespace Bricks.Core.Impl.Sync
 		/// <returns>Результат замены значения.</returns>
 		public TResult CompareExchange<T, TResult>(ref T target, Func<T, IChangeResult<T, TResult>> change) where T : class
 		{
-			var currentValue = Volatile.Read(ref target);
+			T currentValue = Volatile.Read(ref target);
 			T oldValue;
 			TResult result;
 			do
 			{
 				oldValue = currentValue;
-				var changeResult = change(currentValue);
+				IChangeResult<T, TResult> changeResult = change(currentValue);
 				currentValue = Interlocked.CompareExchange(ref target, changeResult.NewValue, currentValue);
 				result = changeResult.Result;
 			}

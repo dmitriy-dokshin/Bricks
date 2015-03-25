@@ -4,12 +4,12 @@ using System;
 using System.Globalization;
 using System.Reflection;
 
-using Bricks.Core.Enum;
+using Bricks.Core.Enumerations;
 using Bricks.Core.Resources;
 
 #endregion
 
-namespace Bricks.Core.Impl.Enum
+namespace Bricks.Core.Impl.Enumerations
 {
 	/// <summary>
 	/// Реализация по умолчанию <see cref="IEnumResourceHelper" />.
@@ -51,6 +51,38 @@ namespace Bricks.Core.Impl.Enum
 			_resourceProvider = resourceProvider;
 		}
 
+		private IResourceManager GetResourceManager()
+		{
+			IResourceManager resourceManager = null;
+			var enumResourceAttribute =
+				_enumType.GetCustomAttribute<EnumResourceAttribute>(false);
+			if (enumResourceAttribute != null)
+			{
+				if (!string.IsNullOrEmpty(enumResourceAttribute.BaseName))
+				{
+					Assembly resourceAssembly =
+						!string.IsNullOrEmpty(enumResourceAttribute.AssemblyString)
+							? Assembly.Load(enumResourceAttribute.AssemblyString)
+							: _enumType.Assembly;
+					resourceManager = _resourceProvider.GetResourceManager(enumResourceAttribute.BaseName, resourceAssembly);
+				}
+				else
+				{
+					Type resourceType = enumResourceAttribute.ResourceType;
+					if (resourceType == null && !string.IsNullOrEmpty(enumResourceAttribute.ResourceTypeFullName))
+					{
+						resourceType = Type.GetType(enumResourceAttribute.ResourceTypeFullName);
+					}
+
+					if (resourceType != null)
+					{
+						resourceManager = _resourceProvider.GetResourceManager(resourceType);
+					}
+				}
+			}
+			return resourceManager;
+		}
+
 		#region Implementation of IEnumResourceHelper
 
 		/// <summary>
@@ -68,7 +100,7 @@ namespace Bricks.Core.Impl.Enum
 			IResourceManager resourceManager = GetResourceManager();
 			if (resourceManager != null)
 			{
-				var resourceName = string.Format(CultureInfo.InvariantCulture, EnumNameResourceKeyTemplate, _enumType.Name);
+				string resourceName = string.Format(CultureInfo.InvariantCulture, EnumNameResourceKeyTemplate, _enumType.Name);
 				return resourceManager.GetString(resourceName, cultureInfo);
 			}
 
@@ -85,7 +117,7 @@ namespace Bricks.Core.Impl.Enum
 			IResourceManager resourceManager = GetResourceManager();
 			if (resourceManager != null)
 			{
-				var resourceName = string.Format(CultureInfo.InvariantCulture, EnumDescriptionResourceKeyTemplate, _enumType.Name);
+				string resourceName = string.Format(CultureInfo.InvariantCulture, EnumDescriptionResourceKeyTemplate, _enumType.Name);
 				return resourceManager.GetString(resourceName, cultureInfo);
 			}
 
@@ -103,7 +135,7 @@ namespace Bricks.Core.Impl.Enum
 			IResourceManager resourceManager = GetResourceManager();
 			if (resourceManager != null)
 			{
-				var resourceName = string.Format(CultureInfo.InvariantCulture, EnumValueNameResourceKeyTemplate, _enumType.Name, enumValueName);
+				string resourceName = string.Format(CultureInfo.InvariantCulture, EnumValueNameResourceKeyTemplate, _enumType.Name, enumValueName);
 				return resourceManager.GetString(resourceName, cultureInfo);
 			}
 
@@ -121,7 +153,7 @@ namespace Bricks.Core.Impl.Enum
 			IResourceManager resourceManager = GetResourceManager();
 			if (resourceManager != null)
 			{
-				var resourceName = string.Format(CultureInfo.InvariantCulture, EnumValueDescriptionResourceKeyTemplate, _enumType.Name, enumValueName);
+				string resourceName = string.Format(CultureInfo.InvariantCulture, EnumValueDescriptionResourceKeyTemplate, _enumType.Name, enumValueName);
 				return resourceManager.GetString(resourceName, cultureInfo);
 			}
 
@@ -129,37 +161,5 @@ namespace Bricks.Core.Impl.Enum
 		}
 
 		#endregion
-
-		private IResourceManager GetResourceManager()
-		{
-			IResourceManager resourceManager = null;
-			var enumResourceAttribute =
-				_enumType.GetCustomAttribute<EnumResourceAttribute>(false);
-			if (enumResourceAttribute != null)
-			{
-				if (!string.IsNullOrEmpty(enumResourceAttribute.BaseName))
-				{
-					var resourceAssembly =
-						!string.IsNullOrEmpty(enumResourceAttribute.AssemblyString)
-							? Assembly.Load(enumResourceAttribute.AssemblyString)
-							: _enumType.Assembly;
-					resourceManager = _resourceProvider.GetResourceManager(enumResourceAttribute.BaseName, resourceAssembly);
-				}
-				else
-				{
-					var resourceType = enumResourceAttribute.ResourceType;
-					if (resourceType == null && !string.IsNullOrEmpty(enumResourceAttribute.ResourceTypeFullName))
-					{
-						resourceType = Type.GetType(enumResourceAttribute.ResourceTypeFullName);
-					}
-
-					if (resourceType != null)
-					{
-						resourceManager = _resourceProvider.GetResourceManager(resourceType);
-					}
-				}
-			}
-			return resourceManager;
-		}
 	}
 }

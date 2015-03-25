@@ -18,12 +18,12 @@ namespace Bricks.Core.Web.ValueConverters
 		/// <returns>Результат конвертации.</returns>
 		protected override string Convert(IEnumerable source)
 		{
-			StringBuilder sb = new StringBuilder();
-			foreach (var item in source)
+			var sb = new StringBuilder();
+			foreach (object item in source)
 			{
 				if (item != null)
 				{
-					var itemString = item.ToString();
+					string itemString = item.ToString();
 					if (sb.Length > 0)
 					{
 						sb.Append(',');

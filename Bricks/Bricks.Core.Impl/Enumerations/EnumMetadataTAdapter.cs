@@ -1,14 +1,15 @@
 ﻿#region
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-using Bricks.Core.Enum;
+using Bricks.Core.Enumerations;
 
 #endregion
 
-namespace Bricks.Core.Impl.Enum
+namespace Bricks.Core.Impl.Enumerations
 {
 	internal sealed class EnumMetadataTAdapter<TEnum> : IEnumMetadata<TEnum>
 		where TEnum : struct
@@ -42,10 +43,10 @@ namespace Bricks.Core.Impl.Enum
 
 		public IEnumValueMetadata GetEnumValueMetadata(TEnum enumValue)
 		{
-			return GetEnumValueMetadata((System.Enum)(object)enumValue);
+			return GetEnumValueMetadata((Enum)(object)enumValue);
 		}
 
-		IReadOnlyDictionary<System.Enum, string> IEnumMetadata.ValueNameDictionary
+		IReadOnlyDictionary<Enum, string> IEnumMetadata.ValueNameDictionary
 		{
 			get
 			{
@@ -53,7 +54,7 @@ namespace Bricks.Core.Impl.Enum
 			}
 		}
 
-		public IEnumValueMetadata GetEnumValueMetadata(System.Enum enumValue)
+		public IEnumValueMetadata GetEnumValueMetadata(Enum enumValue)
 		{
 			return _enumMetadata.GetEnumValueMetadata(enumValue);
 		}

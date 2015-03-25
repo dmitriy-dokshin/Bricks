@@ -1,5 +1,6 @@
 ﻿#region
 
+using System;
 using System.Collections.Immutable;
 using System.Reflection;
 using System.Text;
@@ -13,8 +14,8 @@ namespace Bricks.Core.Impl.Reflection
 {
 	internal sealed class ReflectionHelper : IReflectionHelper
 	{
-		private IImmutableDictionary<MethodBase, string> _methodFullNames;
 		private readonly IInterlockedHelper _interlockedHelper;
+		private IImmutableDictionary<MethodBase, string> _methodFullNames;
 
 		public ReflectionHelper(IInterlockedHelper interlockedHelper)
 		{
@@ -49,7 +50,7 @@ namespace Bricks.Core.Impl.Reflection
 		private static string GetFullNameCore(MethodBase method)
 		{
 			var methodFullNameBuilder = new StringBuilder();
-			var reflectedType = method.ReflectedType;
+			Type reflectedType = method.ReflectedType;
 			if (reflectedType != null)
 			{
 				methodFullNameBuilder.Append(reflectedType.Name);
@@ -57,7 +58,7 @@ namespace Bricks.Core.Impl.Reflection
 			}
 
 			methodFullNameBuilder.Append(method.Name);
-			var methodFullName = methodFullNameBuilder.ToString();
+			string methodFullName = methodFullNameBuilder.ToString();
 			return string.Intern(methodFullName);
 		}
 	}

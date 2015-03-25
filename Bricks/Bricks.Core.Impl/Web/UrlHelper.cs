@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Specialized;
 
 using Bricks.Core.Web;
 
@@ -32,7 +33,7 @@ namespace Bricks.Core.Impl.Web
 		public Uri GetUrl<TParameters>(Uri address, TParameters parameters)
 		{
 			var urlBuilder = new UriBuilder(address);
-			var nameValueCollection = _webSerializationHelper.ToNameValueCollection(parameters);
+			NameValueCollection nameValueCollection = _webSerializationHelper.ToNameValueCollection(parameters);
 			urlBuilder.AppendQuery(nameValueCollection);
 			return urlBuilder.Uri;
 		}

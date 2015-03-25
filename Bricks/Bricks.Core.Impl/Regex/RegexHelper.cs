@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using Bricks.Core.Configuration;
 using Bricks.Core.Exceptions;
 using Bricks.Core.Regex;
+using Bricks.Core.Results;
 
 #endregion
 
@@ -57,7 +58,7 @@ namespace Bricks.Core.Impl.Regex
 				source = Replace(source, @"(@)(.+)$", domainMapper.Evaluate);
 				if (domainMapper.IsValid)
 				{
-					var match = Match(source, _regexSettings.Email.Pattern);
+					Match match = Match(source, _regexSettings.Email.Pattern);
 					if (match != null && match.Success)
 					{
 						email = source;
@@ -77,7 +78,7 @@ namespace Bricks.Core.Impl.Regex
 		/// <returns>Признак корректного номера телефона.</returns>
 		public bool IsValidPhoneNumber(string source)
 		{
-			var match = MatchPhoneNumber(source);
+			Match match = MatchPhoneNumber(source);
 			return match != null && match.Success;
 		}
 
@@ -89,18 +90,18 @@ namespace Bricks.Core.Impl.Regex
 		/// <returns>Признак успешного разбора номера телефона.</returns>
 		public bool TryParsePhoneNumber(string source, out string phoneNumber)
 		{
-			var phoneRegexSettings = _regexSettings.Phone;
-			var numberFormat = phoneRegexSettings.NumberFormat;
-			var numberOnlyFormat = phoneRegexSettings.NumberOnlyFormat;
+			IPhoneRegexSettings phoneRegexSettings = _regexSettings.Phone;
+			string numberFormat = phoneRegexSettings.NumberFormat;
+			string numberOnlyFormat = phoneRegexSettings.NumberOnlyFormat;
 			string countryCode;
 			string cityCode;
 			string number;
-			var success = TryParsePhoneNumber(source, out countryCode, out cityCode, out number);
+			bool success = TryParsePhoneNumber(source, out countryCode, out cityCode, out number);
 			if (success)
 			{
 				var numberBuilder = new StringBuilder();
 				var i = 0;
-				foreach (var @char in numberOnlyFormat)
+				foreach (char @char in numberOnlyFormat)
 				{
 					if (@char.Equals('n'))
 					{
@@ -141,19 +142,19 @@ namespace Bricks.Core.Impl.Regex
 			area = null;
 			number = null;
 
-			var match = MatchPhoneNumber(source);
-			var success = match.Success;
+			Match match = MatchPhoneNumber(source);
+			bool success = match.Success;
 			if (success)
 			{
-				var countryGroup = match.Groups[CountrycodeGroupName];
+				Group countryGroup = match.Groups[CountrycodeGroupName];
 				country = countryGroup.Success ? countryGroup.Value : "+7";
 
-				var areaGroup = match.Groups[CityCodeGroupName];
+				Group areaGroup = match.Groups[CityCodeGroupName];
 				success = areaGroup.Success;
 				if (success)
 				{
 					area = areaGroup.Value;
-					var numberGroup = match.Groups[NumberGroupName];
+					Group numberGroup = match.Groups[NumberGroupName];
 					success = numberGroup.Success;
 					if (success)
 					{
@@ -167,29 +168,29 @@ namespace Bricks.Core.Impl.Regex
 
 		private Match MatchPhoneNumber(string source)
 		{
-			var phoneRegexSettings = _regexSettings.Phone;
+			IPhoneRegexSettings phoneRegexSettings = _regexSettings.Phone;
 			source = Replace(source, phoneRegexSettings.NoisePattern, string.Empty);
-			var match = source != null ? Match(source, phoneRegexSettings.NumberPattern) : null;
+			Match match = source != null ? Match(source, phoneRegexSettings.NumberPattern) : null;
 			return match;
 		}
 
 		private Match Match(string input, string pattern, RegexOptions options = RegexOptions.None)
 		{
-			var result = _exceptionHelper.Catch<Match, RegexMatchTimeoutException>(
+			IResult<Match> result = _exceptionHelper.Catch<Match, RegexMatchTimeoutException>(
 				() => System.Text.RegularExpressions.Regex.Match(input, pattern, options, _regexSettings.MatchTimeout));
 			return result.Success ? result.Data : null;
 		}
 
 		private string Replace(string input, string pattern, string replacement, RegexOptions options = RegexOptions.None)
 		{
-			var result = _exceptionHelper.Catch<string, RegexMatchTimeoutException>(
+			IResult<string> result = _exceptionHelper.Catch<string, RegexMatchTimeoutException>(
 				() => System.Text.RegularExpressions.Regex.Replace(input, pattern, replacement, options, _regexSettings.MatchTimeout));
 			return result.Success ? result.Data : null;
 		}
 
 		private string Replace(string input, string pattern, MatchEvaluator matchEvaluator, RegexOptions options = RegexOptions.None)
 		{
-			var result = _exceptionHelper.Catch<string, RegexMatchTimeoutException>(
+			IResult<string> result = _exceptionHelper.Catch<string, RegexMatchTimeoutException>(
 				() => System.Text.RegularExpressions.Regex.Replace(input, pattern, matchEvaluator, options, _regexSettings.MatchTimeout));
 			return result.Success ? result.Data : null;
 		}
@@ -208,7 +209,7 @@ namespace Bricks.Core.Impl.Regex
 			public string Evaluate(Match match)
 			{
 				var idn = new IdnMapping();
-				var domainName = match.Groups[2].Value;
+				string domainName = match.Groups[2].Value;
 				try
 				{
 					domainName = idn.GetAscii(domainName);

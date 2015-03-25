@@ -14,12 +14,12 @@ namespace Bricks.Core.Modularity
 	/// </summary>
 	public interface IApplication : IDisposable
 	{
+		IServiceLocator ServiceLocator { get; }
+
 		/// <summary>
 		/// Initializes the application.
 		/// </summary>
 		/// <param name="args">The <see cref="IUnityContainer" /> that contains initialization arguments.</param>
 		void Initialize(IUnityContainer args = null);
-
-		IServiceLocator ServiceLocator { get; }
 	}
 }

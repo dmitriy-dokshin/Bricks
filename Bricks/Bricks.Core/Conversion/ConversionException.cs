@@ -38,9 +38,9 @@ namespace Bricks.Core.Conversion
 		protected ConversionException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
-			var sourceTypeName = info.GetString(Refl.GetMemberName(() => SourceType));
+			string sourceTypeName = info.GetString(Refl.GetMemberName(() => SourceType));
 			SourceType = !string.IsNullOrEmpty(sourceTypeName) ? Type.GetType(sourceTypeName) : null;
-			var destinationTypeName = info.GetString(Refl.GetMemberName(() => DestinationType));
+			string destinationTypeName = info.GetString(Refl.GetMemberName(() => DestinationType));
 			DestinationType = !string.IsNullOrEmpty(destinationTypeName) ? Type.GetType(destinationTypeName) : null;
 		}
 

@@ -4,11 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using Bricks.Core.Enum;
+using Bricks.Core.Enumerations;
 
 #endregion
 
-namespace Bricks.Core.Impl.Enum
+namespace Bricks.Core.Impl.Enumerations
 {
 	/// <summary>
 	/// Базовый класс метаданных флагового перечисления.
@@ -18,7 +18,7 @@ namespace Bricks.Core.Impl.Enum
 		protected FlagsMetadataBase(Type enumType)
 			: base(enumType, true)
 		{
-			var flags = new HashSet<System.Enum>(ValueNameDictionary.Keys);
+			var flags = new HashSet<Enum>(ValueNameDictionary.Keys);
 			Flags = flags.Where(x => flags.Count(x.HasFlag) == 1).ToArray();
 		}
 
@@ -29,7 +29,7 @@ namespace Bricks.Core.Impl.Enum
 		/// </summary>
 		/// <param name="enumValue">Значение перечисления.</param>
 		/// <returns>Метаданные значения перечисления.</returns>
-		public override IEnumValueMetadata GetEnumValueMetadata(System.Enum enumValue)
+		public override IEnumValueMetadata GetEnumValueMetadata(Enum enumValue)
 		{
 			return GetFlagsValueMetadata(enumValue);
 		}
@@ -41,14 +41,14 @@ namespace Bricks.Core.Impl.Enum
 		/// <summary>
 		/// Флаги перечисления.
 		/// </summary>
-		public IReadOnlyCollection<System.Enum> Flags { get; private set; }
+		public IReadOnlyCollection<Enum> Flags { get; private set; }
 
 		/// <summary>
 		/// Получает метаданные значения флагового перечисления <paramref name="enumValue" />.
 		/// </summary>
 		/// <param name="enumValue">Значение флагового перечисления.</param>
 		/// <returns>Метаданные значения флагового перечисления.</returns>
-		public abstract IFlagsValueMetadata GetFlagsValueMetadata(System.Enum enumValue);
+		public abstract IFlagsValueMetadata GetFlagsValueMetadata(Enum enumValue);
 
 		#endregion
 	}

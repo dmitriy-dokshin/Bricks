@@ -3,11 +3,11 @@
 using System;
 using System.Globalization;
 
-using Bricks.Core.Enum;
+using Bricks.Core.Enumerations;
 
 #endregion
 
-namespace Bricks.Core.Impl.Enum
+namespace Bricks.Core.Impl.Enumerations
 {
 	/// <summary>
 	/// Класс метаданных флагового перечисления, получаемых из ресурсов.
@@ -29,7 +29,7 @@ namespace Bricks.Core.Impl.Enum
 		/// </summary>
 		/// <param name="enumValue">Значение флагового перечисления.</param>
 		/// <returns>Метаданные значения флагового перечисления.</returns>
-		public override IFlagsValueMetadata GetFlagsValueMetadata(System.Enum enumValue)
+		public override IFlagsValueMetadata GetFlagsValueMetadata(Enum enumValue)
 		{
 			return new ResourceFlagsValueMetadata(this, _enumResourceHelper, enumValue);
 		}

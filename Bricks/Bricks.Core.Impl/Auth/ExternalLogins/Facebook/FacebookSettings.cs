@@ -24,7 +24,10 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.Facebook
 		[ConfigurationProperty(AppIdName, IsRequired = true)]
 		public string AppId
 		{
-			get { return (string) this[AppIdName]; }
+			get
+			{
+				return (string)this[AppIdName];
+			}
 		}
 
 		/// <summary>
@@ -33,7 +36,10 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.Facebook
 		[ConfigurationProperty(AppSecretName, IsRequired = true)]
 		public string AppSecret
 		{
-			get { return (string) this[AppSecretName]; }
+			get
+			{
+				return (string)this[AppSecretName];
+			}
 		}
 
 		#endregion

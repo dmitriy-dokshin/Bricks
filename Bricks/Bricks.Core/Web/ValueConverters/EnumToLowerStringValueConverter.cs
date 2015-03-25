@@ -1,6 +1,8 @@
 ﻿#region
 
-using Bricks.Core.Enum;
+using System;
+
+using Bricks.Core.Enumerations;
 
 #endregion
 
@@ -23,9 +25,9 @@ namespace Bricks.Core.Web.ValueConverters
 		/// </summary>
 		/// <param name="source">Исходное значение.</param>
 		/// <returns>Результат конвертации.</returns>
-		protected override string Convert(System.Enum source)
+		protected override string Convert(Enum source)
 		{
-			var result = base.Convert(source);
+			string result = base.Convert(source);
 			result = result.ToLowerInvariant();
 			return result;
 		}

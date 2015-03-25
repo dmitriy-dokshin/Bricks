@@ -1,11 +1,13 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http.Controllers;
@@ -39,7 +41,7 @@ namespace Bricks.WebAPI.Filters
 
 		private static void SetClentCacheControl(HttpResponseMessage httpResponseMessage, CacheAttribute cacheAttribute)
 		{
-			var cacheControl = httpResponseMessage.Headers.CacheControl;
+			CacheControlHeaderValue cacheControl = httpResponseMessage.Headers.CacheControl;
 			if (cacheControl == null)
 			{
 				cacheControl = new CacheControlHeaderValue();
@@ -48,6 +50,42 @@ namespace Bricks.WebAPI.Filters
 
 			cacheControl.Private = true;
 			cacheControl.MaxAge = TimeSpan.FromSeconds(cacheAttribute.ClientLifetime);
+		}
+
+		private static string GetKey(HttpRequestMessage request, IReadOnlyCollection<string> headers)
+		{
+			string pathAndQuery = request.RequestUri.PathAndQuery;
+			bool hasParams = pathAndQuery.IndexOf('?') >= 0;
+			var keyBuilder = new StringBuilder(pathAndQuery);
+			if (headers != null && headers.Count > 0)
+			{
+				foreach (string header in headers)
+				{
+					IEnumerable<string> values;
+					if (request.Headers.TryGetValues(header, out values))
+					{
+						foreach (string value in values)
+						{
+							if (!hasParams)
+							{
+								keyBuilder.Append('?');
+								hasParams = true;
+							}
+							else
+							{
+								keyBuilder.Append('&');
+							}
+
+							keyBuilder.Append(header);
+							keyBuilder.Append('=');
+							keyBuilder.Append(Uri.EscapeDataString(value));
+						}
+					}
+				}
+			}
+
+			string key = keyBuilder.ToString();
+			return key;
 		}
 
 		#region Implementation of IFilter
@@ -78,16 +116,17 @@ namespace Bricks.WebAPI.Filters
 		/// <param name="continuation">The delegate function to continue after the action method is invoked.</param>
 		public async Task<HttpResponseMessage> ExecuteActionFilterAsync(HttpActionContext actionContext, CancellationToken cancellationToken, Func<Task<HttpResponseMessage>> continuation)
 		{
-			if (actionContext.Request.Method == HttpMethod.Get)
+			HttpRequestMessage request = actionContext.Request;
+			if (request.Method == HttpMethod.Get)
 			{
-				var cacheAttribute = actionContext.ActionDescriptor.GetCustomAttributes<CacheAttribute>().FirstOrDefault();
+				CacheAttribute cacheAttribute = actionContext.ActionDescriptor.GetCustomAttributes<CacheAttribute>().FirstOrDefault();
 				if (cacheAttribute != null)
 				{
 					if (cacheAttribute.ServerLifetime > 0)
 					{
-						var cacheManagerKey =
+						string cacheManagerKey =
 							cacheAttribute.CacheManagerKey ?? actionContext.ControllerContext.ControllerDescriptor.ControllerName + "_" + actionContext.ActionDescriptor.ActionName;
-						var cacheManager = _interlockedHelper.CompareExchange(ref _cacheMangers, x =>
+						ICacheManager cacheManager = _interlockedHelper.CompareExchange(ref _cacheMangers, x =>
 							{
 								ICacheManager result;
 								IImmutableDictionary<string, ICacheManager> newValue;
@@ -104,7 +143,7 @@ namespace Bricks.WebAPI.Filters
 								return _interlockedHelper.CreateChangeResult(newValue, result);
 							});
 
-						var key = actionContext.Request.RequestUri.PathAndQuery;
+						string key = GetKey(request, cacheAttribute.Headers);
 						var httpResponseMessageData = (HttpResponseMessageData)cacheManager.GetData(key);
 						if (httpResponseMessageData == null)
 						{
@@ -119,7 +158,7 @@ namespace Bricks.WebAPI.Filters
 										httpResponseMessageData = (HttpResponseMessageData)cacheManager.GetData(key);
 										if (httpResponseMessageData == null)
 										{
-											var httpResponseMessage = await continuation();
+											HttpResponseMessage httpResponseMessage = await continuation();
 											if (cacheAttribute.ClientLifetime > 0)
 											{
 												SetClentCacheControl(httpResponseMessage, cacheAttribute);
@@ -138,7 +177,7 @@ namespace Bricks.WebAPI.Filters
 
 					if (cacheAttribute.ClientLifetime > 0)
 					{
-						var httpResponseMessage = await continuation();
+						HttpResponseMessage httpResponseMessage = await continuation();
 						SetClentCacheControl(httpResponseMessage, cacheAttribute);
 						return httpResponseMessage;
 					}

@@ -11,7 +11,7 @@ namespace Bricks.Core.IO
 	{
 		public static async Task<byte[]> GetBytes(this Stream stream)
 		{
-			MemoryStream memoryStream = stream as MemoryStream;
+			var memoryStream = stream as MemoryStream;
 			byte[] bytes;
 			if (memoryStream != null)
 			{

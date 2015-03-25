@@ -24,7 +24,10 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.VK
 		[ConfigurationProperty(ClientIdName, IsRequired = true)]
 		public string ClientId
 		{
-			get { return (string) this[ClientIdName]; }
+			get
+			{
+				return (string)this[ClientIdName];
+			}
 		}
 
 		/// <summary>
@@ -33,7 +36,10 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.VK
 		[ConfigurationProperty(ClientSecretName, IsRequired = true)]
 		public string ClientSecret
 		{
-			get { return (string) this[ClientSecretName]; }
+			get
+			{
+				return (string)this[ClientSecretName];
+			}
 		}
 
 		#endregion

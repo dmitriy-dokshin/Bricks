@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Specialized;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -34,8 +35,8 @@ namespace Bricks.Core.Impl.Web
 
 		public async Task<IResult<WebResponseData<TResult, TErrorResult>>> Execute<TParameters, TResult, TErrorResult>(Uri address, HttpMethod method, TParameters parameters, ContentType contentType, TimeSpan? timeout = null)
 		{
-			var data = _webSerializationHelper.ToNameValueCollection(parameters);
-			var webResponse = await _webClient.ExecuteRequestAsync(address, method, data, timeout: timeout);
+			NameValueCollection data = _webSerializationHelper.ToNameValueCollection(parameters);
+			IWebResponse webResponse = await _webClient.ExecuteRequestAsync(address, method, data, timeout: timeout);
 			TResult result;
 			TErrorResult errorResult;
 			if (webResponse.Stream != null)
@@ -81,7 +82,6 @@ namespace Bricks.Core.Impl.Web
 						default:
 							throw new ArgumentOutOfRangeException("contentType");
 					}
-
 
 					result = default(TResult);
 				}

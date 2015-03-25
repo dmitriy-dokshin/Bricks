@@ -4,7 +4,7 @@ using System;
 
 #endregion
 
-namespace Bricks.Core.Enum
+namespace Bricks.Core.Enumerations
 {
 	/// <summary>
 	/// Контейнер метаданных перечислений.

@@ -22,9 +22,9 @@ namespace Bricks.Core.Impl.Serialization
 	/// </summary>
 	internal sealed class SerializationHelper : ISerializationHelper
 	{
-		private IImmutableDictionary<Type, XmlSerializer> _xmlSerializersByType;
 		private readonly IInterlockedHelper _interlockedHelper;
 		private readonly JsonSerializer _jsonSerializer;
+		private IImmutableDictionary<Type, XmlSerializer> _xmlSerializersByType;
 
 		public SerializationHelper(JsonSerializer jsonSerializer, IInterlockedHelper interlockedHelper)
 		{
@@ -148,7 +148,7 @@ namespace Bricks.Core.Impl.Serialization
 			}
 
 			XmlSerializer xmlSerializer = GetXmlSerializer(source.GetType());
-			StringBuilder stringBuilder = new StringBuilder();
+			var stringBuilder = new StringBuilder();
 			using (XmlWriter xmlWriter = XmlWriter.Create(stringBuilder))
 			{
 				xmlSerializer.Serialize(xmlWriter, source);

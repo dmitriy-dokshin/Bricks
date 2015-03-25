@@ -26,7 +26,7 @@ namespace Bricks.Core.Impl
 			base.Initialize(container, args);
 
 			var webSerializationHelper = container.Resolve<IWebSerializationHelper>();
-			webSerializationHelper.RegisterValueConverter<System.Enum, EnumToIntValueConverter>();
+			webSerializationHelper.RegisterValueConverter<Enum, EnumToIntValueConverter>();
 			webSerializationHelper.RegisterValueConverter<Guid, GuidToStringValueConverter>();
 		}
 

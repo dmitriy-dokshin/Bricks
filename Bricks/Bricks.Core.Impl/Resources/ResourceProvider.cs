@@ -17,8 +17,8 @@ namespace Bricks.Core.Impl.Resources
 	/// </summary>
 	internal sealed class ResourceProvider : IResourceProvider
 	{
-		private IImmutableDictionary<ResourceManagerKey, IResourceManager> _resourceManagers;
 		private readonly IInterlockedHelper _interlockedHelper;
+		private IImmutableDictionary<ResourceManagerKey, IResourceManager> _resourceManagers;
 
 		public ResourceProvider(IInterlockedHelper interlockedHelper)
 		{

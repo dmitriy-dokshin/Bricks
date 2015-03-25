@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 
@@ -25,7 +26,7 @@ namespace Bricks.Core.Configuration
 		/// </returns>
 		IEnumerator<T> IEnumerable<T>.GetEnumerator()
 		{
-			var enumerator = GetEnumerator();
+			IEnumerator enumerator = GetEnumerator();
 			while (enumerator.MoveNext())
 			{
 				yield return (T)enumerator.Current;

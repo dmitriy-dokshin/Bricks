@@ -1,14 +1,20 @@
-﻿namespace Bricks.Core.Extensions
+﻿#region
+
+using System;
+
+#endregion
+
+namespace Bricks.Core.Extensions
 {
 	public static class EnumExtensions
 	{
-		public static string GetName(this System.Enum value)
+		public static string GetName(this Enum value)
 		{
-			string name = System.Enum.GetName(value.GetType(), value);
+			string name = Enum.GetName(value.GetType(), value);
 			return name;
 		}
 
-		public static string GetLowerCamelCaseName(this System.Enum value)
+		public static string GetLowerCamelCaseName(this Enum value)
 		{
 			string name = value.GetName();
 			if (name.Length > 0 && !char.IsLower(name[0]))

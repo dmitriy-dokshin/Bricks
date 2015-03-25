@@ -41,9 +41,9 @@ namespace Bricks.Core.Impl.Web
 		public NameValueCollection ToNameValueCollection(object source)
 		{
 			var nameValueCollection = new NameValueCollection();
-			var type = source.GetType();
-			var propertyInfos = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
-			foreach (var propertyInfo in propertyInfos)
+			Type type = source.GetType();
+			PropertyInfo[] propertyInfos = type.GetProperties(BindingFlags.Instance | BindingFlags.Public);
+			foreach (PropertyInfo propertyInfo in propertyInfos)
 			{
 				if (propertyInfo.GetCustomAttribute<JsonIgnoreAttribute>() != null)
 				{
@@ -51,9 +51,9 @@ namespace Bricks.Core.Impl.Web
 				}
 
 				var jsonPropertyAttribute = propertyInfo.GetCustomAttribute<JsonPropertyAttribute>();
-				var name = jsonPropertyAttribute != null ? jsonPropertyAttribute.PropertyName : propertyInfo.Name;
+				string name = jsonPropertyAttribute != null ? jsonPropertyAttribute.PropertyName : propertyInfo.Name;
 
-				var value = propertyInfo.GetValue(source);
+				object value = propertyInfo.GetValue(source);
 				if (value != null)
 				{
 					var valueConverterAttribute = propertyInfo.GetCustomAttribute<ValueConverterAttribute>();
@@ -64,7 +64,7 @@ namespace Bricks.Core.Impl.Web
 					}
 					else
 					{
-						var valueType = value.GetType();
+						Type valueType = value.GetType();
 						_valueConverterTypesByTSource.TryGetValue(valueType, out valueConverterType);
 						if (valueConverterType == null)
 						{
@@ -72,7 +72,7 @@ namespace Bricks.Core.Impl.Web
 								_valueConverterTypesByTSource.Where(x => x.Key.IsAssignableFrom(valueType)).Select(x => x.Value).ToArray();
 							if (valueConverterTypes.Count > 1)
 							{
-								var message = string.Format(
+								string message = string.Format(
 									CultureInfo.InvariantCulture,
 									Resources.WebSerializationHelper_ToNameValueCollection_MultipleValueConverterTypes_InvalidOperationExceptionMessage,
 									valueType.FullName);

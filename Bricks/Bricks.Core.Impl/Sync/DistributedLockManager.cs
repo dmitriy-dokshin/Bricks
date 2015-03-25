@@ -86,7 +86,7 @@ namespace Bricks.Core.Impl.Sync
 			string key1String = key1.ToString();
 			using (IRepository repository = getRepository())
 			{
-				var @lock = await repository.Select<Lock>().FirstOrDefaultAsync(x => x.Key == keyString && x.Key1 == key1String, CancellationToken.None);
+				Lock @lock = await repository.Select<Lock>().FirstOrDefaultAsync(x => x.Key == keyString && x.Key1 == key1String, CancellationToken.None);
 				if (@lock != null)
 				{
 					if (_dateTimeProvider.Now - @lock.CreatedAt > timeout.Value)
@@ -139,10 +139,10 @@ namespace Bricks.Core.Impl.Sync
 			using (_lockContainer.GetLock(key, out @lockAsync))
 			{
 				var cancellationTokenSource = new CancellationTokenSource(timeout.Value);
-				var localDisposable = await @lockAsync.Enter(cancellationTokenSource.Token);
+				IDisposable localDisposable = await @lockAsync.Enter(cancellationTokenSource.Token);
 				while (true)
 				{
-					var ditributedDisposable = await TryGetLock(getRepository, key, key1, timeout);
+					IDisposable ditributedDisposable = await TryGetLock(getRepository, key, key1, timeout);
 					if (ditributedDisposable != null)
 					{
 						return ditributedDisposable.After(localDisposable.Dispose);

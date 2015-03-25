@@ -19,7 +19,7 @@ namespace Bricks.Core.Resources
 		/// <returns>Менеджер ресурсов.</returns>
 		public static IResourceManager GetResourceManager(this IResourceProvider resourceProvider, string resourceTypeName)
 		{
-			var type = Type.GetType(resourceTypeName, true);
+			Type type = Type.GetType(resourceTypeName, true);
 			return resourceProvider.GetResourceManager(type);
 		}
 	}

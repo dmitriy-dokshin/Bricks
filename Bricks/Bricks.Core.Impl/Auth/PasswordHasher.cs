@@ -27,7 +27,7 @@ namespace Bricks.Core.Impl.Auth
 
 		public string HashPassword(string password, byte[] salt = null)
 		{
-			var plainText = Encoding.Unicode.GetBytes(password);
+			byte[] plainText = Encoding.Unicode.GetBytes(password);
 			if (salt == null)
 			{
 				salt = _defaultSalt;
@@ -47,7 +47,7 @@ namespace Bricks.Core.Impl.Auth
 				plainTextWithSaltBytes[plainText.Length + i] = salt[i];
 			}
 
-			var hash = algorithm.ComputeHash(plainTextWithSaltBytes);
+			byte[] hash = algorithm.ComputeHash(plainTextWithSaltBytes);
 			return Convert.ToBase64String(hash);
 		}
 

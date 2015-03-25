@@ -43,7 +43,7 @@ namespace Bricks.Core.Impl.Web
 			{
 				if (headers != null)
 				{
-					foreach (var header in headers)
+					foreach (KeyValuePair<HttpRequestHeader, string> header in headers)
 					{
 						webClient.Headers.Add(header.Key, header.Value);
 					}
@@ -114,7 +114,7 @@ namespace Bricks.Core.Impl.Web
 			/// <param name="address">A <see cref="T:System.Uri" /> that identifies the resource to request.</param>
 			protected override WebRequest GetWebRequest(Uri address)
 			{
-				var webRequest = base.GetWebRequest(address);
+				WebRequest webRequest = base.GetWebRequest(address);
 				if (webRequest != null)
 				{
 					webRequest.Timeout = Convert.ToInt32(Math.Round(_timeout.TotalMilliseconds));

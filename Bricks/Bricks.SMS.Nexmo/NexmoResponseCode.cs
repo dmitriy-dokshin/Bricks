@@ -1,6 +1,6 @@
 ﻿#region
 
-using Bricks.Core.Enum;
+using Bricks.Core.Enumerations;
 
 #endregion
 

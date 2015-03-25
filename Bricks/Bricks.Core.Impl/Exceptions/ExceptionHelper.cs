@@ -29,7 +29,7 @@ namespace Bricks.Core.Impl.Exceptions
 
 		public string GetSummary(Exception exception, bool stackTrace = false)
 		{
-			StringBuilder summaryBuilder = new StringBuilder();
+			var summaryBuilder = new StringBuilder();
 			summaryBuilder.Append(exception.GetType().Name);
 			summaryBuilder.Append(": ");
 			summaryBuilder.AppendLine(exception.Message);

@@ -4,7 +4,7 @@ using System.Globalization;
 
 #endregion
 
-namespace Bricks.Core.Enum
+namespace Bricks.Core.Enumerations
 {
 	/// <summary>
 	/// Интерфейс метаданных значения перечисления.

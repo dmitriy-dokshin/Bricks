@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 #endregion
 
-namespace Bricks.Core.Enum
+namespace Bricks.Core.Enumerations
 {
 	/// <summary>
 	/// Интерфейс метаданных значения флагового перечисления.

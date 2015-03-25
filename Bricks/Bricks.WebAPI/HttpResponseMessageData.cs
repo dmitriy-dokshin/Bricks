@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -49,7 +50,7 @@ namespace Bricks.WebAPI
 		{
 			var httpResponseMessage = new HttpResponseMessage(StatusCode) { Version = Version, ReasonPhrase = ReasonPhrase };
 			httpResponseMessage.Headers.Clear();
-			foreach (var httpResponseHeader in Headers)
+			foreach (KeyValuePair<string, IEnumerable<string>> httpResponseHeader in Headers)
 			{
 				httpResponseMessage.Headers.Add(httpResponseHeader.Key, httpResponseHeader.Value);
 			}
@@ -57,7 +58,7 @@ namespace Bricks.WebAPI
 			if (Content != null)
 			{
 				var content = new ByteArrayContent(Content);
-				foreach (var httpContentHeader in ContentHeaders)
+				foreach (KeyValuePair<string, IEnumerable<string>> httpContentHeader in ContentHeaders)
 				{
 					content.Headers.Add(httpContentHeader.Key, httpContentHeader.Value);
 				}

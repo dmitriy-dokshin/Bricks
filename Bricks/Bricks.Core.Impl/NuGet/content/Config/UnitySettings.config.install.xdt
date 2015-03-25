@@ -71,18 +71,18 @@
 		</register>
 
 		<!-- Enum -->
-		<register type="Bricks.Core.Enum.IEnumHelper"
-				  mapTo="Bricks.Core.Impl.Enum.EnumHelper">
+		<register type="Bricks.Core.Enumerations.IEnumHelper"
+				  mapTo="Bricks.Core.Impl.Enumerations.EnumHelper">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
-		<register type="Bricks.Core.Impl.Enum.IEnumResourceHelper"
-				  mapTo="Bricks.Core.Impl.Enum.EnumResourceHelper" />
-		<register type="Bricks.Core.Enum.IFlagsMetadata"
-				  mapTo="Bricks.Core.Impl.Enum.ResourceFlagsMetadata" />
-		<register type="Bricks.Core.Enum.IEnumMetadata"
-				  mapTo="Bricks.Core.Impl.Enum.ResourceEnumMetadata" />
-		<register type="Bricks.Core.Enum.IEnumMetadataContainer"
-				  mapTo="Bricks.Core.Impl.Enum.EnumMetadataContainer">
+		<register type="Bricks.Core.Impl.Enumerations.IEnumResourceHelper"
+				  mapTo="Bricks.Core.Impl.Enumerations.EnumResourceHelper" />
+		<register type="Bricks.Core.Enumerations.IFlagsMetadata"
+				  mapTo="Bricks.Core.Impl.Enumerations.ResourceFlagsMetadata" />
+		<register type="Bricks.Core.Enumerations.IEnumMetadata"
+				  mapTo="Bricks.Core.Impl.Enumerations.ResourceEnumMetadata" />
+		<register type="Bricks.Core.Enumerations.IEnumMetadataContainer"
+				  mapTo="Bricks.Core.Impl.Enumerations.EnumMetadataContainer">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
 

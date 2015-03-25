@@ -49,13 +49,13 @@ namespace Bricks.Core.Impl.Conversion
 				success = true;
 			}
 
-			var destinationType = typeof(TDestination);
+			Type destinationType = typeof(TDestination);
 			if (!success)
 			{
 				ICollection<object> converters;
 				if (_convertersByDestinationType.TryGetValue(destinationType, out converters))
 				{
-					foreach (var converter in converters.Cast<IConverter<TDestination>>())
+					foreach (IConverter<TDestination> converter in converters.Cast<IConverter<TDestination>>())
 					{
 						success = converter.TryConvert(source, out destination);
 						if (success)
@@ -71,7 +71,7 @@ namespace Bricks.Core.Impl.Conversion
 				ICollection<Type> converterTypes;
 				if (_converterTypesByDestinationType.TryGetValue(destinationType, out converterTypes))
 				{
-					foreach (var converterType in converterTypes)
+					foreach (Type converterType in converterTypes)
 					{
 						var converter = (IConverter<TDestination>)_serviceLocator.GetInstance(converterType);
 						success = converter.TryConvert(source, out destination);
@@ -98,7 +98,7 @@ namespace Bricks.Core.Impl.Conversion
 			TDestination destination;
 			if (!TryConvert(source, out destination))
 			{
-				var sourceType = source != null ? source.GetType() : null;
+				Type sourceType = source != null ? source.GetType() : null;
 				throw new ConversionException(Resources.Converter_Convert_UnableToConvert, sourceType, typeof(TDestination));
 			}
 
@@ -113,7 +113,7 @@ namespace Bricks.Core.Impl.Conversion
 		/// <typeparam name="TConverter">Тип конвертера.</typeparam>
 		public void Register<TDestination, TConverter>() where TConverter : IConverter<TDestination>
 		{
-			var destinationType = typeof(TDestination);
+			Type destinationType = typeof(TDestination);
 			ICollection<Type> converterTypes;
 			if (!_converterTypesByDestinationType.TryGetValue(destinationType, out converterTypes))
 			{
@@ -131,7 +131,7 @@ namespace Bricks.Core.Impl.Conversion
 		/// <param name="converter">Конвертер.</param>
 		public void Register<TDestination>(IConverter<TDestination> converter)
 		{
-			var destinationType = typeof(TDestination);
+			Type destinationType = typeof(TDestination);
 			ICollection<object> converters;
 			if (!_convertersByDestinationType.TryGetValue(destinationType, out converters))
 			{

@@ -314,9 +314,9 @@ namespace Bricks.Core.Repository
 
 		public static async Task<IResult<TData>> ChangeAndSaveAsync<TData>(this IRepository repository, Func<IRepository, TData> change)
 		{
-			var data = change(repository);
-			var saveResult = await repository.SaveAsync();
-			var result =
+			TData data = change(repository);
+			IResult saveResult = await repository.SaveAsync();
+			IResult<TData> result =
 				saveResult.Success
 					? _resultFactory.Value.Create(data)
 					: _resultFactory.Value.CreateUnsuccessfulResult<TData>(innerResult: saveResult);
@@ -326,8 +326,8 @@ namespace Bricks.Core.Repository
 		public static async Task<IResult> ChangeAndSaveAsync(this IRepository repository, Action<IRepository> change)
 		{
 			change(repository);
-			var saveResult = await repository.SaveAsync();
-			var result =
+			IResult saveResult = await repository.SaveAsync();
+			IResult result =
 				saveResult.Success
 					? _resultFactory.Value.Create()
 					: _resultFactory.Value.CreateUnsuccessfulResult(innerResult: saveResult);

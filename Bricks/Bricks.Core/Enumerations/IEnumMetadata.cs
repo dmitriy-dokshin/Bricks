@@ -6,7 +6,7 @@ using System.Globalization;
 
 #endregion
 
-namespace Bricks.Core.Enum
+namespace Bricks.Core.Enumerations
 {
 	/// <summary>
 	/// Интерфейс метаданных перечисления.
@@ -21,14 +21,14 @@ namespace Bricks.Core.Enum
 		/// <summary>
 		/// Словарь значений-названий перечисления.
 		/// </summary>
-		IReadOnlyDictionary<System.Enum, string> ValueNameDictionary { get; }
+		IReadOnlyDictionary<Enum, string> ValueNameDictionary { get; }
 
 		/// <summary>
 		/// Получает метаданные значения перечисления <paramref name="enumValue" />.
 		/// </summary>
 		/// <param name="enumValue">Значение перечисления.</param>
 		/// <returns>Метаданные значения перечисления.</returns>
-		IEnumValueMetadata GetEnumValueMetadata(System.Enum enumValue);
+		IEnumValueMetadata GetEnumValueMetadata(Enum enumValue);
 
 		/// <summary>
 		/// Получает название перечисления.
