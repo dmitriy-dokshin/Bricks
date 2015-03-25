@@ -22,6 +22,8 @@ using Bricks.Core.Repository;
 using Bricks.Core.Results;
 using Bricks.Core.Tasks;
 
+using EntityFramework.BulkInsert.Extensions;
+
 #endregion
 
 namespace Bricks.DAL.EF
@@ -62,11 +64,11 @@ namespace Bricks.DAL.EF
 
 		private sealed class TransactionScope : ITransactionScope
 		{
-			private readonly DbContextTransaction _dbContextTransaction;
+			public DbContextTransaction DbContextTransaction { get; private set; }
 
 			public TransactionScope(DbContextTransaction dbContextTransaction)
 			{
-				_dbContextTransaction = dbContextTransaction;
+				DbContextTransaction = dbContextTransaction;
 			}
 
 			#region Implementation of IDisposable
@@ -76,7 +78,7 @@ namespace Bricks.DAL.EF
 			/// </summary>
 			public void Dispose()
 			{
-				_dbContextTransaction.Dispose();
+				DbContextTransaction.Dispose();
 			}
 
 			#endregion
@@ -88,7 +90,7 @@ namespace Bricks.DAL.EF
 			/// </summary>
 			public void Commit()
 			{
-				_dbContextTransaction.Commit();
+				DbContextTransaction.Commit();
 			}
 
 			/// <summary>
@@ -96,7 +98,7 @@ namespace Bricks.DAL.EF
 			/// </summary>
 			public void Rollback()
 			{
-				_dbContextTransaction.Rollback();
+				DbContextTransaction.Rollback();
 			}
 
 			#endregion
@@ -113,6 +115,23 @@ namespace Bricks.DAL.EF
 		{
 			var dbSet = _dbContext.Set<TEntity>();
 			dbSet.AddRange(entities);
+			return entities;
+		}
+
+		public TEnumerable BulkInsert<TEntity, TEnumerable>(TEnumerable entities, ITransactionScope transactionScope = null)
+			where TEntity : class
+			where TEnumerable : IEnumerable<TEntity>
+		{
+			if (transactionScope != null)
+			{
+				DbContextTransaction dbContextTransaction = ((TransactionScope)transactionScope).DbContextTransaction;
+				_dbContext.BulkInsert(entities, dbContextTransaction.UnderlyingTransaction);
+			}
+			else
+			{
+				_dbContext.BulkInsert(entities);
+			}
+
 			return entities;
 		}
 

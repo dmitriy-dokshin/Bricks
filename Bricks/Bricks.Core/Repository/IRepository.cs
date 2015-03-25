@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,6 +18,10 @@ namespace Bricks.Core.Repository
 		IQueryable<TEntity> Select<TEntity>() where TEntity : class;
 
 		TEnumerable AddRange<TEntity, TEnumerable>(TEnumerable entities)
+			where TEntity : class
+			where TEnumerable : IEnumerable<TEntity>;
+
+		TEnumerable BulkInsert<TEntity, TEnumerable>(TEnumerable entities, ITransactionScope transactionScope = null)
 			where TEntity : class
 			where TEnumerable : IEnumerable<TEntity>;
 

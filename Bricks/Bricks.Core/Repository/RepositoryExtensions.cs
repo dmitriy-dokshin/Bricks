@@ -34,6 +34,12 @@ namespace Bricks.Core.Repository
 			return repository.AddRange<TEntity, IEnumerable<TEntity>>(entities);
 		}
 
+		public static IEnumerable<TEntity> BulkInsert<TEntity>(this IRepository repository, IEnumerable<TEntity> entities, ITransactionScope transactionScope = null)
+			where TEntity : class
+		{
+			return repository.BulkInsert<TEntity, IEnumerable<TEntity>>(entities, transactionScope);
+		}
+
 		public static IEnumerable<TEntity> UpdateRange<TEntity>(this IRepository repository, IEnumerable<TEntity> entities)
 			where TEntity : class
 		{
@@ -56,6 +62,12 @@ namespace Bricks.Core.Repository
 			where TEntity : class
 		{
 			return repository.AddRange<TEntity, IReadOnlyCollection<TEntity>>(entities);
+		}
+
+		public static IReadOnlyCollection<TEntity> BulkInsert<TEntity>(this IRepository repository, IReadOnlyCollection<TEntity> entities, ITransactionScope transactionScope = null)
+			where TEntity : class
+		{
+			return repository.BulkInsert<TEntity, IReadOnlyCollection<TEntity>>(entities, transactionScope);
 		}
 
 		public static IReadOnlyCollection<TEntity> UpdateRange<TEntity>(this IRepository repository, IReadOnlyCollection<TEntity> entities)
