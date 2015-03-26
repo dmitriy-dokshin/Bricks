@@ -1,6 +1,8 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 
 using Bricks.Core.Results;
@@ -22,12 +24,19 @@ namespace Bricks.Core.Web
 		/// <typeparam name="TResult">Тип ответа.</typeparam>
 		/// <typeparam name="TErrorResult">Тип ответа в случае ошибки.</typeparam>
 		/// <param name="address">Адрес web-сервиса.</param>
-		/// <param name="method">Метод запроса.</param>
 		/// <param name="parameters">Параметры запроса.</param>
-		/// <param name="contentType">Тип контента.</param>
+		/// <param name="method">Метод запроса.</param>
+		/// <param name="resultContentType">Тип контента.</param>
+		/// <param name="errorContentType">Тип контента ошибки.</param>
+		/// <param name="headers">Заголовки.</param>
 		/// <param name="timeout">Таймаут запроса.</param>
 		/// <returns>Результат запроса.</returns>
 		Task<IResult<WebResponseData<TResult, TErrorResult>>> Execute<TParameters, TResult, TErrorResult>(
-			Uri address, HttpMethod method, TParameters parameters, ContentType contentType, TimeSpan? timeout = null);
+			Uri address, TParameters parameters, HttpMethod method = HttpMethod.Get, ContentType? resultContentType = null, ContentType? errorContentType = null,
+			IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null);
+
+		Task<IResult<WebResponseData<TResult, TErrorResult>>> Execute<TResult, TErrorResult>(
+			Uri address, HttpMethod method = HttpMethod.Get, ContentType? resultContentType = null, ContentType? errorContentType = null,
+			IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null);
 	}
 }

@@ -42,7 +42,7 @@ namespace Bricks.SMS.Nexmo
 			_serviceLocator.BuildUp(smsParameters);
 
 			var sendSmsResult = await _webHelper.Execute<SmsParameters, SmsResult, JObject>(
-				smsParameters.ServiceUrl, HttpMethod.Post, smsParameters, ContentType.Json);
+				smsParameters.ServiceUrl, smsParameters, HttpMethod.Post);
 			if (!sendSmsResult.Success)
 			{
 				// todo: Логировать.

@@ -48,7 +48,7 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.VK
 			var vkAccessTokenParameters = new VkAccessTokenParameters(_vkSettings.ClientId, _vkSettings.ClientSecret, code, redirectUrl);
 			IResult<WebResponseData<VkAccessTokenData, JObject>> accessTokenResult =
 				await _webHelper.Execute<VkAccessTokenParameters, VkAccessTokenData, JObject>(
-					_accessTokenUrl, HttpMethod.Get, vkAccessTokenParameters, ContentType.Json, _timeout);
+					_accessTokenUrl, vkAccessTokenParameters, timeout: _timeout);
 			if (!accessTokenResult.Success)
 			{
 				var message = accessTokenResult.Data.ErrorResult["error_description"].Value<string>();
@@ -62,7 +62,7 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.VK
 		{
 			IResult<WebResponseData<VkResponseData<IReadOnlyCollection<VkUserData>>, JObject>> usersGetResult =
 				await _webHelper.Execute<VkUserParameters, VkResponseData<IReadOnlyCollection<VkUserData>>, JObject>(
-					_usersGetUrl, HttpMethod.Get, new VkUserParameters(accessToken), ContentType.Json, _timeout);
+					_usersGetUrl, new VkUserParameters(accessToken), timeout: _timeout);
 			if (!usersGetResult.Success)
 			{
 				var message = usersGetResult.Data.ErrorResult["error"]["error_msg"].Value<string>();

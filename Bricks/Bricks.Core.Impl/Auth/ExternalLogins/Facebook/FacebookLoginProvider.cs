@@ -43,7 +43,7 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.Facebook
 		{
 			IResult<WebResponseData<FacebookUserData, JObject>> meResult =
 				await _webHelper.Execute<FacebookUserParameters, FacebookUserData, JObject>(
-					_meUrl, HttpMethod.Get, new FacebookUserParameters(accessToken), ContentType.Json, _timeout);
+					_meUrl, new FacebookUserParameters(accessToken), timeout: _timeout);
 			if (!meResult.Success)
 			{
 				var message = meResult.Data.ErrorResult["error"]["message"].Value<string>();
@@ -53,7 +53,7 @@ namespace Bricks.Core.Impl.Auth.ExternalLogins.Facebook
 			FacebookUserData facebookUserData = meResult.Data.Result;
 			IResult<WebResponseData<FacebookResponseData<FacebookUserPictureData>, JObject>> mePictureResult =
 				await _webHelper.Execute<FacebookUserPictureParameters, FacebookResponseData<FacebookUserPictureData>, JObject>(
-					_mePictureUrl, HttpMethod.Get, new FacebookUserPictureParameters(accessToken), ContentType.Json, _timeout);
+					_mePictureUrl, new FacebookUserPictureParameters(accessToken), timeout: _timeout);
 			if (mePictureResult.Success)
 			{
 				FacebookUserPictureData facebookUserPictureData = mePictureResult.Data.Result.Data;

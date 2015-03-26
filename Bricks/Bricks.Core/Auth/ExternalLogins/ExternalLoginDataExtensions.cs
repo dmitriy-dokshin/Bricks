@@ -40,7 +40,7 @@ namespace Bricks.Core.Auth.ExternalLogins
 			Image image = null;
 			if (!string.IsNullOrEmpty(externalLoginData.ImageUrl))
 			{
-				IWebResponse webResponse = await webClient.ExecuteRequestAsync(new Uri(externalLoginData.ImageUrl), HttpMethod.Get);
+				IWebResponse webResponse = await webClient.ExecuteRequestAsync(new Uri(externalLoginData.ImageUrl));
 				if (webResponse.Success)
 				{
 					image = Image.FromStream(webResponse.Stream);

@@ -19,11 +19,11 @@ namespace Bricks.Core.Web
 		/// Выполняет запрос по адресу <paramref name="address" /> методом <paramref name="method" />.
 		/// </summary>
 		/// <param name="address">Адрес web-сервиса.</param>
-		/// <param name="method">Метод запроса.</param>
 		/// <param name="data">Параметры запроса.</param>
+		/// <param name="method">Метод запроса.</param>
 		/// <param name="headers">Заголовки.</param>
 		/// <param name="timeout">Таймаут запроса.</param>
 		/// <returns>Ответ на запрос.</returns>
-		Task<IWebResponse> ExecuteRequestAsync(Uri address, HttpMethod method, NameValueCollection data = null, IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null);
+		Task<IWebResponse> ExecuteRequestAsync(Uri address, NameValueCollection data = null, HttpMethod method = HttpMethod.Get, IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null);
 	}
 }

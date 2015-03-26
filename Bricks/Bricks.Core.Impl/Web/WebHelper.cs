@@ -1,8 +1,10 @@
 ﻿#region
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 
 using Bricks.Core.Results;
@@ -33,17 +35,43 @@ namespace Bricks.Core.Impl.Web
 
 		#region Implementation of IWebHelper
 
-		public async Task<IResult<WebResponseData<TResult, TErrorResult>>> Execute<TParameters, TResult, TErrorResult>(Uri address, HttpMethod method, TParameters parameters, ContentType contentType, TimeSpan? timeout = null)
+		public Task<IResult<WebResponseData<TResult, TErrorResult>>> Execute<TParameters, TResult, TErrorResult>(
+			Uri address, TParameters parameters, HttpMethod method = HttpMethod.Get, ContentType? resultContentType = null, ContentType? errorContentType = null,
+			IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null)
 		{
 			NameValueCollection data = _webSerializationHelper.ToNameValueCollection(parameters);
-			IWebResponse webResponse = await _webClient.ExecuteRequestAsync(address, method, data, timeout: timeout);
+			return ExecuteCore<TResult, TErrorResult>(address, method, resultContentType, errorContentType, headers, timeout, data);
+		}
+
+		public Task<IResult<WebResponseData<TResult, TErrorResult>>> Execute<TResult, TErrorResult>(
+			Uri address, HttpMethod method = HttpMethod.Get, ContentType? resultContentType = null, ContentType? errorContentType = null,
+			IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null)
+		{
+			return ExecuteCore<TResult, TErrorResult>(address, method, resultContentType, errorContentType, headers, timeout);
+		}
+
+		private async Task<IResult<WebResponseData<TResult, TErrorResult>>> ExecuteCore<TResult, TErrorResult>(
+			Uri address, HttpMethod method = HttpMethod.Get, ContentType? resultContentType = null, ContentType? errorContentType = null,
+			IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null, NameValueCollection data = null)
+		{
+			if (!resultContentType.HasValue)
+			{
+				resultContentType = typeof(TResult) == typeof(string) ? ContentType.String : ContentType.Json;
+			}
+
+			if (!errorContentType.HasValue)
+			{
+				errorContentType = typeof(TErrorResult) == typeof(string) ? ContentType.String : ContentType.Json;
+			}
+
+			IWebResponse webResponse = await _webClient.ExecuteRequestAsync(address, data, method, headers, timeout);
 			TResult result;
 			TErrorResult errorResult;
 			if (webResponse.Stream != null)
 			{
 				if (webResponse.Success)
 				{
-					switch (contentType)
+					switch (resultContentType.Value)
 					{
 						case ContentType.String:
 							if (typeof(TResult) != typeof(string))
@@ -58,14 +86,14 @@ namespace Bricks.Core.Impl.Web
 							result = _serializationHelper.DeserializeJson<TResult>(webResponse.Stream);
 							break;
 						default:
-							throw new ArgumentOutOfRangeException("contentType");
+							throw new ArgumentOutOfRangeException("resultContentType");
 					}
 
 					errorResult = default(TErrorResult);
 				}
 				else
 				{
-					switch (contentType)
+					switch (errorContentType.Value)
 					{
 						case ContentType.String:
 							if (typeof(TErrorResult) != typeof(string))
@@ -80,7 +108,7 @@ namespace Bricks.Core.Impl.Web
 							errorResult = _serializationHelper.DeserializeJson<TErrorResult>(webResponse.Stream);
 							break;
 						default:
-							throw new ArgumentOutOfRangeException("contentType");
+							throw new ArgumentOutOfRangeException("resultContentType");
 					}
 
 					result = default(TResult);
