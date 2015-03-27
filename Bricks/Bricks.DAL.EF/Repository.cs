@@ -290,7 +290,7 @@ namespace Bricks.DAL.EF
 		/// <returns>Результат запроса.</returns>
 		public IEnumerable<TEntity> SqlQuery<TEntity>(string sql, params KeyValuePair<string, object>[] parameters)
 		{
-			var sqlParameters = GetParameters(parameters);
+			SqlParameter[] sqlParameters = GetParameters(parameters);
 			// ReSharper disable CoVariantArrayConversion
 			return _dbContext.Database.SqlQuery<TEntity>(sql, sqlParameters);
 			// ReSharper restore CoVariantArrayConversion
@@ -298,7 +298,10 @@ namespace Bricks.DAL.EF
 
 		public Task<int> ExecuteSqlCommandAsync(string sql, params KeyValuePair<string, object>[] parameters)
 		{
-			return _dbContext.Database.ExecuteSqlCommandAsync(sql, _cancellationToken, parameters);
+			SqlParameter[] sqlParameters = GetParameters(parameters);
+			// ReSharper disable CoVariantArrayConversion
+			return _dbContext.Database.ExecuteSqlCommandAsync(sql, _cancellationToken, sqlParameters);
+			// ReSharper restore CoVariantArrayConversion
 		}
 
 		#endregion
