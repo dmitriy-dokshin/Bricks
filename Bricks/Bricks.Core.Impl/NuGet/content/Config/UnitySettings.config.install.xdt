@@ -119,6 +119,10 @@
 				  mapTo="Bricks.Core.Impl.IO.FileSystemProvider">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
+		<register type="Bricks.Core.IO.IFileSystemWatcher"
+				  mapTo="Bricks.Core.Impl.IO.FileSystemWatcherImpl">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
 
 		<!-- Mapping -->
 		<register type="Bricks.Core.Mapping.IMapper"

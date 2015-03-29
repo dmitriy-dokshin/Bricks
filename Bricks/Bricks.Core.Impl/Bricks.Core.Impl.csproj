@@ -125,6 +125,7 @@
     <Compile Include="Images\ImageProcessor.cs" />
     <Compile Include="IoC\SimpleUnityServiceLocator.cs" />
     <Compile Include="IO\FileSystemProvider.cs" />
+    <Compile Include="IO\FileSystemWatcherImpl.cs" />
     <Compile Include="Mapping\MapperImpl.cs" />
     <Compile Include="Modularity\ModularityConfigurationSection.cs" />
     <Compile Include="Modularity\ModuleConfigurationElement.cs" />

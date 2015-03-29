@@ -105,6 +105,7 @@
     <Compile Include="Enumerations\IEnumValueMetadata.cs" />
     <Compile Include="Enumerations\IFlagsMetadata.cs" />
     <Compile Include="Enumerations\IFlagsValueMetadata.cs" />
+    <Compile Include="Environment\EnvironmentExtensions.cs" />
     <Compile Include="Environment\IEnvironment.cs" />
     <Compile Include="Events\EventHandlerBase.cs" />
     <Compile Include="Events\EventHandlerObservable.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Globalization\CultureExtensions.cs" />
     <Compile Include="Globalization\ICultureHelper.cs" />
     <Compile Include="Globalization\ICultureProvider.cs" />
+    <Compile Include="IO\IFileSystemWatcher.cs" />
     <Compile Include="Results\IResultHelper.cs" />
     <Compile Include="Tasks\EventCancellationTokenProvider.cs" />
     <Compile Include="Events\EventHandlerAdapter.cs" />
