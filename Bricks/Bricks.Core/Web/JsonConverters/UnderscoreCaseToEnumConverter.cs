@@ -1,7 +1,6 @@
 ﻿#region
 
 using System;
-using System.Text;
 
 using Bricks.Core.Extensions;
 
@@ -52,18 +51,7 @@ namespace Bricks.Core.Web.JsonConverters
 				return null;
 			}
 
-			var valueBuilder = new StringBuilder();
-			string[] words = valueString.Split(new[] { '_' }, StringSplitOptions.None);
-			foreach (string word in words)
-			{
-				for (var i = 0; i < word.Length; i++)
-				{
-					char c = word[i];
-					valueBuilder.Append(i == 0 ? char.ToUpperInvariant(c) : char.ToLowerInvariant(c));
-				}
-			}
-
-			string value = valueBuilder.ToString();
+			string value = valueString.FromUnderscoreToCamelCase();
 			return Enum.Parse(enumType, value);
 		}
 

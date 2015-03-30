@@ -112,6 +112,7 @@
     <Compile Include="Events\EventHandlerObservableInvokeMode.cs" />
     <Compile Include="Extensions\PredicateBuilder.cs" />
     <Compile Include="Extensions\ReflectionExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Globalization\CultureExtensions.cs" />
     <Compile Include="Globalization\ICultureHelper.cs" />
     <Compile Include="Globalization\ICultureProvider.cs" />
