@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -54,5 +53,9 @@ namespace Bricks.Core.Repository
 		Task<IResult> SaveAsync();
 
 		IResult Save();
+
+		IEnumerable<TEntity> SqlQuery<TEntity>(string sql, params KeyValuePair<string, object>[] parameters);
+
+		Task<int> ExecuteSqlCommandAsync(string sql, params KeyValuePair<string, object>[] parameters);
 	}
 }

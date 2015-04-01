@@ -28,7 +28,7 @@ using EntityFramework.BulkInsert.Extensions;
 
 namespace Bricks.DAL.EF
 {
-	internal sealed class Repository : IRepository, ISqlRepository
+	internal sealed class Repository : IRepository
 	{
 		private static readonly string _traceCategory = typeof(Repository).Name;
 		private readonly CancellationToken _cancellationToken;
@@ -64,12 +64,12 @@ namespace Bricks.DAL.EF
 
 		private sealed class TransactionScope : ITransactionScope
 		{
-			public DbContextTransaction DbContextTransaction { get; private set; }
-
 			public TransactionScope(DbContextTransaction dbContextTransaction)
 			{
 				DbContextTransaction = dbContextTransaction;
 			}
+
+			public DbContextTransaction DbContextTransaction { get; private set; }
 
 			#region Implementation of IDisposable
 
@@ -277,17 +277,6 @@ namespace Bricks.DAL.EF
 			return result;
 		}
 
-		#endregion
-
-		#region Implementation of ISqlRepository
-
-		/// <summary>
-		/// Выполняет SQL-скрипт <paramref name="sql" /> с параметрами <paramref name="parameters" />.
-		/// </summary>
-		/// <typeparam name="TEntity">Тип сущности-результата запроса.</typeparam>
-		/// <param name="sql">SQL-скрипт.</param>
-		/// <param name="parameters">Параметры SQL-скрипта.</param>
-		/// <returns>Результат запроса.</returns>
 		public IEnumerable<TEntity> SqlQuery<TEntity>(string sql, params KeyValuePair<string, object>[] parameters)
 		{
 			SqlParameter[] sqlParameters = GetParameters(parameters);

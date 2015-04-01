@@ -29,13 +29,6 @@ namespace Bricks.DAL.EF
 			return repository;
 		}
 
-		public ISqlRepository GetSqlRepository(string name, TimeSpan? timeout = null)
-		{
-			DbContext dbContext = GetDbContext(name, timeout, false, false);
-			var repository = _unityContainer.Resolve<ISqlRepository>(new DependencyOverride(typeof(DbContext), dbContext));
-			return repository;
-		}
-
 		private DbContext GetDbContext(string name, TimeSpan? timeout, bool autoDetectChangesEnabled, bool validateOnSaveEnabled)
 		{
 			var dbContext = _unityContainer.Resolve<DbContext>(name);
