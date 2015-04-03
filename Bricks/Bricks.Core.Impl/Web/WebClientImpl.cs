@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Bricks.Core.Web;
@@ -24,12 +25,13 @@ namespace Bricks.Core.Impl.Web
 		/// Выполняет запрос по адресу <paramref name="address" /> методом <paramref name="method" />.
 		/// </summary>
 		/// <param name="address">Адрес web-сервиса.</param>
+		/// <param name="cancellationToken">Токен отмены.</param>
 		/// <param name="data">Параметры запроса.</param>
 		/// <param name="method">Метод запроса.</param>
 		/// <param name="headers">Заголовки.</param>
 		/// <param name="timeout">Таймаут запроса.</param>
 		/// <returns>Ответ на запрос.</returns>
-		public async Task<IWebResponse> ExecuteRequestAsync(Uri address, NameValueCollection data = null, HttpMethod method = HttpMethod.Get, IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null)
+		public async Task<IWebResponse> ExecuteRequestAsync(Uri address, CancellationToken cancellationToken, NameValueCollection data = null, HttpMethod method = HttpMethod.Get, IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null)
 		{
 			if (!timeout.HasValue)
 			{
@@ -39,7 +41,7 @@ namespace Bricks.Core.Impl.Web
 			bool success;
 			Stream stream = null;
 			Exception exception = null;
-			using (var webClient = new WebClientWithTimeout(timeout.Value))
+			using (var webClient = new WebClientWithTimeout(timeout.Value, cancellationToken))
 			{
 				if (headers != null)
 				{
@@ -98,8 +100,9 @@ namespace Bricks.Core.Impl.Web
 		{
 			private readonly TimeSpan _timeout;
 
-			public WebClientWithTimeout(TimeSpan timeout)
+			public WebClientWithTimeout(TimeSpan timeout, CancellationToken cancellationToken)
 			{
+				cancellationToken.Register(CancelAsync);
 				_timeout = timeout;
 			}
 

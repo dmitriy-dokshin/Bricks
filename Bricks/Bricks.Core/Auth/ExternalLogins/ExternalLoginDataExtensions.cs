@@ -3,6 +3,7 @@
 using System;
 using System.Drawing;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Bricks.Core.Web;
@@ -35,12 +36,12 @@ namespace Bricks.Core.Auth.ExternalLogins
 			return name;
 		}
 
-		public static async Task<Image> GetImage(this IExternalLoginData externalLoginData, IWebClient webClient)
+		public static async Task<Image> GetImage(this IExternalLoginData externalLoginData, IWebClient webClient, CancellationToken cancellationToken)
 		{
 			Image image = null;
 			if (!string.IsNullOrEmpty(externalLoginData.ImageUrl))
 			{
-				IWebResponse webResponse = await webClient.ExecuteRequestAsync(new Uri(externalLoginData.ImageUrl));
+				IWebResponse webResponse = await webClient.ExecuteRequestAsync(new Uri(externalLoginData.ImageUrl), cancellationToken);
 				if (webResponse.Success)
 				{
 					image = Image.FromStream(webResponse.Stream);

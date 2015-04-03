@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.IO;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Bricks.Core.Results;
@@ -36,22 +37,22 @@ namespace Bricks.Core.Impl.Web
 		#region Implementation of IWebHelper
 
 		public Task<IResult<WebResponseData<TResult, TErrorResult>>> Execute<TParameters, TResult, TErrorResult>(
-			Uri address, TParameters parameters, HttpMethod method = HttpMethod.Get, ContentType? resultContentType = null, ContentType? errorContentType = null,
+			Uri address, CancellationToken cancellationToken, TParameters parameters, HttpMethod method = HttpMethod.Get, ContentType? resultContentType = null, ContentType? errorContentType = null,
 			IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null)
 		{
 			NameValueCollection data = _webSerializationHelper.ToNameValueCollection(parameters);
-			return ExecuteCore<TResult, TErrorResult>(address, method, resultContentType, errorContentType, headers, timeout, data);
+			return ExecuteCore<TResult, TErrorResult>(address, cancellationToken, method, resultContentType, errorContentType, headers, timeout, data);
 		}
 
 		public Task<IResult<WebResponseData<TResult, TErrorResult>>> Execute<TResult, TErrorResult>(
-			Uri address, HttpMethod method = HttpMethod.Get, ContentType? resultContentType = null, ContentType? errorContentType = null,
+			Uri address, CancellationToken cancellationToken, HttpMethod method = HttpMethod.Get, ContentType? resultContentType = null, ContentType? errorContentType = null,
 			IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null)
 		{
-			return ExecuteCore<TResult, TErrorResult>(address, method, resultContentType, errorContentType, headers, timeout);
+			return ExecuteCore<TResult, TErrorResult>(address, cancellationToken, method, resultContentType, errorContentType, headers, timeout);
 		}
 
 		private async Task<IResult<WebResponseData<TResult, TErrorResult>>> ExecuteCore<TResult, TErrorResult>(
-			Uri address, HttpMethod method = HttpMethod.Get, ContentType? resultContentType = null, ContentType? errorContentType = null,
+			Uri address, CancellationToken cancellationToken, HttpMethod method = HttpMethod.Get, ContentType? resultContentType = null, ContentType? errorContentType = null,
 			IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null, NameValueCollection data = null)
 		{
 			if (!resultContentType.HasValue)
@@ -64,7 +65,7 @@ namespace Bricks.Core.Impl.Web
 				errorContentType = typeof(TErrorResult) == typeof(string) ? ContentType.String : ContentType.Json;
 			}
 
-			IWebResponse webResponse = await _webClient.ExecuteRequestAsync(address, data, method, headers, timeout);
+			IWebResponse webResponse = await _webClient.ExecuteRequestAsync(address, cancellationToken, data, method, headers, timeout);
 			TResult result;
 			TErrorResult errorResult;
 			if (webResponse.Stream != null)

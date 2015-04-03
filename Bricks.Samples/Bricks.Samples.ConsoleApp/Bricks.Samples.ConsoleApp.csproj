@@ -40,21 +40,21 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AutoMapper.3.3.1\lib\net40\AutoMapper.Net4.dll</HintPath>
     </Reference>
-    <Reference Include="Bricks.Core, Version=0.1.5567.29366, Culture=neutral, PublicKeyToken=aebd4819ba1ff32b, processorArchitecture=MSIL">
+    <Reference Include="Bricks.Core, Version=0.1.5571.21203, Culture=neutral, PublicKeyToken=aebd4819ba1ff32b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Bricks.Core.0.1.5567.29366\lib\net45\Bricks.Core.dll</HintPath>
+      <HintPath>..\packages\Bricks.Core.0.1.5571.21203\lib\net45\Bricks.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Bricks.Core.Impl, Version=0.1.5567.29368, Culture=neutral, PublicKeyToken=aebd4819ba1ff32b, processorArchitecture=MSIL">
+    <Reference Include="Bricks.Core.Impl, Version=0.1.5571.21204, Culture=neutral, PublicKeyToken=aebd4819ba1ff32b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Bricks.Core.Impl.0.1.5567.29368\lib\net45\Bricks.Core.Impl.dll</HintPath>
+      <HintPath>..\packages\Bricks.Core.Impl.0.1.5571.21204\lib\net45\Bricks.Core.Impl.dll</HintPath>
     </Reference>
-    <Reference Include="Bricks.SMS, Version=0.1.5567.29366, Culture=neutral, PublicKeyToken=aebd4819ba1ff32b, processorArchitecture=MSIL">
+    <Reference Include="Bricks.SMS, Version=0.1.5571.21202, Culture=neutral, PublicKeyToken=aebd4819ba1ff32b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Bricks.SMS.0.1.5567.29366\lib\net45\Bricks.SMS.dll</HintPath>
+      <HintPath>..\packages\Bricks.SMS.0.1.5571.21202\lib\net45\Bricks.SMS.dll</HintPath>
     </Reference>
-    <Reference Include="Bricks.SMS.Nexmo, Version=0.1.5567.29368, Culture=neutral, PublicKeyToken=aebd4819ba1ff32b, processorArchitecture=MSIL">
+    <Reference Include="Bricks.SMS.Nexmo, Version=0.1.5571.21205, Culture=neutral, PublicKeyToken=aebd4819ba1ff32b, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Bricks.SMS.Nexmo.0.1.5567.29368\lib\net45\Bricks.SMS.Nexmo.dll</HintPath>
+      <HintPath>..\packages\Bricks.SMS.Nexmo.0.1.5571.21205\lib\net45\Bricks.SMS.Nexmo.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

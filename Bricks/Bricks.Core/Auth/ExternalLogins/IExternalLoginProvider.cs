@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Bricks.Core.Results;
@@ -13,8 +14,8 @@ namespace Bricks.Core.Auth.ExternalLogins
 	{
 		Uri GetAuthorizeUrl(string scope, string redirectUrl);
 
-		Task<IResult<IAccessTokenData>> GetAccessToken(string code, string redirectUrl);
+		Task<IResult<IAccessTokenData>> GetAccessToken(string code, string redirectUrl, CancellationToken cancellationToken);
 
-		Task<IResult<IExternalLoginData>> GetExternalLoginData(string accessToken);
+		Task<IResult<IExternalLoginData>> GetExternalLoginData(string accessToken, CancellationToken cancellationToken);
 	}
 }

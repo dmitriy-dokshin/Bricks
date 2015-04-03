@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.Threading;
 using System.Threading.Tasks;
 
 #endregion
@@ -16,7 +17,8 @@ namespace Bricks.SMS
 		/// </summary>
 		/// <param name="phoneNumber">Номер телефона.</param>
 		/// <param name="text">Текст сообщения.</param>
+		/// <param name="cancellationToken">Токен отмены.</param>
 		/// <returns />
-		Task SendAsync(string phoneNumber, string text);
+		Task SendAsync(string phoneNumber, string text, CancellationToken cancellationToken);
 	}
 }

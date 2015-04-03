@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Threading;
 
 using Bricks.Core.Modularity;
 using Bricks.Core.Regex;
@@ -28,7 +29,7 @@ namespace Bricks.Samples.ConsoleApp
 					{
 						Console.Write(Resources.Console_Main_Message);
 						string message = Console.ReadLine();
-						smsService.SendAsync(phoneNumber, message);
+						smsService.SendAsync(phoneNumber, message, CancellationToken.None);
 
 						Console.WriteLine(Resources.Console_Main_OnceMore);
 						ConsoleKeyInfo consoleKeyInfo = Console.ReadKey();

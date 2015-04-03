@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Bricks.Core.IoC;
@@ -35,14 +36,15 @@ namespace Bricks.SMS.Nexmo
 		/// </summary>
 		/// <param name="phoneNumber">Номер телефона.</param>
 		/// <param name="text">Текст сообщения.</param>
+		/// <param name="cancellationToken">Токен отмены.</param>
 		/// <returns />
-		public async Task SendAsync(string phoneNumber, string text)
+		public async Task SendAsync(string phoneNumber, string text, CancellationToken cancellationToken)
 		{
 			var smsParameters = new SmsParameters(phoneNumber, text);
 			_serviceLocator.BuildUp(smsParameters);
 
 			var sendSmsResult = await _webHelper.Execute<SmsParameters, SmsResult, JObject>(
-				smsParameters.ServiceUrl, smsParameters, HttpMethod.Post);
+				smsParameters.ServiceUrl, cancellationToken, smsParameters, HttpMethod.Post);
 			if (!sendSmsResult.Success)
 			{
 				// todo: Логировать.
