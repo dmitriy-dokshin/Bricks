@@ -7,6 +7,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
+using Bricks.Core.Results;
 using Bricks.Core.Serialization;
 using Bricks.Core.Sync;
 
@@ -22,14 +23,16 @@ namespace Bricks.Core.Impl.Serialization
 	/// </summary>
 	internal sealed class SerializationHelper : ISerializationHelper
 	{
+		private IResultFactory _resultFactory;
 		private readonly IInterlockedHelper _interlockedHelper;
 		private readonly JsonSerializer _jsonSerializer;
 		private IImmutableDictionary<Type, XmlSerializer> _xmlSerializersByType;
 
-		public SerializationHelper(JsonSerializer jsonSerializer, IInterlockedHelper interlockedHelper)
+		public SerializationHelper(JsonSerializer jsonSerializer, IInterlockedHelper interlockedHelper, IResultFactory resultFactory)
 		{
 			_jsonSerializer = jsonSerializer;
 			_interlockedHelper = interlockedHelper;
+			_resultFactory = resultFactory;
 			_xmlSerializersByType = ImmutableDictionary<Type, XmlSerializer>.Empty;
 		}
 
@@ -61,14 +64,22 @@ namespace Bricks.Core.Impl.Serialization
 		/// <typeparam name="T">Тип объекта.</typeparam>
 		/// <param name="stream">Поток с данными в формате JSON.</param>
 		/// <returns>Новый объект <see cref="T" />.</returns>
-		public T DeserializeJson<T>(Stream stream)
+		public IResult<T> DeserializeJson<T>(Stream stream)
 		{
 			using (var streamReader = new StreamReader(stream))
 			{
 				using (JsonReader jsonReader = new JsonTextReader(streamReader))
 				{
-					var result = _jsonSerializer.Deserialize<T>(jsonReader);
-					return result;
+
+					try
+					{
+						var value = _jsonSerializer.Deserialize<T>(jsonReader);
+						return _resultFactory.Create(value);
+					}
+					catch (JsonSerializationException exception)
+					{
+						return _resultFactory.CreateUnsuccessfulResult<T>(exception: exception);
+					}
 				}
 			}
 		}
@@ -79,14 +90,21 @@ namespace Bricks.Core.Impl.Serialization
 		/// <typeparam name="T">Тип объекта.</typeparam>
 		/// <param name="json">Текст с данными в формате JSON.</param>
 		/// <returns>Новый объект <see cref="T" />.</returns>
-		public T DeserializeJson<T>(string json)
+		public IResult<T> DeserializeJson<T>(string json)
 		{
 			using (var stringReader = new StringReader(json))
 			{
 				using (var jsonTextReader = new JsonTextReader(stringReader))
 				{
-					var result = _jsonSerializer.Deserialize<T>(jsonTextReader);
-					return result;
+					try
+					{
+						var value = _jsonSerializer.Deserialize<T>(jsonTextReader);
+						return _resultFactory.Create(value);
+					}
+					catch (JsonSerializationException exception)
+					{
+						return _resultFactory.CreateUnsuccessfulResult<T>(exception: exception);
+					}
 				}
 			}
 		}
@@ -97,9 +115,17 @@ namespace Bricks.Core.Impl.Serialization
 		/// <typeparam name="T">Тип объекта.</typeparam>
 		/// <param name="jObject">JSON-объект.</param>
 		/// <returns>Новый объект <see cref="T" />.</returns>
-		public T DeserializeJson<T>(JObject jObject)
+		public IResult<T> DeserializeJson<T>(JObject jObject)
 		{
-			return jObject.ToObject<T>(_jsonSerializer);
+			try
+			{
+				var value = jObject.ToObject<T>(_jsonSerializer);
+				return _resultFactory.Create(value);
+			}
+			catch (JsonSerializationException exception)
+			{
+				return _resultFactory.CreateUnsuccessfulResult<T>(exception: exception);
+			}
 		}
 
 		/// <summary>

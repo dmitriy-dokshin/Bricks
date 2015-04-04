@@ -3,6 +3,8 @@
 using System;
 using System.IO;
 
+using Bricks.Core.Results;
+
 using Newtonsoft.Json.Linq;
 
 #endregion
@@ -34,7 +36,7 @@ namespace Bricks.Core.Serialization
 		/// <typeparam name="T">Тип объекта.</typeparam>
 		/// <param name="stream">Поток с данными в формате JSON.</param>
 		/// <returns>Новый объект <see cref="T" />.</returns>
-		T DeserializeJson<T>(Stream stream);
+		IResult<T> DeserializeJson<T>(Stream stream);
 
 		/// <summary>
 		/// Выполняет десериализацию объекта из текста в формате JSON.
@@ -42,7 +44,7 @@ namespace Bricks.Core.Serialization
 		/// <typeparam name="T">Тип объекта.</typeparam>
 		/// <param name="json">Текст с данными в формате JSON.</param>
 		/// <returns>Новый объект <see cref="T" />.</returns>
-		T DeserializeJson<T>(string json);
+		IResult<T> DeserializeJson<T>(string json);
 
 		/// <summary>
 		/// Выполняет десериализацию объекта из JSON-объекта.
@@ -50,7 +52,7 @@ namespace Bricks.Core.Serialization
 		/// <typeparam name="T">Тип объекта.</typeparam>
 		/// <param name="jObject">JSON-объект.</param>
 		/// <returns>Новый объект <see cref="T" />.</returns>
-		T DeserializeJson<T>(JObject jObject);
+		IResult<T> DeserializeJson<T>(JObject jObject);
 
 		/// <summary>
 		/// Пытается десериализовать объект из потока с данными в формате JSON.

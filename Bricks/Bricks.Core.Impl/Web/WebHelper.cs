@@ -84,7 +84,13 @@ namespace Bricks.Core.Impl.Web
 							result = (TResult)(object)await streamReader.ReadToEndAsync();
 							break;
 						case ContentType.Json:
-							result = _serializationHelper.DeserializeJson<TResult>(webResponse.Stream);
+							var deserializeJsonResult = _serializationHelper.DeserializeJson<TResult>(webResponse.Stream);
+							if (!deserializeJsonResult.Success)
+							{
+								return _resultFactory.CreateUnsuccessfulResult<WebResponseData<TResult, TErrorResult>>(innerResult: deserializeJsonResult);
+							}
+
+							result = deserializeJsonResult.Data;
 							break;
 						default:
 							throw new ArgumentOutOfRangeException("resultContentType");
@@ -106,7 +112,13 @@ namespace Bricks.Core.Impl.Web
 							errorResult = (TErrorResult)(object)await streamReader.ReadToEndAsync();
 							break;
 						case ContentType.Json:
-							errorResult = _serializationHelper.DeserializeJson<TErrorResult>(webResponse.Stream);
+							var deserializeJsonResult = _serializationHelper.DeserializeJson<TErrorResult>(webResponse.Stream);
+							if (!deserializeJsonResult.Success)
+							{
+								return _resultFactory.CreateUnsuccessfulResult<WebResponseData<TResult, TErrorResult>>(innerResult: deserializeJsonResult);
+							}
+
+							errorResult = deserializeJsonResult.Data;
 							break;
 						default:
 							throw new ArgumentOutOfRangeException("resultContentType");
