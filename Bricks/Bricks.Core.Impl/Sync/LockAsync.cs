@@ -25,11 +25,11 @@ namespace Bricks.Core.Impl.Sync
 		private IDisposableHelper _disposableHelper;
 		private IInterlockedHelper _interlockedHelper;
 		private Random _random;
-		private IImmutableList<TaskCompletionSource<IDisposable>> _taskCompletionSources;
+		private IImmutableList<TaskCompletionSourceData> _taskCompletionSources;
 
 		public LockAsync(LockAsyncType type = LockAsyncType.Random)
 		{
-			_taskCompletionSources = ImmutableList.Create<TaskCompletionSource<IDisposable>>();
+			_taskCompletionSources = ImmutableList.Create<TaskCompletionSourceData>();
 			_type = type;
 			if (_type == LockAsyncType.Random)
 			{
@@ -52,19 +52,24 @@ namespace Bricks.Core.Impl.Sync
 
 		private void RemoveAndSetNextResult()
 		{
-			int tcsIndex =
-				_interlockedHelper.CompareExchange(ref _taskCompletionSources,
-												   x =>
-													   {
-														   IImmutableList<TaskCompletionSource<IDisposable>> newValue = x.RemoveAt(_currentCompletedTcsIndex);
-														   return _interlockedHelper.CreateChangeResult(newValue, newValue.Count > 0 ? GetNextTcsIndex(newValue) : -1);
-													   });
+			Tuple<int, TaskCompletionSourceData> tuple =
+				_interlockedHelper.CompareExchange(
+					ref _taskCompletionSources,
+					x =>
+						{
+							TaskCompletionSourceData tcsData = x[_currentCompletedTcsIndex];
+							IImmutableList<TaskCompletionSourceData> newValue = x.RemoveAt(_currentCompletedTcsIndex);
+							int index = newValue.Count > 0 ? GetNextTcsIndex(newValue) : -1;
+							return _interlockedHelper.CreateChangeResult(newValue, new Tuple<int, TaskCompletionSourceData>(index, tcsData));
+						});
+			tuple.Item2.Dispose();
+			int tcsIndex = tuple.Item1;
 			if (tcsIndex >= 0)
 			{
 				try
 				{
 					_currentCompletedTcsIndex = tcsIndex;
-					_taskCompletionSources[_currentCompletedTcsIndex].SetResult(_disposableHelper.Action(RemoveAndSetNextResult));
+					_taskCompletionSources[_currentCompletedTcsIndex].Tsc.SetResult(_disposableHelper.Action(RemoveAndSetNextResult));
 				}
 				catch (InvalidOperationException)
 				{
@@ -77,7 +82,7 @@ namespace Bricks.Core.Impl.Sync
 			}
 		}
 
-		private int GetNextTcsIndex(IImmutableList<TaskCompletionSource<IDisposable>> taskCompletionSources)
+		private int GetNextTcsIndex(IImmutableList<TaskCompletionSourceData> taskCompletionSources)
 		{
 			int nextTcsIndex;
 			switch (_type)
@@ -96,6 +101,63 @@ namespace Bricks.Core.Impl.Sync
 			}
 
 			return nextTcsIndex;
+		}
+
+		private IChangeResult<IImmutableList<TaskCompletionSourceData>, TaskCompletionSourceData> AddTcsData(IImmutableList<TaskCompletionSourceData> x)
+		{
+			var tcs = new TaskCompletionSource<IDisposable>();
+			if (x.Count == 0)
+			{
+				tcs.SetResult(_disposableHelper.Action(RemoveAndSetNextResult));
+			}
+
+			var tcsData = new TaskCompletionSourceData(tcs);
+			return _interlockedHelper.CreateChangeResult(x.Add(tcsData), tcsData);
+		}
+
+		private IChangeResult<IImmutableList<TaskCompletionSourceData>, TaskCompletionSourceData> TryAddTcsData(IImmutableList<TaskCompletionSourceData> x)
+		{
+			TaskCompletionSourceData tcsData = null;
+			IImmutableList<TaskCompletionSourceData> newValue;
+			if (x.Count == 0)
+			{
+				var tcs = new TaskCompletionSource<IDisposable>();
+				tcsData = new TaskCompletionSourceData(tcs);
+				newValue = x.Add(tcsData);
+			}
+			else
+			{
+				newValue = x;
+			}
+
+			return _interlockedHelper.CreateChangeResult(newValue, tcsData);
+		}
+
+		private sealed class TaskCompletionSourceData : IDisposable
+		{
+			public TaskCompletionSourceData(TaskCompletionSource<IDisposable> tsc)
+			{
+				Tsc = tsc;
+			}
+
+			public TaskCompletionSource<IDisposable> Tsc { get; private set; }
+
+			public CancellationTokenRegistration? CancellationTokenRegistration { get; set; }
+
+			#region Implementation of IDisposable
+
+			/// <summary>
+			/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+			/// </summary>
+			public void Dispose()
+			{
+				if (CancellationTokenRegistration.HasValue)
+				{
+					CancellationTokenRegistration.Value.Dispose();
+				}
+			}
+
+			#endregion
 		}
 
 		#region Implementation of ILockAsync
@@ -118,38 +180,29 @@ namespace Bricks.Core.Impl.Sync
 		/// <returns>An <see cref="IDisposable" /> object that is used to release the lock.</returns>
 		public Task<IDisposable> Enter(CancellationToken cancellationToken)
 		{
-			TaskCompletionSource<IDisposable> tcs1 =
-				_interlockedHelper.CompareExchange(ref _taskCompletionSources,
-												   x =>
-													   {
-														   var tcs = new TaskCompletionSource<IDisposable>();
-														   if (x.Count == 0)
-														   {
-															   tcs.SetResult(_disposableHelper.Action(RemoveAndSetNextResult));
-														   }
-
-														   return _interlockedHelper.CreateChangeResult(x.Add(tcs), tcs);
-													   });
-			if (tcs1.Task.Status == TaskStatus.RanToCompletion)
+			TaskCompletionSourceData tcsData =
+				_interlockedHelper.CompareExchange(ref _taskCompletionSources, x => AddTcsData(x));
+			if (tcsData.Tsc.Task.Status == TaskStatus.RanToCompletion)
 			{
 				_currentCompletedTcsIndex = 0;
 			}
 
 			if (cancellationToken != CancellationToken.None)
 			{
-				cancellationToken.Register(() =>
-					{
-						try
+				tcsData.CancellationTokenRegistration =
+					cancellationToken.Register(() =>
 						{
-							tcs1.SetCanceled();
-						}
-						catch (InvalidOperationException)
-						{
-						}
-					});
+							try
+							{
+								tcsData.Tsc.SetCanceled();
+							}
+							catch (InvalidOperationException)
+							{
+							}
+						});
 			}
 
-			return tcs1.Task;
+			return tcsData.Tsc.Task;
 		}
 
 		/// <summary>
@@ -161,30 +214,12 @@ namespace Bricks.Core.Impl.Sync
 		/// <returns>If the lock is not acquired returns <c>true</c>; otherwise, <c>false</c>.</returns>
 		public bool TryEnter(out IDisposable disposable)
 		{
-			TaskCompletionSource<IDisposable> tcs1 =
-				_interlockedHelper.CompareExchange(ref _taskCompletionSources,
-												   x =>
-													   {
-														   TaskCompletionSource<IDisposable> tcs = null;
-														   IImmutableList<TaskCompletionSource<IDisposable>> newValue;
-														   if (x.Count == 0)
-														   {
-															   tcs = new TaskCompletionSource<IDisposable>();
-															   newValue = x.Add(tcs);
-														   }
-														   else
-														   {
-															   newValue = x;
-														   }
-
-														   return _interlockedHelper.CreateChangeResult(newValue, tcs);
-													   });
-
+			TaskCompletionSourceData tcsData = _interlockedHelper.CompareExchange(ref _taskCompletionSources, x => TryAddTcsData(x));
 			bool isEntered;
-			if (tcs1 != null)
+			if (tcsData != null)
 			{
 				disposable = _disposableHelper.Action(RemoveAndSetNextResult);
-				tcs1.SetResult(disposable);
+				tcsData.Tsc.SetResult(disposable);
 				isEntered = true;
 				_currentCompletedTcsIndex = 0;
 			}

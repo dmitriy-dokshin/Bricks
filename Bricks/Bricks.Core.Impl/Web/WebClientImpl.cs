@@ -99,11 +99,12 @@ namespace Bricks.Core.Impl.Web
 		private sealed class WebClientWithTimeout : WebClient
 		{
 			private readonly TimeSpan _timeout;
+			private CancellationTokenRegistration _cancellationTokenRegistration;
 
 			public WebClientWithTimeout(TimeSpan timeout, CancellationToken cancellationToken)
 			{
-				cancellationToken.Register(CancelAsync);
 				_timeout = timeout;
+				_cancellationTokenRegistration = cancellationToken.Register(CancelAsync);
 			}
 
 			#region Overrides of WebClient
@@ -124,6 +125,23 @@ namespace Bricks.Core.Impl.Web
 				}
 
 				return webRequest;
+			}
+
+			#endregion
+
+			#region Overrides of Component
+
+			/// <summary>
+			/// Releases the unmanaged resources used by the <see cref="T:System.ComponentModel.Component"/> and optionally releases the managed resources.
+			/// </summary>
+			/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+			protected override void Dispose(bool disposing)
+			{
+				base.Dispose(disposing);
+				if (disposing)
+				{
+					_cancellationTokenRegistration.Dispose();
+				}
 			}
 
 			#endregion
