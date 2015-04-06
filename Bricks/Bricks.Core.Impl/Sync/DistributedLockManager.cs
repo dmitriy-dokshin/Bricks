@@ -113,7 +113,7 @@ namespace Bricks.Core.Impl.Sync
 			}
 		}
 
-		public async Task<IDisposable> GetLock(Func<IRepository> getRepository, object key, object key1 = null, TimeSpan? timeout = null, TimeSpan? checkPeriod = null)
+		public async Task<IDisposable> GetLock(Func<IRepository> getRepository, CancellationToken cancellationToken, object key, object key1 = null, TimeSpan? timeout = null, TimeSpan? checkPeriod = null)
 		{
 			if (!timeout.HasValue)
 			{
@@ -148,6 +148,7 @@ namespace Bricks.Core.Impl.Sync
 						return ditributedDisposable.After(localDisposable.Dispose);
 					}
 
+					cancellationToken.ThrowIfCancellationRequested();
 					await Task.Delay(checkPeriod.Value, CancellationToken.None);
 				}
 			}

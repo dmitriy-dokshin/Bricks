@@ -1,6 +1,7 @@
 ﻿#region
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 using Bricks.Core.Repository;
@@ -14,7 +15,7 @@ namespace Bricks.Core.Sync
 	{
 		Task<IDisposable> TryGetLock(Func<IRepository> getRepository, object key, object key1 = null, TimeSpan? timeout = null);
 
-		Task<IDisposable> GetLock(Func<IRepository> getRepository, object key, object key1 = null, TimeSpan? timeout = null, TimeSpan? checkPeriod = null);
+		Task<IDisposable> GetLock(Func<IRepository> getRepository, CancellationToken cancellationToken, object key, object key1 = null, TimeSpan? timeout = null, TimeSpan? checkPeriod = null);
 
 		Task<IResult> CleanUp(IRepository repository, TimeSpan? lifetime = null, object key = null, object key1 = null);
 	}
