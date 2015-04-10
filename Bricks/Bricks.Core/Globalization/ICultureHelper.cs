@@ -20,5 +20,7 @@ namespace Bricks.Core.Globalization
 		TResult Execute<TResult>(Func<TResult> func, CultureInfo cultureInfo);
 
 		Task<TResult> ExecuteAsync<TResult>(Func<Task<TResult>> func, CultureInfo cultureInfo);
+
+		IDisposable UseCulture(CultureInfo cultureInfo);
 	}
 }

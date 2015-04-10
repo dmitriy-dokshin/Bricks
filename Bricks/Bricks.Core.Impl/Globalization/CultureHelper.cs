@@ -32,14 +32,18 @@ namespace Bricks.Core.Impl.Globalization
 		{
 			private readonly CultureInfo _cultureInfo;
 			private readonly CultureInfo _currentCulture;
+			private readonly CultureInfo _currentUICulture;
 
 			public CultureDisposable(CultureInfo cultureInfo)
 			{
-				_currentCulture = Thread.CurrentThread.CurrentCulture;
-				_cultureInfo = cultureInfo ?? _currentCulture;
-				if (!Equals(_currentCulture, _cultureInfo))
+				_cultureInfo = cultureInfo;
+				if (cultureInfo != null)
 				{
-					Thread.CurrentThread.CurrentCulture = _cultureInfo;
+					Thread currentThread = Thread.CurrentThread;
+					_currentCulture = currentThread.CurrentCulture;
+					_currentUICulture = currentThread.CurrentUICulture;
+					currentThread.CurrentCulture = cultureInfo;
+					currentThread.CurrentUICulture = cultureInfo;
 				}
 			}
 
@@ -47,9 +51,11 @@ namespace Bricks.Core.Impl.Globalization
 
 			public void Dispose()
 			{
-				if (!Equals(_currentCulture, _cultureInfo))
+				if (_cultureInfo != null)
 				{
-					Thread.CurrentThread.CurrentCulture = _currentCulture;
+					Thread currentThread = Thread.CurrentThread;
+					currentThread.CurrentCulture = _currentCulture;
+					currentThread.CurrentUICulture = _currentUICulture;
 				}
 			}
 
@@ -99,6 +105,11 @@ namespace Bricks.Core.Impl.Globalization
 			{
 				return await func();
 			}
+		}
+
+		public IDisposable UseCulture(CultureInfo cultureInfo)
+		{
+			return new CultureDisposable(cultureInfo);
 		}
 
 		#endregion
