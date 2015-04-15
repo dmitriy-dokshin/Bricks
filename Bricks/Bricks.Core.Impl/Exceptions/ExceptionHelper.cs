@@ -38,7 +38,7 @@ namespace Bricks.Core.Impl.Exceptions
 				summaryBuilder.AppendLine(exception.StackTrace);
 			}
 
-			return exception.Message;
+			return summaryBuilder.ToString();
 		}
 
 		public IResult<TResult> Catch<TResult>(Func<TResult> func, IReadOnlyCollection<Type> exceptionTypes, string message = null)
