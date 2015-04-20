@@ -25,12 +25,12 @@ namespace Bricks.OWIN.Impl.Auth
 
 		#region Implementation of IAccessTokenProvider
 
-		public string CreateAccessToken(ClaimsIdentity claimsIdentity)
+		public string CreateAccessToken(ClaimsIdentity claimsIdentity, TimeSpan lifetime)
 		{
 			var authenticationProperties = new AuthenticationProperties();
 			DateTimeOffset now = _dateTimeProvider.Now;
 			authenticationProperties.IssuedUtc = now;
-			authenticationProperties.ExpiresUtc = now.Add(TimeSpan.FromDays(30));
+			authenticationProperties.ExpiresUtc = now.Add(lifetime);
 			var ticket = new AuthenticationTicket(claimsIdentity, authenticationProperties);
 			string accesstoken = _accessTokenFormat.Protect(ticket);
 			return accesstoken;
