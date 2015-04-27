@@ -8,6 +8,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Bricks.Core.Tasks;
 using Bricks.Core.Web;
 
 #endregion
@@ -63,7 +64,7 @@ namespace Bricks.Core.Impl.Web
 						}
 
 						address = addressBuilder.Uri;
-						bytes = await webClient.DownloadDataTaskAsync(address);
+						bytes = await webClient.DownloadDataTaskAsync(address).WithTimeOut(timeout.Value);
 					}
 					else
 					{
@@ -72,7 +73,7 @@ namespace Bricks.Core.Impl.Web
 							throw new ArgumentNullException("data");
 						}
 
-						bytes = await webClient.UploadValuesTaskAsync(address, method.ToString(), data);
+						bytes = await webClient.UploadValuesTaskAsync(address, method.ToString(), data).WithTimeOut(timeout.Value);
 					}
 
 					success = true;
@@ -87,6 +88,11 @@ namespace Bricks.Core.Impl.Web
 					}
 
 					exception = webException;
+				}
+				catch (TimeoutException timeoutException)
+				{
+					success = false;
+					exception = timeoutException;
 				}
 			}
 
