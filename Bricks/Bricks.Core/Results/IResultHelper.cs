@@ -2,6 +2,6 @@
 {
 	public interface IResultHelper
 	{
-		string GetSummary(IResult result, bool stackTrace = false, bool exception = false, bool exceptionStackTrace = false);
+		string GetSummary(IResult result, bool stackTrace = false, bool exception = false, bool exceptionStackTrace = false, bool hierarchy = true);
 	}
 }

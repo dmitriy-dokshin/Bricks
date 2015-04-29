@@ -22,9 +22,25 @@ namespace Bricks.Core.Impl.Results
 
 		#region Implementation of IResultHelper
 
-		public string GetSummary(IResult result, bool stackTrace = false, bool exception = false, bool exceptionStackTrace = false)
+		public string GetSummary(IResult result, bool stackTrace = false, bool exception = false, bool exceptionStackTrace = false, bool hierarchy = true)
 		{
 			var summaryBuilder = new StringBuilder();
+			if (hierarchy)
+			{
+				foreach (var result1 in result.GetResultHierarchy())
+				{
+					AddResultSummary(result1, stackTrace, exception, exceptionStackTrace, summaryBuilder);
+				}
+			}
+			else
+			{
+				AddResultSummary(result, stackTrace, exception, exceptionStackTrace, summaryBuilder);
+			}
+			return summaryBuilder.ToString();
+		}
+
+		private void AddResultSummary(IResult result, bool stackTrace, bool exception, bool exceptionStackTrace, StringBuilder summaryBuilder)
+		{
 			if (!string.IsNullOrEmpty(result.Message))
 			{
 				summaryBuilder.AppendLine(result.Message);
@@ -35,7 +51,7 @@ namespace Bricks.Core.Impl.Results
 				summaryBuilder.AppendLine(System.Environment.StackTrace);
 			}
 
-			if (exception)
+			if (exception && result.Exception != null)
 			{
 				IEnumerable<Exception> exceptionHierarchy = result.Exception.GetExceptionHierarchy();
 				foreach (Exception e in exceptionHierarchy)
@@ -43,8 +59,6 @@ namespace Bricks.Core.Impl.Results
 					summaryBuilder.AppendLine(_exceptionHelper.GetSummary(e, exceptionStackTrace));
 				}
 			}
-
-			return summaryBuilder.ToString();
 		}
 
 		#endregion
