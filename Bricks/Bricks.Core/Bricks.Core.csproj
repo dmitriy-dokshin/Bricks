@@ -86,7 +86,9 @@
     <Compile Include="Collections\IContainer.cs" />
     <Compile Include="Collections\IContainerFactory.cs" />
     <Compile Include="ComponentModel\DisplayNameFromResourceAttribute.cs" />
+    <Compile Include="Configuration\ConfigurationElementBase.cs" />
     <Compile Include="Configuration\ConfigurationElementCollectionAdapter.cs" />
+    <Compile Include="Configuration\ConfigurationSectionBase.cs" />
     <Compile Include="Configuration\KeyValueConfigurationCollectionAdapter.cs" />
     <Compile Include="Conversion\ConversionException.cs" />
     <Compile Include="Conversion\IConverter.cs" />
