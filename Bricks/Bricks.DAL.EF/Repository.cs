@@ -285,6 +285,11 @@ namespace Bricks.DAL.EF
 			// ReSharper restore CoVariantArrayConversion
 		}
 
+		public IEnumerable<TEntity> SqlQuery<TEntity>(string sql, params object[] parameters)
+		{
+			return _dbContext.Database.SqlQuery<TEntity>(sql, parameters);
+		}
+
 		public Task<int> ExecuteSqlCommandAsync(string sql, params KeyValuePair<string, object>[] parameters)
 		{
 			SqlParameter[] sqlParameters = GetParameters(parameters);

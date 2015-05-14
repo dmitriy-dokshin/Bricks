@@ -56,6 +56,8 @@ namespace Bricks.Core.Repository
 
 		IEnumerable<TEntity> SqlQuery<TEntity>(string sql, params KeyValuePair<string, object>[] parameters);
 
+		IEnumerable<TEntity> SqlQuery<TEntity>(string sql, params object[] parameters);
+
 		Task<int> ExecuteSqlCommandAsync(string sql, params KeyValuePair<string, object>[] parameters);
 	}
 }
