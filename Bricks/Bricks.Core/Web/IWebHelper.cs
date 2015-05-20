@@ -32,13 +32,14 @@ namespace Bricks.Core.Web
 		/// <param name="errorContentType">Тип контента ошибки.</param>
 		/// <param name="headers">Заголовки.</param>
 		/// <param name="timeout">Таймаут запроса.</param>
+		/// <param name="ipAddress">Локальный IP адрес, используемый для выполнения запроса.</param>
 		/// <returns>Результат запроса.</returns>
 		Task<IResult<WebResponseData<TResult, TErrorResult>>> Execute<TParameters, TResult, TErrorResult>(
 			Uri address, CancellationToken cancellationToken, TParameters parameters, HttpMethod method = HttpMethod.Get, ContentType? resultContentType = null, ContentType? errorContentType = null,
-			IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null);
+			IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null, IPAddress ipAddress = null);
 
 		Task<IResult<WebResponseData<TResult, TErrorResult>>> Execute<TResult, TErrorResult>(
 			Uri address, CancellationToken cancellationToken, HttpMethod method = HttpMethod.Get, ContentType? resultContentType = null, ContentType? errorContentType = null,
-			IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null);
+			IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null, IPAddress ipAddress = null);
 	}
 }

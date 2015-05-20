@@ -25,7 +25,8 @@ namespace Bricks.Core.Web
 		/// <param name="method">Метод запроса.</param>
 		/// <param name="headers">Заголовки.</param>
 		/// <param name="timeout">Таймаут запроса.</param>
+		/// <param name="ipAddress">Локальный IP адрес, используемый для выполнения запроса.</param>
 		/// <returns>Ответ на запрос.</returns>
-		Task<IWebResponse> ExecuteRequestAsync(Uri address, CancellationToken cancellationToken, NameValueCollection data = null, HttpMethod method = HttpMethod.Get, IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null);
+		Task<IWebResponse> ExecuteRequestAsync(Uri address, CancellationToken cancellationToken, NameValueCollection data = null, HttpMethod method = HttpMethod.Get, IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null, IPAddress ipAddress = null);
 	}
 }

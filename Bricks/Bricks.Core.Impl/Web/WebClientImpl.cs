@@ -34,17 +34,7 @@ namespace Bricks.Core.Impl.Web
 
 		#region Implementation of IWebClient
 
-		/// <summary>
-		/// Выполняет запрос по адресу <paramref name="address" /> методом <paramref name="method" />.
-		/// </summary>
-		/// <param name="address">Адрес web-сервиса.</param>
-		/// <param name="cancellationToken">Токен отмены.</param>
-		/// <param name="data">Параметры запроса.</param>
-		/// <param name="method">Метод запроса.</param>
-		/// <param name="headers">Заголовки.</param>
-		/// <param name="timeout">Таймаут запроса.</param>
-		/// <returns>Ответ на запрос.</returns>
-		public async Task<IWebResponse> ExecuteRequestAsync(Uri address, CancellationToken cancellationToken, NameValueCollection data = null, HttpMethod method = HttpMethod.Get, IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null)
+		public async Task<IWebResponse> ExecuteRequestAsync(Uri address, CancellationToken cancellationToken, NameValueCollection data = null, HttpMethod method = HttpMethod.Get, IEnumerable<KeyValuePair<HttpRequestHeader, string>> headers = null, TimeSpan? timeout = null, IPAddress ipAddress = null)
 		{
 			if (!timeout.HasValue)
 			{
@@ -54,7 +44,7 @@ namespace Bricks.Core.Impl.Web
 			bool success;
 			Stream stream = null;
 			Exception exception = null;
-			using (var webClient = new WebClientWithTimeout(timeout.Value, cancellationToken, _ipAddress))
+			using (var webClient = new WebClientWithTimeout(timeout.Value, cancellationToken, ipAddress ?? _ipAddress))
 			{
 				if (headers != null)
 				{
@@ -116,8 +106,8 @@ namespace Bricks.Core.Impl.Web
 
 		private sealed class WebClientWithTimeout : WebClient
 		{
-			private readonly TimeSpan _timeout;
 			private readonly IPAddress _ipAddress;
+			private readonly TimeSpan _timeout;
 			private CancellationTokenRegistration _cancellationTokenRegistration;
 
 			public WebClientWithTimeout(TimeSpan timeout, CancellationToken cancellationToken, IPAddress ipAddress)
@@ -161,9 +151,13 @@ namespace Bricks.Core.Impl.Web
 			#region Overrides of Component
 
 			/// <summary>
-			/// Releases the unmanaged resources used by the <see cref="T:System.ComponentModel.Component"/> and optionally releases the managed resources.
+			/// Releases the unmanaged resources used by the <see cref="T:System.ComponentModel.Component" /> and optionally releases
+			/// the managed resources.
 			/// </summary>
-			/// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+			/// <param name="disposing">
+			/// true to release both managed and unmanaged resources; false to release only unmanaged
+			/// resources.
+			/// </param>
 			protected override void Dispose(bool disposing)
 			{
 				base.Dispose(disposing);
