@@ -139,7 +139,7 @@ namespace Bricks.Core.Impl.Web
 					var httpWebRequest = webRequest as HttpWebRequest;
 					if (httpWebRequest != null)
 					{
-						httpWebRequest.ServicePoint.BindIPEndPointDelegate += (point, endPoint, count) => new IPEndPoint(_ipAddress, 0);
+						httpWebRequest.ServicePoint.BindIPEndPointDelegate = (point, endPoint, count) => new IPEndPoint(_ipAddress, 0);
 					}
 				}
 
