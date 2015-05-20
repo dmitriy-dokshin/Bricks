@@ -8,6 +8,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
+using Bricks.Core.Configuration;
 using Bricks.Core.Tasks;
 using Bricks.Core.Web;
 
@@ -18,8 +19,19 @@ namespace Bricks.Core.Impl.Web
 	/// <summary>
 	/// Реализация по умолчанию <see cref="IWebClient" />.
 	/// </summary>
-	internal class WebClientImpl : IWebClient
+	internal sealed class WebClientImpl : IWebClient
 	{
+		private readonly IPAddress _ipAddress;
+
+		public WebClientImpl(IConfigurationManager configurationManager)
+		{
+			string ipString = configurationManager.AppSettings["WebClient_IPAddress"];
+			if (!string.IsNullOrEmpty(ipString))
+			{
+				_ipAddress = IPAddress.Parse(ipString);
+			}
+		}
+
 		#region Implementation of IWebClient
 
 		/// <summary>
@@ -42,7 +54,7 @@ namespace Bricks.Core.Impl.Web
 			bool success;
 			Stream stream = null;
 			Exception exception = null;
-			using (var webClient = new WebClientWithTimeout(timeout.Value, cancellationToken))
+			using (var webClient = new WebClientWithTimeout(timeout.Value, cancellationToken, _ipAddress))
 			{
 				if (headers != null)
 				{
@@ -105,11 +117,13 @@ namespace Bricks.Core.Impl.Web
 		private sealed class WebClientWithTimeout : WebClient
 		{
 			private readonly TimeSpan _timeout;
+			private readonly IPAddress _ipAddress;
 			private CancellationTokenRegistration _cancellationTokenRegistration;
 
-			public WebClientWithTimeout(TimeSpan timeout, CancellationToken cancellationToken)
+			public WebClientWithTimeout(TimeSpan timeout, CancellationToken cancellationToken, IPAddress ipAddress)
 			{
 				_timeout = timeout;
+				_ipAddress = ipAddress;
 				_cancellationTokenRegistration = cancellationToken.Register(CancelAsync);
 			}
 
@@ -128,6 +142,15 @@ namespace Bricks.Core.Impl.Web
 				if (webRequest != null)
 				{
 					webRequest.Timeout = Convert.ToInt32(Math.Round(_timeout.TotalMilliseconds));
+				}
+
+				if (_ipAddress != null)
+				{
+					var httpWebRequest = webRequest as HttpWebRequest;
+					if (httpWebRequest != null)
+					{
+						httpWebRequest.ServicePoint.BindIPEndPointDelegate += (point, endPoint, count) => new IPEndPoint(_ipAddress, 0);
+					}
 				}
 
 				return webRequest;
