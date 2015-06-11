@@ -157,8 +157,6 @@
     <Compile Include="IoC\IInitializable.cs" />
     <Compile Include="IoC\ServiceLocatorExtensions.cs" />
     <Compile Include="IO\IFileSystemProvider.cs" />
-    <Compile Include="Mapping\IMapper.cs" />
-    <Compile Include="Mapping\MapperExtensions.cs" />
     <Compile Include="Modularity\IApplication.cs" />
     <Compile Include="Modularity\IModularitySettings.cs" />
     <Compile Include="Modularity\IModule.cs" />

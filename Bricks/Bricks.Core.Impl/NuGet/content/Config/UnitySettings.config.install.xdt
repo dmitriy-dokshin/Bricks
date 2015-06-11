@@ -124,12 +124,6 @@
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
 
-		<!-- Mapping -->
-		<register type="Bricks.Core.Mapping.IMapper"
-				  mapTo="Bricks.Core.Impl.Mapping.MapperImpl">
-			<lifetime type="ContainerControlledLifetimeManager" />
-		</register>
-
 		<!-- Reflection -->
 		<register type="Bricks.Core.Reflection.IReflectionHelper"
 				  mapTo="Bricks.Core.Impl.Reflection.ReflectionHelper">
