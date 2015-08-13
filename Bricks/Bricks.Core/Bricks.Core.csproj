@@ -55,9 +55,9 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
@@ -85,6 +85,9 @@
     <Compile Include="Collections\ICollectionHelper.cs" />
     <Compile Include="Collections\IContainer.cs" />
     <Compile Include="Collections\IContainerFactory.cs" />
+    <Compile Include="Linq\EnumerableExtensions.cs" />
+    <Compile Include="Linq\QueryableExtensions.cs" />
+    <Compile Include="Linq\EnumerableTaskExtensions.cs" />
     <Compile Include="ComponentModel\DisplayNameFromResourceAttribute.cs" />
     <Compile Include="Configuration\ConfigurationElementBase.cs" />
     <Compile Include="Configuration\ConfigurationElementCollectionAdapter.cs" />
@@ -95,8 +98,9 @@
     <Compile Include="Conversion\IConvertible.cs" />
     <Compile Include="Configuration\IConfigurationManager.cs" />
     <Compile Include="Configuration\IKeyConfigurationElement.cs" />
-    <Compile Include="DateTime\IDateTimeProvider.cs" />
+    <Compile Include="DateTime\DateTimeHelper.cs" />
     <Compile Include="Disposing\DisposableBase.cs" />
+    <Compile Include="Disposing\DisposableExtensions.cs" />
     <Compile Include="Disposing\EmptyDisposable.cs" />
     <Compile Include="Disposing\IDisposableHelper.cs" />
     <Compile Include="Enumerations\EnumExtensions.cs" />
@@ -119,6 +123,7 @@
     <Compile Include="Globalization\ICultureHelper.cs" />
     <Compile Include="Globalization\ICultureProvider.cs" />
     <Compile Include="IO\IFileSystemWatcher.cs" />
+    <Compile Include="Linq\MultiQueryableExtensions.cs" />
     <Compile Include="Results\IResultHelper.cs" />
     <Compile Include="Tasks\EventCancellationTokenProvider.cs" />
     <Compile Include="Events\EventHandlerAdapter.cs" />
@@ -148,11 +153,6 @@
     <Compile Include="Regex\IPhoneRegexSettings.cs" />
     <Compile Include="Regex\IRegexHelper.cs" />
     <Compile Include="Regex\IRegexSettings.cs" />
-    <Compile Include="Repository\IRepository.cs" />
-    <Compile Include="Repository\IRepositoryFactory.cs" />
-    <Compile Include="Repository\IRepositoryHelper.cs" />
-    <Compile Include="Repository\ITransactionScope.cs" />
-    <Compile Include="Repository\RepositoryExtensions.cs" />
     <Compile Include="Resources\ResourceHelper.cs" />
     <Compile Include="IoC\IInitializable.cs" />
     <Compile Include="IoC\ServiceLocatorExtensions.cs" />
@@ -177,14 +177,12 @@
     <Compile Include="Seams\IRandomProvider.cs" />
     <Compile Include="Serialization\ISerializationHelper.cs" />
     <Compile Include="Sync\IChangeResult.cs" />
-    <Compile Include="Sync\IDistributedLockManager.cs" />
     <Compile Include="Sync\IInterlockedHelper.cs" />
     <Compile Include="Sync\ILockAsync.cs" />
     <Compile Include="Sync\ILockContainer.cs" />
     <Compile Include="Sync\ILockStorage.cs" />
     <Compile Include="Sync\ISyncFactory.cs" />
     <Compile Include="Sync\ISyncStorage.cs" />
-    <Compile Include="Sync\Lock.cs" />
     <Compile Include="Sync\LockAsyncType.cs" />
     <Compile Include="Tasks\ICancellationTokenProvider.cs" />
     <Compile Include="Tasks\ITaskHelper.cs" />

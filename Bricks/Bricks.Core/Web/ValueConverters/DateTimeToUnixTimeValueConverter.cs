@@ -1,7 +1,6 @@
 ﻿#region
 
 using System;
-
 using Bricks.Core.DateTime;
 
 #endregion
@@ -10,13 +9,6 @@ namespace Bricks.Core.Web.ValueConverters
 {
 	public sealed class DateTimeToUnixTimeValueConverter : ValueConverterBase<DateTimeOffset, double>
 	{
-		private readonly IDateTimeProvider _dateTimeProvider;
-
-		public DateTimeToUnixTimeValueConverter(IDateTimeProvider dateTimeProvider)
-		{
-			_dateTimeProvider = dateTimeProvider;
-		}
-
 		#region Overrides of ValueConverterBase<DateTimeOffset,double>
 
 		/// <summary>
@@ -26,7 +18,7 @@ namespace Bricks.Core.Web.ValueConverters
 		/// <returns>Результат конвертации.</returns>
 		protected override double Convert(DateTimeOffset source)
 		{
-			return _dateTimeProvider.ToUnixTime(source);
+			return DateTimeHelper.ToUnixTime(source);
 		}
 
 		#endregion

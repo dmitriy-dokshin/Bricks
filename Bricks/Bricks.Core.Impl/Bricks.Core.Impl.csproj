@@ -53,8 +53,9 @@
     <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention">
       <HintPath>..\packages\Unity.3.5.1404.0\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable">
@@ -95,9 +96,7 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="DateTime\DateTimeProvider.cs" />
     <Compile Include="Disposing\ActionDisposable.cs" />
-    <Compile Include="Disposing\DisposableExtensions.cs" />
     <Compile Include="Disposing\DisposableHelper.cs" />
     <Compile Include="Enumerations\EnumHelper.cs" />
     <Compile Include="Enumerations\EnumMetadataBase.cs" />
@@ -134,7 +133,6 @@
     <Compile Include="Results\ResultHelper.cs" />
     <Compile Include="Seams\RandomProvider.cs" />
     <Compile Include="Serialization\SerializationHelper.cs" />
-    <Compile Include="Sync\DistributedLockManager.cs" />
     <Compile Include="Sync\InterlockedHelper.cs" />
     <Compile Include="Sync\LockAsync.cs" />
     <Compile Include="Sync\LockContainer.cs" />

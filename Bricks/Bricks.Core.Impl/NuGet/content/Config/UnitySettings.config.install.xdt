@@ -64,12 +64,6 @@
 				  mapTo="Bricks.Core.Impl.Collections.ContainerFactory">
 		</register>
 
-		<!-- DateTime -->
-		<register type="Bricks.Core.DateTime.IDateTimeProvider"
-				  mapTo="Bricks.Core.Impl.DateTime.DateTimeProvider">
-			<lifetime type="ContainerControlledLifetimeManager" />
-		</register>
-
 		<!-- Enum -->
 		<register type="Bricks.Core.Enumerations.IEnumHelper"
 				  mapTo="Bricks.Core.Impl.Enumerations.EnumHelper">
@@ -175,10 +169,6 @@
 				  mapTo="Bricks.Core.Impl.Sync.LockContainer" />
 		<register type="Bricks.Core.Sync.ILockStorage"
 				  mapTo="Bricks.Core.Impl.Sync.LockStorage">
-			<lifetime type="ContainerControlledLifetimeManager" />
-		</register>
-		<register type="Bricks.Core.Sync.IDistributedLockManager"
-				  mapTo="Bricks.Core.Impl.Sync.DistributedLockManager">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
 
