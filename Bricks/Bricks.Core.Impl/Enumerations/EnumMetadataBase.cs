@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-
 using Bricks.Core.Enumerations;
 
 #endregion
@@ -49,11 +48,12 @@ namespace Bricks.Core.Impl.Enumerations
 		public abstract string GetName(CultureInfo cultureInfo = null);
 
 		/// <summary>
-		/// Получает описание перечисления.
+		/// Получает метаданные перечисления по ключу.
 		/// </summary>
+		/// <param name="metadataKey">Ключ метаданных.</param>
 		/// <param name="cultureInfo">Информация о культуре.</param>
-		/// <returns>Описание перечисления.</returns>
-		public abstract string GetDescription(CultureInfo cultureInfo = null);
+		/// <returns>Метаданные.</returns>
+		public abstract string GetMetadata(string metadataKey, CultureInfo cultureInfo = null);
 
 		#endregion
 	}

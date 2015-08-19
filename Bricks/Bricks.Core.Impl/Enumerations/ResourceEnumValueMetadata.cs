@@ -2,7 +2,6 @@
 
 using System;
 using System.Globalization;
-
 using Bricks.Core.Enumerations;
 
 #endregion
@@ -49,16 +48,17 @@ namespace Bricks.Core.Impl.Enumerations
 		}
 
 		/// <summary>
-		/// Получает описание перечисления.
+		/// Получает метаданные для знчения перечисления по ключу.
 		/// </summary>
+		/// <param name="metadataKey">Ключ метаданных.</param>
 		/// <param name="cultureInfo">Информация о культуре.</param>
-		/// <returns>Описание перечисления.</returns>
-		public virtual string GetDescription(CultureInfo cultureInfo = null)
+		/// <returns>Метаданные.</returns>
+		public virtual string GetMetadata(string metadataKey, CultureInfo cultureInfo = null)
 		{
 			if (_enumMetadata.ValueNameDictionary.ContainsKey(_enumValue))
 			{
 				string enumValueName = _enumMetadata.ValueNameDictionary[_enumValue];
-				return _enumResourceHelper.GetEnumValueDescription(enumValueName, cultureInfo);
+				return _enumResourceHelper.GetEnumValueMetadata(enumValueName, metadataKey, cultureInfo);
 			}
 
 			return null;

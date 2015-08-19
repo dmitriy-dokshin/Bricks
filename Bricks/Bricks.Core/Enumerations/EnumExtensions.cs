@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 
@@ -14,6 +15,9 @@ namespace Bricks.Core.Enumerations
 	/// </summary>
 	public static class EnumExtensions
 	{
+		private const string DescriptionMetadataKey = "Description";
+		private const string ImageUrlMetadataKey = "ImageUrl";
+
 		/// <summary>
 		/// Приводит значение <paramref name="enum" /> к базовому типу перечисления.
 		/// </summary>
@@ -22,12 +26,12 @@ namespace Bricks.Core.Enumerations
 		/// <returns>Значение перечисления базового типа.</returns>
 		public static Enum ToEnum<TEnum>(this TEnum @enum) where TEnum : struct
 		{
-			if (!typeof(TEnum).IsEnum)
+			if (!typeof (TEnum).IsEnum)
 			{
 				throw new InvalidOperationException();
 			}
 
-			return (Enum)(object)@enum;
+			return (Enum) (object) @enum;
 		}
 
 		/// <summary>
@@ -38,12 +42,12 @@ namespace Bricks.Core.Enumerations
 		/// <returns>Значение перечисления типа <typeparamref name="TEnum" />.</returns>
 		public static TEnum ToTEnum<TEnum>(this Enum @enum) where TEnum : struct
 		{
-			if (!typeof(TEnum).IsEnum)
+			if (!typeof (TEnum).IsEnum)
 			{
 				throw new InvalidOperationException();
 			}
 
-			return (TEnum)(object)@enum;
+			return (TEnum) (object) @enum;
 		}
 
 		/// <summary>
@@ -54,12 +58,12 @@ namespace Bricks.Core.Enumerations
 		/// <returns>Числовое значение перечисления.</returns>
 		public static int ToInt<TEnum>(this TEnum @enum) where TEnum : struct
 		{
-			if (!typeof(TEnum).IsEnum)
+			if (!typeof (TEnum).IsEnum)
 			{
 				throw new InvalidOperationException();
 			}
 
-			return (int)(object)@enum;
+			return (int) (object) @enum;
 		}
 
 		public static IReadOnlyCollection<TEnum> GetFlags<TEnum>(this TEnum source) where TEnum : struct
@@ -71,7 +75,7 @@ namespace Bricks.Core.Enumerations
 
 		public static IReadOnlyCollection<TEnum> GetFlags<TEnum>(this Enum @enum) where TEnum : struct
 		{
-			if (!typeof(TEnum).IsEnum)
+			if (!typeof (TEnum).IsEnum)
 			{
 				throw new InvalidOperationException();
 			}
@@ -83,7 +87,7 @@ namespace Bricks.Core.Enumerations
 		public static IReadOnlyCollection<Enum> GetFlags(this Enum @enum)
 		{
 			Type type = @enum.GetType();
-			if (type.GetCustomAttribute(typeof(FlagsAttribute), false) == null)
+			if (type.GetCustomAttribute(typeof (FlagsAttribute), false) == null)
 			{
 				throw new InvalidOperationException();
 			}
@@ -96,6 +100,26 @@ namespace Bricks.Core.Enumerations
 		public static object GetValue(this Enum @enum)
 		{
 			return Convert.ChangeType(@enum, Enum.GetUnderlyingType(@enum.GetType()));
+		}
+
+		public static string GetDescription(this IEnumMetadata enumMetadata, CultureInfo cultureInfo = null)
+		{
+			return enumMetadata.GetMetadata(DescriptionMetadataKey, cultureInfo);
+		}
+
+		public static string GetDescription(this IEnumValueMetadata enumValueMetadata, CultureInfo cultureInfo = null)
+		{
+			return enumValueMetadata.GetMetadata(DescriptionMetadataKey, cultureInfo);
+		}
+
+		public static string GetImageUrl(this IEnumMetadata enumMetadata, CultureInfo cultureInfo = null)
+		{
+			return enumMetadata.GetMetadata(ImageUrlMetadataKey, cultureInfo);
+		}
+
+		public static string GetImageUrl(this IEnumValueMetadata enumValueMetadata, CultureInfo cultureInfo = null)
+		{
+			return enumValueMetadata.GetMetadata(ImageUrlMetadataKey, cultureInfo);
 		}
 	}
 }

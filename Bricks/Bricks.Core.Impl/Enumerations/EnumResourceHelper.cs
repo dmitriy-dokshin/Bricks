@@ -3,7 +3,6 @@
 using System;
 using System.Globalization;
 using System.Reflection;
-
 using Bricks.Core.Enumerations;
 using Bricks.Core.Resources;
 
@@ -23,10 +22,11 @@ namespace Bricks.Core.Impl.Enumerations
 		private const string EnumNameResourceKeyTemplate = "{0}";
 
 		/// <summary>
-		/// Шаблон ключа описания перечисления в ресурсе.
+		/// Шаблон ключа метаданных перечисления в ресурсе.
 		/// <para>{0}: название типа перечисления.</para>
+		/// <para>{1}: ключ метаданных.</para>
 		/// </summary>
-		private const string EnumDescriptionResourceKeyTemplate = "{0}_Description";
+		private const string EnumMetadataResourceKeyTemplate = "{0}_{1}";
 
 		/// <summary>
 		/// Шаблон ключа названия значения перечисления в ресурсе.
@@ -36,11 +36,12 @@ namespace Bricks.Core.Impl.Enumerations
 		private const string EnumValueNameResourceKeyTemplate = "{0}_{1}";
 
 		/// <summary>
-		/// Шаблон ключа описания значения перечисления в ресурсе.
+		/// Шаблон ключа метаданных значения перечисления в ресурсе.
 		/// <para>{0}: название типа перечисления.</para>
 		/// <para>{1}: название значения перечисления.</para>
+		/// <para>{2}: ключ метаданных.</para>
 		/// </summary>
-		private const string EnumValueDescriptionResourceKeyTemplate = "{0}_{1}_Description";
+		private const string EnumValueMetadataResourceKeyTemplate = "{0}_{1}_{2}";
 
 		private readonly Type _enumType;
 		private readonly IResourceProvider _resourceProvider;
@@ -108,16 +109,17 @@ namespace Bricks.Core.Impl.Enumerations
 		}
 
 		/// <summary>
-		/// Получает локализованное описание типа перечисления.
+		/// Получает метаданные перечисления по ключу.
 		/// </summary>
+		/// <param name="metadataKey">Ключ метаданных.</param>
 		/// <param name="cultureInfo">Информация о культуре.</param>
-		/// <returns>Локализованное описание типа перечисления.</returns>
-		public string GetEnumDescription(CultureInfo cultureInfo)
+		/// <returns>Метаданные.</returns>
+		public string GetEnumMetadata(string metadataKey, CultureInfo cultureInfo)
 		{
 			IResourceManager resourceManager = GetResourceManager();
 			if (resourceManager != null)
 			{
-				string resourceName = string.Format(CultureInfo.InvariantCulture, EnumDescriptionResourceKeyTemplate, _enumType.Name);
+				string resourceName = string.Format(CultureInfo.InvariantCulture, EnumMetadataResourceKeyTemplate, _enumType.Name, metadataKey);
 				return resourceManager.GetString(resourceName, cultureInfo);
 			}
 
@@ -143,17 +145,18 @@ namespace Bricks.Core.Impl.Enumerations
 		}
 
 		/// <summary>
-		/// Получает локализованное описание значения типа перечисления.
+		/// Получает метаданные для знчения перечисления по ключу.
 		/// </summary>
 		/// <param name="enumValueName">Название значения перечисления.</param>
+		/// <param name="metadataKey">Ключ метаданных.</param>
 		/// <param name="cultureInfo">Информация о культуре.</param>
-		/// <returns>Локализованное описание значения типа перечисления.</returns>
-		public string GetEnumValueDescription(string enumValueName, CultureInfo cultureInfo)
+		/// <returns>Метаданные.</returns>
+		public string GetEnumValueMetadata(string enumValueName, string metadataKey, CultureInfo cultureInfo)
 		{
 			IResourceManager resourceManager = GetResourceManager();
 			if (resourceManager != null)
 			{
-				string resourceName = string.Format(CultureInfo.InvariantCulture, EnumValueDescriptionResourceKeyTemplate, _enumType.Name, enumValueName);
+				string resourceName = string.Format(CultureInfo.InvariantCulture, EnumValueMetadataResourceKeyTemplate, _enumType.Name, enumValueName, metadataKey);
 				return resourceManager.GetString(resourceName, cultureInfo);
 			}
 

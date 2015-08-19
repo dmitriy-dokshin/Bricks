@@ -19,10 +19,11 @@ namespace Bricks.Core.Enumerations
 		string GetName(CultureInfo cultureInfo = null);
 
 		/// <summary>
-		/// Получает описание перечисления.
+		/// Получает метаданные для знчения перечисления по ключу.
 		/// </summary>
+		/// <param name="metadataKey">Ключ метаданных.</param>
 		/// <param name="cultureInfo">Информация о культуре.</param>
-		/// <returns>Описание перечисления.</returns>
-		string GetDescription(CultureInfo cultureInfo = null);
+		/// <returns>Метаданные.</returns>
+		string GetMetadata(string metadataKey, CultureInfo cultureInfo = null);
 	}
 }

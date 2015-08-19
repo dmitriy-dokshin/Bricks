@@ -19,11 +19,12 @@ namespace Bricks.Core.Impl.Enumerations
 		string GetEnumName(CultureInfo cultureInfo);
 
 		/// <summary>
-		/// Получает локализованное описание типа перечисления.
+		/// Получает метаданные перечисления по ключу.
 		/// </summary>
+		/// <param name="metadataKey">Ключ метаданных.</param>
 		/// <param name="cultureInfo">Информация о культуре.</param>
-		/// <returns>Локализованное описание типа перечисления.</returns>
-		string GetEnumDescription(CultureInfo cultureInfo);
+		/// <returns>Метаданные.</returns>
+		string GetEnumMetadata(string metadataKey, CultureInfo cultureInfo);
 
 		/// <summary>
 		/// Получает локализованное название значения типа перечисления.
@@ -34,11 +35,12 @@ namespace Bricks.Core.Impl.Enumerations
 		string GetEnumValueName(string enumValueName, CultureInfo cultureInfo);
 
 		/// <summary>
-		/// Получает локализованное описание значения типа перечисления.
+		/// Получает метаданные для знчения перечисления по ключу.
 		/// </summary>
 		/// <param name="enumValueName">Название значения перечисления.</param>
+		/// <param name="metadataKey">Ключ метаданных.</param>
 		/// <param name="cultureInfo">Информация о культуре.</param>
-		/// <returns>Локализованное описание значения типа перечисления.</returns>
-		string GetEnumValueDescription(string enumValueName, CultureInfo cultureInfo);
+		/// <returns>Метаданные.</returns>
+		string GetEnumValueMetadata(string enumValueName, string metadataKey, CultureInfo cultureInfo);
 	}
 }

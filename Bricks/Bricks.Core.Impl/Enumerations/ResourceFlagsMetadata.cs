@@ -49,13 +49,14 @@ namespace Bricks.Core.Impl.Enumerations
 		}
 
 		/// <summary>
-		/// Получает описание перечисления.
+		/// Получает метаданные перечисления по ключу.
 		/// </summary>
+		/// <param name="metadataKey">Ключ метаданных.</param>
 		/// <param name="cultureInfo">Информация о культуре.</param>
-		/// <returns>Описание перечисления.</returns>
-		public override string GetDescription(CultureInfo cultureInfo = null)
+		/// <returns>Метаданные.</returns>
+		public override string GetMetadata(string metadataKey, CultureInfo cultureInfo = null)
 		{
-			return _enumResourceHelper.GetEnumDescription(cultureInfo);
+			return _enumResourceHelper.GetEnumMetadata(metadataKey, cultureInfo);
 		}
 
 		#endregion
