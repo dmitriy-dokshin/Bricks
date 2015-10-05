@@ -195,7 +195,10 @@ namespace Bricks.WebAPI.Filters
 									}
 
 									httpResponseMessageData = await HttpResponseMessageData.Create(httpResponseMessage);
-									cacheManager.Add(key, httpResponseMessageData, CacheItemPriority.Normal, null, new AbsoluteTime(TimeSpan.FromSeconds(cacheAttribute.ServerLifetime)));
+									if (httpResponseMessage.IsSuccessStatusCode)
+									{
+										cacheManager.Add(key, httpResponseMessageData, CacheItemPriority.Normal, null, new AbsoluteTime(TimeSpan.FromSeconds(cacheAttribute.ServerLifetime)));
+									}
 								}
 							}
 						}
