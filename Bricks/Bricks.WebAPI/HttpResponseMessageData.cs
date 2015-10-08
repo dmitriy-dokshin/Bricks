@@ -13,13 +13,16 @@ namespace Bricks.WebAPI
 {
 	public sealed class HttpResponseMessageData
 	{
-		private HttpResponseMessageData(Version version, HttpStatusCode statusCode, string reasonPhrase, HttpResponseHeaders headers)
+		private HttpResponseMessageData(DateTime createdAt, Version version, HttpStatusCode statusCode, string reasonPhrase, HttpResponseHeaders headers)
 		{
+			CreatedAt = createdAt;
 			Version = version;
 			StatusCode = statusCode;
 			ReasonPhrase = reasonPhrase;
 			Headers = headers;
 		}
+
+		public DateTime CreatedAt { get; private set; }
 
 		public Version Version { get; private set; }
 
@@ -36,7 +39,7 @@ namespace Bricks.WebAPI
 		public static async Task<HttpResponseMessageData> Create(HttpResponseMessage httpResponseMessage)
 		{
 			var httpResponseMessageData =
-				new HttpResponseMessageData(httpResponseMessage.Version, httpResponseMessage.StatusCode, httpResponseMessage.ReasonPhrase, httpResponseMessage.Headers);
+				new HttpResponseMessageData(DateTime.UtcNow, httpResponseMessage.Version, httpResponseMessage.StatusCode, httpResponseMessage.ReasonPhrase, httpResponseMessage.Headers);
 			if (httpResponseMessage.Content != null)
 			{
 				httpResponseMessageData.Content = await httpResponseMessage.Content.ReadAsByteArrayAsync();

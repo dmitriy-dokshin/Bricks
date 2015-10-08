@@ -21,5 +21,7 @@ namespace Bricks.WebAPI.Filters
 		public double ClientLifetime { get; set; }
 
 		public string CacheManagerKey { get; set; }
+
+		public string CacheId { get; set; }
 	}
 }

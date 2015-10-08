@@ -108,6 +108,8 @@
     <Compile Include="Filters\CacheAttribute.cs" />
     <Compile Include="Filters\CacheFilter.cs" />
     <Compile Include="Filters\DefaultIfNullAttribute.cs" />
+    <Compile Include="Filters\Impl\WebCacheController.cs" />
+    <Compile Include="Filters\IWebCacheController.cs" />
     <Compile Include="Filters\ServiceLocatorFilterProvider.cs" />
     <Compile Include="Filters\ValidationFilter.cs" />
     <Compile Include="Formatters\ImageFormatter.cs" />

@@ -28,13 +28,15 @@ namespace Bricks.WebAPI.Filters
 		private readonly IInterlockedHelper _interlockedHelper;
 		private readonly ILockStorage _lockStorage;
 		private readonly IReflectionHelper _reflectionHelper;
+		private readonly IWebCacheController _webCacheController;
 		private IImmutableDictionary<string, ICacheManager> _cacheMangers;
 
-		public CacheFilter(IInterlockedHelper interlockedHelper, ILockStorage lockStorage, IReflectionHelper reflectionHelper)
+		public CacheFilter(IInterlockedHelper interlockedHelper, ILockStorage lockStorage, IReflectionHelper reflectionHelper, IWebCacheController webCacheController)
 		{
 			_interlockedHelper = interlockedHelper;
 			_lockStorage = lockStorage;
 			_reflectionHelper = reflectionHelper;
+			_webCacheController = webCacheController;
 
 			_cacheMangers = ImmutableDictionary.Create<string, ICacheManager>();
 		}
@@ -154,8 +156,8 @@ namespace Bricks.WebAPI.Filters
 			HttpResponseMessage httpResponseMessage;
 			if (cacheAttribute.ServerLifetime > 0)
 			{
-				string cacheManagerKey =
-					cacheAttribute.CacheManagerKey ?? actionContext.ControllerContext.ControllerDescriptor.ControllerName + "_" + actionContext.ActionDescriptor.ActionName;
+				string controllerActionName = actionContext.ControllerContext.ControllerDescriptor.ControllerName + "_" + actionContext.ActionDescriptor.ActionName;
+				string cacheManagerKey = cacheAttribute.CacheManagerKey ?? controllerActionName;
 				ICacheManager cacheManager = _interlockedHelper.CompareExchange(ref _cacheMangers, x =>
 					{
 						ICacheManager result;
@@ -173,9 +175,11 @@ namespace Bricks.WebAPI.Filters
 						return _interlockedHelper.CreateChangeResult(newValue, result);
 					});
 
-				string key = GetKey(request, cacheAttribute.Headers);
-				var httpResponseMessageData = (HttpResponseMessageData)cacheManager.GetData(key);
-				if (httpResponseMessageData == null)
+				string cacheKey = GetKey(request, cacheAttribute.Headers);
+				var httpResponseMessageData = (HttpResponseMessageData)cacheManager.GetData(cacheKey);
+				string cacheId = cacheAttribute.CacheId ?? controllerActionName;
+				DateTime? updatedAt = _webCacheController.GetCacheUpdatedAt(cacheId);
+				if (httpResponseMessageData == null || (updatedAt.HasValue && httpResponseMessageData.CreatedAt < updatedAt.Value))
 				{
 					ILockContainer lockContainer;
 					using (_lockStorage.GetContainer(_reflectionHelper.GetFullName(MethodBase.GetCurrentMethod()), out lockContainer))
@@ -185,8 +189,9 @@ namespace Bricks.WebAPI.Filters
 						{
 							using (await @lock.Enter(cancellationToken))
 							{
-								httpResponseMessageData = (HttpResponseMessageData)cacheManager.GetData(key);
-								if (httpResponseMessageData == null)
+								httpResponseMessageData = (HttpResponseMessageData)cacheManager.GetData(cacheKey);
+								updatedAt = _webCacheController.GetCacheUpdatedAt(cacheId);
+								if (httpResponseMessageData == null || (updatedAt.HasValue && httpResponseMessageData.CreatedAt < updatedAt.Value))
 								{
 									httpResponseMessage = await continuation();
 									if (cacheAttribute.ClientLifetime > 0)
@@ -197,7 +202,7 @@ namespace Bricks.WebAPI.Filters
 									httpResponseMessageData = await HttpResponseMessageData.Create(httpResponseMessage);
 									if (httpResponseMessage.IsSuccessStatusCode)
 									{
-										cacheManager.Add(key, httpResponseMessageData, CacheItemPriority.Normal, null, new AbsoluteTime(TimeSpan.FromSeconds(cacheAttribute.ServerLifetime)));
+										cacheManager.Add(cacheKey, httpResponseMessageData, CacheItemPriority.Normal, null, new AbsoluteTime(TimeSpan.FromSeconds(cacheAttribute.ServerLifetime)));
 									}
 								}
 							}

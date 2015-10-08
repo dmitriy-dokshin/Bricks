@@ -7,5 +7,9 @@
 		<register type="Bricks.WebAPI.IoC.UnityDependencyResolver">
 			<lifetime type="ContainerControlledLifetimeManager" />
 		</register>
+		<register type="Bricks.WebAPI.Filters.IWebCacheController"
+				  mapTo="Bricks.WebAPI.Filters.Impl.WebCacheController">
+			<lifetime type="ContainerControlledLifetimeManager" />
+		</register>
 	</container>
 </unity>
