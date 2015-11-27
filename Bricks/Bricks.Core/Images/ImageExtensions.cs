@@ -38,11 +38,11 @@ namespace Bricks.Core.Images
 			return _exceptionHelper.Value.Catch<Image, ArgumentException>(() => Image.FromStream(stream));
 		}
 
-		public static byte[] GetBytes(this Image image)
+		public static byte[] GetBytes(this Image image, ImageFormat format = null)
 		{
 			using (var memoryStream = new MemoryStream())
 			{
-				image.SaveFixed(memoryStream, image.RawFormat);
+				image.SaveFixed(memoryStream, format ?? image.RawFormat);
 				return memoryStream.ToArray();
 			}
 		}

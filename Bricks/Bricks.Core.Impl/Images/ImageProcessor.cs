@@ -3,6 +3,7 @@
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 
 using Bricks.Core.Images;
 using Bricks.Core.Results;
@@ -35,7 +36,7 @@ namespace Bricks.Core.Impl.Images
 
 		#region Implementation of IImageProcessor
 
-		public byte[] Resize(byte[] data, int? width = null, int? height = null, bool preserveAspectRatio = true)
+		public byte[] Resize(byte[] data, int? width = null, int? height = null, bool preserveAspectRatio = true, ImageFormat format = null)
 		{
 			if (!width.HasValue && !height.HasValue)
 			{
@@ -50,7 +51,7 @@ namespace Bricks.Core.Impl.Images
 
 			Image image = getImageResult.Data;
 			Image newImage = Resize(image, width, height, preserveAspectRatio);
-			return newImage.GetBytes();
+			return newImage.GetBytes(format ?? image.RawFormat);
 		}
 
 		public Image Resize(Image image, int? width = null, int? height = null, bool preserveAspectRatio = true)

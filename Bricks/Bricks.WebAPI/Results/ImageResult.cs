@@ -45,7 +45,7 @@ namespace Bricks.WebAPI.Results
 		/// <param name="cancellationToken">The token to monitor for cancellation requests.</param>
 		public Task<HttpResponseMessage> ExecuteAsync(CancellationToken cancellationToken)
 		{
-			byte[] imageData = _imageProcessor.Resize(_imageData, _width, _height, _preserveAspectRatio);
+			byte[] imageData = _imageProcessor.Resize(_imageData, _width, _height, _preserveAspectRatio, ImageHelper.ParseFormat(_imageFormat));
 			var httpResponseMessage = new HttpResponseMessage(HttpStatusCode.OK) { Content = new ByteArrayContent(imageData) };
 			HttpContentHeaders httpContentHeaders = httpResponseMessage.Content.Headers;
 			string contentType = string.Format("image/{0}", _imageFormat);
